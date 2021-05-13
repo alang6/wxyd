@@ -1,0 +1,20 @@
+1 新建a目录
+mkdir /a/
+
+2 把压缩包里的文件全部解压到 a目录
+
+3 启动容器
+在 docker-compose.yml 文件的目录下执行 docker-compose up -d
+
+4 访问面板
+http://IP:5100
+
+5 访问获取cookie网站
+http://IP:1234
+
+6 修改在线获取cookie网页内容
+
+编辑 index.html 文件
+
+html内自带本博客及小毛驴（扫码作者）的博客 如有介意请自行修改
+需要企业微信推送请自己在index.js修改相关参数

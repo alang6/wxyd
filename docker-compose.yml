@@ -1,0 +1,28 @@
+version: '2.0'
+services:
+  jd:
+    image: oolool/jd
+    container_name: jd
+    restart: always
+    tty: true
+    volumes:
+      - /a/jd/config:/jd/config
+      - /a/jd/log:/jd/log
+      - /a/jd/scripts:/jd/scripts
+      - /a/server.js:/jd/panel/server.js
+    ports:
+      - 5100:5678
+    environment:
+      - ENABLE_HANGUP=true
+      - ENABLE_WEB_PANEL=true
+  jd_cookie:
+    image: echowxsy/jd_cookie
+    container_name: jd_cookie
+    restart: always
+    volumes:
+      - /a/index.html:/app/public/index.html
+      - /a/index.js:/app/index.js
+    ports:
+      - 1234:6789
+    environment:
+      - UPDATE_API=http://ip:5100/updateCookie
