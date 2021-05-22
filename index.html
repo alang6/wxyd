@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width">
+    <title>京东免费代挂</title>
+	<meta name="keywords" content="京东免费代挂">
+	<meta name="description" content="京东代挂">
+    <link href="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/layui.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/index_style.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/animate.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="section" id="section1">
+        <div class="fp-tablecell">
+            <div class="page1">
+                <div class="nav wow zoomIn animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: zoomIn;">
+                    <h1>京东免费扫码</h1>
+                    <p>全自动挂机项目，免费代挂。</p>
+                      <button class="layui-btn layui-btn-normal" style="margin-top: 20px" href="https://slaye.cn" id="cookietools">开始代挂</button>
+                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" href="https://slaye.cn">沙拉野人的博客</a>
+                    <a class="layui-btn layui-btn-normal" style="margin-top: 20px" href="https://novpx.com">小毛驴的博客</a>
+                </div>
+                <script
+                  src="https://code.jquery.com/jquery-3.6.0.min.js"
+                  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                  crossorigin="anonymous"
+                ></script>
+                <script
+                  type="text/javascript"
+                  src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.all.min.js"
+                ></script>
+                <script
+                  type="text/javascript"
+                  src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"
+                ></script>
+                <style type="text/css">
+                  body,
+                  html {
+                    margin: 0;
+                    padding: 0;
+                  }
+
+                  button {
+                    color: #444444;
+                    background: #f3f3f3;
+                    border: 1px #dadada solid;
+                    padding: 5px 10px;
+                    border-radius: 2px;
+                    font-weight: bold;
+                    font-size: 32pt;
+                    outline: none;
+                  }
+
+                  button:hover {
+                    border: 1px #c6c6c6 solid;
+                    box-shadow: 1px 1px 1px #eaeaea;
+                    color: #333333;
+                    background: #f7f7f7;
+                  }
+
+                  button:active {
+                    box-shadow: inset 1px 1px 1px #dfdfdf;
+                  }
+
+                  .container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100vh;
+                    width: 100vw;
+                  }
+
+                  /* Blue button as seen on translate.google.com*/
+                  .container .btn {
+                    margin: 0 auto 100px;
+                    color: white;
+                    background: #4c8ffb;
+                    border: 1px #3079ed solid;
+                    border-radius: 5px;
+                    box-shadow: inset 0 1px 0 #80b0fb;
+                  }
+
+                  .container .btn:hover {
+                    border: 1px #2f5bb7 solid;
+                    box-shadow: 0 1px 1px #eaeaea, inset 0 1px 0 #5a94f1;
+                    background: #3f83f1;
+                  }
+
+                  .container .btn:active {
+                    box-shadow: inset 0 2px 5px #2370fe;
+                  }
+
+                  .container .dec {
+                    margin-top: 100px;
+                    text-align: center;
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: red;
+                  }
+
+                  #qrcontainer {
+                    position: fixed;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(255, 255, 255, 0.8);
+                    text-align: center;
+                    transition: all 0.3s;
+                  }
+                  #qrcontainer.hidden {
+                    opacity: 0;
+                    visibility: hidden;
+                  }
+
+                  #qrcontainer .qframe {
+                    background-color: #ffffff;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    border: #6d8a88 1px solid;
+                    -webkit-box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.2);
+                    position: relative;
+                  }
+                  #qrcontainer .qframe #refresh_qrcode {
+                    width: 256px;
+                    height: 256px;
+                    position: absolute;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    left: 1rem;
+                    top: 1rem;
+                    color: #ffffff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                  #qrcontainer .qframe #refresh_qrcode.hidden {
+                    opacity: 0;
+                    visibility: hidden;
+                  }
+                  #qrcontainer .qframe #refresh_qrcode h3 {
+                    font-weight: normal;
+                  }
+                  #qrcontainer .qframe #refresh_qrcode .refresh {
+                    display: block;
+                    background: #e4393c;
+                    width: 80px;
+                    height: 30px;
+                    margin: 0 auto;
+                    line-height: 30px;
+                    opacity: 1;
+                    z-index: 19;
+                    color: #fbfbfb;
+                    text-decoration: none;
+                    cursor: pointer;
+                  }
+                  #qrcontainer .qframe .info {
+                    padding: 1rem 0 0 0;
+                  }
+
+                  @media screen and (max-width: 480px) {
+                    .container .dec {
+                      margin-top: 50px;
+                    }
+                    .container .btn {
+                      margin-bottom: 50px;
+                    }
+                  }
+                </style>
+              </head>
+
+              <body>
+                <div id="qrcontainer" class="hidden">
+                  <div class="qframe">
+                    <div id="refresh_qrcode" class="hidden">
+                      <div>
+                        <h3>二维码已失效</h3>
+                        <div class="refresh">刷新</div>
+                      </div>
+                    </div>
+                    <div id="qrcode"></div>
+                    <div class="info">
+                      请使用京东APP扫码<br />或截图用京东APP扫码<br />完成后请回到此页面复制cookie<br />请无视升级提示
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  var qrcode, userCookie, user;
+                  $(document).ready(function () {
+                    qrcode = new QRCode(document.getElementById('qrcode'), {
+                      text: 'sample',
+                      correctLevel: QRCode.CorrectLevel.L,
+                    });
+
+                    function copyToClip(content, message) {
+                      var aux = document.createElement('input');
+                      aux.setAttribute('value', content);
+                      document.body.appendChild(aux);
+                      aux.select();
+                      document.execCommand('copy');
+                      document.body.removeChild(aux);
+                    }
+
+                    function checkLogin(user) {
+                      var timeId = setInterval(() => {
+                        let timeStamp = new Date().getTime();
+                        $.post(`./cookie?t=${timeStamp}`, { user }, function (data) {
+                          if (data.err == 0) {
+                            clearInterval(timeId);
+                            $('#qrcontainer').addClass('hidden');
+                            $('#refresh_qrcode').addClass('hidden');
+                            userCookie = data.cookie;
+                            msg = data.msg;
+                            Swal.fire({
+                              title: msg || 'Cookie已获取',
+                              html:
+                                '<div class="cookieCon" style="font-size:12px;">' +
+                                userCookie +
+                                '</div>',
+                              text: userCookie,
+                              icon: 'success',
+                              confirmButtonText: '复制',
+                            }).then((result) => {
+                              copyToClip(userCookie);
+                            });
+                          } else if (data.err == 21) {
+                            clearInterval(timeId);
+                            $('#refresh_qrcode').removeClass('hidden');
+                          }
+                        });
+                      }, 3000);
+                    }
+
+                    function get_code() {
+                      let timeStamp = new Date().getTime();
+                      $.get('./qrcode?t=' + timeStamp, function (data) {
+                        if (data.err == 0) {
+                          $('#qrcontainer').removeClass('hidden');
+                          $('#refresh_qrcode').addClass('hidden');
+                          qrcode.clear();
+                          qrcode.makeCode(data.qrcode);
+                          user = data.user;
+                          checkLogin(user);
+                        } else {
+                          Swal.fire({
+                            text: data.msg,
+                            icon: 'error',
+                          });
+                        }
+                      });
+                    }
+                    $('.refresh').click(get_code);
+                    $('#cookietools').click(get_code);
+                  });
+                </script>
+    <script src="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/layui.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/wow.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aouyyy/jdcdn/index.js"></script>
+
+<ul class="layui-fixbar"><li class="layui-icon layui-fixbar-top" lay-type="top" style="display: none;"></li></ul></body></html>
