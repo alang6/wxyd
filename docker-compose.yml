@@ -6,10 +6,10 @@ services:
     restart: always
     tty: true
     volumes:
-      - /b/jd/config:/jd/config
-      - /b/jd/log:/jd/log
-      - /b/jd/scripts:/jd/scripts
-      - /b/server.js:/jd/panel/server.js
+      - /a/jd/config:/jd/config
+      - /a/jd/log:/jd/log
+      - /a/jd/scripts:/jd/scripts
+      - /a/server.js:/jd/panel/server.js
     ports:
       - 5100:5678
     environment:
@@ -20,8 +20,8 @@ services:
     container_name: jd_cookie
     restart: always
     volumes:
-      - /b/index.html:/app/public/index.html
-      - /b/index.js:/app/index.js
+      - /a/index.html:/app/public/index.html
+      - /a/index.js:/app/index.js
     ports:
       - 1234:6789
     environment:
