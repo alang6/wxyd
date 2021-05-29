@@ -7,6 +7,9 @@ COPY ["package.json","yarn.lock", "./"]
 RUN yarn
 
 COPY index.js ./
+
+COPY sendNotify.js ./
+
 COPY public ./public
 
 EXPOSE 6789
