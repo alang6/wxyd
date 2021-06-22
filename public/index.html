@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>在线获取京东Cookie</title>
-    <script type="text/javascript" src="./jd_cookie.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
+    <script type="text/javascript" src="./jd_cookie.js"></script>
     <style type="text/css">
       body,
       html {
@@ -39,15 +39,21 @@
       .container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        height: 100vh;
+        justify-content: space-around;
+        /*height: 100%;*/
+        /*min-height: 100vh;*/
         width: 100vw;
         align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
 
       /* Blue button as seen on translate.google.com*/
       .container .btn {
-        margin: 0 auto 100px;
+        margin: 0 auto;
         color: white;
         background: #4c8ffb;
         border: 1px #3079ed solid;
@@ -72,26 +78,6 @@
         font-weight: 600;
         color: red;
       }
-
-      #qrcontainer {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.8);
-        text-align: center;
-        transition: all 0.3s;
-      }
-      #qrcontainer.hidden {
-        opacity: 0;
-        visibility: hidden;
-      }
-
       #qrcontainer .qframe {
         background-color: #ffffff;
         padding: 1rem;
@@ -142,27 +128,46 @@
           margin-top: 50px;
         }
         .container .btn {
-          margin-bottom: 50px;
+          /*margin-bottom: 50px;*/
         }
+      }
+      #msg {
+        display: block;
+        width: 90%;
+        height: 30px;
+        border-width: 2px;
+        border-radius: 5px;
+        margin: 0 auto;
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-<!--      <p class="dec">⚠️请确认你信任此服务的提供商<br />否则会有隐私泄漏风险</p>-->
+      <input
+              id="msg"
+              type="text"
+              placeholder="请输入备注信息，方便识别账号"
+      />
       <button class="btn" id="jd_cookie" title="手机扫描二维码登录">
-        点击获取二维码
+        获取二维码
       </button>
+      <button class="btn" id="jdcode">口令登录</button>
+      <button class="btn" id="jumpapp">京东登录</button>
     </div>
     <script>
-      document
-        .getElementById('jd_cookie')
-        .addEventListener('click', function () {
-          // 后端服务接口
-          var apiHost = '.';
-          JDCookie(apiHost);
-        });
+      // 后端服务接口
+      var apiHost = '.';
+      get_code2(apiHost);
+      document.getElementById('jd_cookie').addEventListener('click', function () {
+        qrLogin(apiHost);
+      });
+      document.getElementById('jdcode').addEventListener('click', function () {
+        jdCodeLogin(apiHost);
+      });
+      document.getElementById('jumpapp').addEventListener('click', function () {
+        jumpAppLogin(apiHost);
+      });
     </script>
   </body>
 </html>

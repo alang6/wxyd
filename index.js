@@ -24,7 +24,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 const transformKey = (key) => {
   return key.substring(key.indexOf('=') + 1, key.indexOf(';'));
 };
-
+/**
+ * 随机字符串
+ * @param {number} [length=6]
+ * @return {*}
+ */
+const ramdomString = (length = 6) => {
+  var str = 'abcdefghijklmnopqrstuvwxyz';
+  str += str.toUpperCase();
+  str += '0123456789';
+  var _str = '';
+  for (let i = 0; i < length; i++) {
+    var rand = Math.floor(Math.random() * str.length);
+    _str += str[rand];
+  }
+  return _str;
+};
 /**
  * 通过res获取cookie
  * 此cookie用来请求二维码
@@ -187,6 +202,47 @@ async function checkLogin(user) {
 }
 
 /**
+ * 获取登录口令
+ * @param {*} url
+ * @return {*} code
+ */
+async function getJDCode(url) {
+  const timeStamp = new Date().getTime();
+  const getCodeUrlObj = new URL(
+      'https://api.m.jd.com/api?functionId=jCommand&appid=u&client=apple&clientVersion=8.3.6'
+  );
+  getCodeUrlObj.searchParams.set(
+      'body',
+      JSON.stringify({
+        appCode: 'jApp',
+        command: {
+          keyEndTime: timeStamp + 3 * 60 * 1000,
+          keyTitle: '【口令登录】点击->立即查看去登录',
+          url: url,
+          keyChannel: 'Wxfriends',
+          keyId: ramdomString(28),
+          sourceCode: 'jUnion',
+          keyImg:
+              'https://img14.360buyimg.com/imagetools/jfs/t1/188781/6/3393/253109/60a53002E2cd2ea37/17eabc4b8272021b.jpg',
+          keyContent: '',
+          acrossClient: '0',
+        },
+      })
+  );
+
+  const response = await got.get(getCodeUrlObj.toString(), {
+    responseType: 'json',
+    headers: {
+      Host: 'api.m.jd.com',
+      accept: '*/*',
+      'accept-language': 'zh-cn',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+    },
+  });
+  return response.body;
+}
+
+/**
  * 发送消息推送
  *
  * @param {*} msg
@@ -310,7 +366,8 @@ app.get('/qrcode', function (request, response) {
     try {
       const cookiesObj = await step1();
       const user = await step2(cookiesObj);
-      response.send({ err: 0, qrcode: user.qrCodeUrl, user });
+      const getCodeBody = await getJDCode(user.qrCodeUrl);
+      response.send({ err: 0, qrcode: user.qrCodeUrl, user, jdCode: getCodeBody.data, });
     } catch (err) {
       response.send({ err: 2, msg: '错误' });
     }
