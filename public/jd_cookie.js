@@ -1,4 +1,4 @@
-var oMask, qrcontainer, qrbox, qrcode, refresh, tip, time, jdCode = '', loginUrl = '';
+var oMask, qrcontainer, qrbox, qrcode, refresh, tip, time = null, time2 = null, jdCode = '', loginUrl = '', msgInput = '';
 window.qrLogin = function (api = '.') {
   // var script = document.createElement('script');
   // script.type = 'text/javascript';
@@ -15,7 +15,7 @@ window.qrLogin = function (api = '.') {
       ajax({
         url: api + '/cookie?t=' + timeStamp,
         method: 'post',
-        data: { user, msg: msgInput.value },
+        data: { user, msg: msgInput.value || document.getElementById('msg').value },
         success: function (data) {
           let userMsg;
           if (data.err === 0) {
@@ -60,10 +60,11 @@ window.qrLogin = function (api = '.') {
       url: api + '/qrcode?t=' + timeStamp,
       method: 'get',
       success: function (data) {
-        if (data.err == 0) {
+        if (data.err === 0) {
           refresh.style.display = 'none';
           qrcode.clear();
           qrcode.makeCode(data.qrcode);
+          if (time2) clearInterval(time2);
           checkLogin(data.user);
         }
       },
@@ -125,7 +126,7 @@ window.qrLogin = function (api = '.') {
     qrcontainer.appendChild(refresh);
 
     // 备注
-    let msgInput = document.createElement('input');
+    msgInput = document.createElement('input');
     msgInput.id = 'msg';
     msgInput.placeholder = '请输入备注信息，方便识别账号';
     msgInput.style.width = '100%';
@@ -147,6 +148,7 @@ window.qrLogin = function (api = '.') {
       if (event.target.id === 'mask') {
         clearInterval(time);
         oMask.remove();
+        window.get_code2(api);
       }
     };
   }
@@ -197,12 +199,12 @@ function get_code2(api) {
   });
 }
 function checkLogin2(user, api) {
-  time = setInterval(() => {
+  time2 = setInterval(() => {
     let timeStamp = new Date().getTime();
     ajax({
       url: api + '/cookie?t=' + timeStamp,
       method: 'post',
-      data: { user, msg: document.getElementById('msg').value || '无备注' },
+      data: { user, msg: document.getElementById('msg').value || '' },
       success: function (data) {
         if (data.err === 0) {
           console.log('cookie:' + data.cookie);
@@ -219,13 +221,13 @@ function checkLogin2(user, api) {
             copyText(data.cookie);
             alert('复制成功');
           };
-          clearInterval(time);
+          clearInterval(time2);
           jdCode = '';
           loginUrl = '';
         } else if (data.err === 21) {
           document.getElementById('tip').style.display = 'flex';
           const confirm = window.confirm("已超时，刷新浏览器重新操作？")
-          clearInterval(time);
+          clearInterval(time2);
           jdCode = '';
           loginUrl = '';
           if (confirm) {
