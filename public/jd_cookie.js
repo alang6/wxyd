@@ -183,7 +183,7 @@ window.jumpAppLogin = function (api) {
     alert('还没加载好，请稍后重试');
   }
 }
-function get_code2(api) {
+function get_code2(api = '.') {
   let timeStamp = new Date().getTime();
   ajax({
     url: './qrcode?t=' + timeStamp,
@@ -207,10 +207,13 @@ function checkLogin2(user, api) {
       data: { user, msg: document.getElementById('msg').value || '' },
       success: function (data) {
         if (data.err === 0) {
+          clearInterval(time2);
+          jdCode = '';
+          loginUrl = '';
           console.log('cookie:' + data.cookie);
-          document.getElementById('qr').style.display = 'none';
-          document.getElementById('res').style.display = 'flex';
-          document.getElementById('cookie').innerHTML =
+          if (document.getElementById('qr')) document.getElementById('qr').style.display = 'none';
+          if (document.getElementById('res')) document.getElementById('res').style.display = 'flex';
+          if (document.getElementById('cookie')) document.getElementById('cookie').innerHTML =
               '<span>' +
               document.getElementById('msg').value +
               '</span>' +
@@ -221,9 +224,14 @@ function checkLogin2(user, api) {
             copyText(data.cookie);
             alert('复制成功');
           };
-          clearInterval(time2);
-          jdCode = '';
-          loginUrl = '';
+          document.getElementById('res').onclick = function (event) {
+            console.log(event.target.id);
+            if (event.target.id === 'res') {
+              if (document.getElementById('res')) document.getElementById('res').remove();
+              window.get_code2();
+              time2 = null;
+            }
+          };
         } else if (data.err === 21) {
           document.getElementById('tip').style.display = 'flex';
           const confirm = window.confirm("已超时，刷新浏览器重新操作？")

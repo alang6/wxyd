@@ -139,6 +139,45 @@
         border-radius: 5px;
         margin: 0 auto;
       }
+      .qr {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: fixed;
+        inset: 0px;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.45);
+        z-index: 1001;
+        width:100%;
+        min-width: 100vw;
+      }
+      .qrcontainer {
+        position: relative;
+        width: 256px;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid rgb(109, 138, 136);
+        background-color: rgb(255, 255, 255);
+        box-shadow: rgb(0 0 0 / 20%) 0px 0px 7px 3px;
+        box-sizing: content-box;
+      }
+      #tip {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 256px;
+        height: 256px;
+        color: rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .des {
+        word-break: break-word;
+        padding-top: 16px;
+      }
     </style>
   </head>
 
@@ -154,6 +193,11 @@
       </button>
       <button class="btn" id="jdcode">口令登录</button>
       <button class="btn" id="jumpapp">京东登录</button>
+    </div>
+    <div id="res" class="qr">
+      <div class="qrcontainer">
+        <div id="cookie" class="des"></div>
+      </div>
     </div>
     <script>
       // 后端服务接口
