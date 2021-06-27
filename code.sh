@@ -68,7 +68,7 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  "repo1"_jd_fruit
+  acoolbook_lxkwz_jd_fruit
   "$repo1"_jd_pet
   "$repo1"_jd_plantBean
   "$repo1"_jd_dreamFactory
