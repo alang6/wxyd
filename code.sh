@@ -68,21 +68,21 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  "$repo"_jd_fruit
-  "$repo"_jd_pet
-  "$repo"_jd_plantBean
-  "$repo"_jd_dreamFactory
-  "$repo"_jd_jdfactory
-  "$repo"_jd_crazy_joy
-  "$repo"_jd_jdzz
-  "$repo"_jd_jxnc
-  "$repo"_jd_bookshop
-  "$repo"_jd_cash
-  "$repo"_jd_sgmh
-  "$repo"_jd_cfd
-  "$repo"_jd_health
-  "$repo"_jd_carnivalcity
-  "$repo"_jd_city
+  "repo1"_jd_fruit
+  "$repo1"_jd_pet
+  "$repo1"_jd_plantBean
+  "$repo1"_jd_dreamFactory
+  "$repo1"_jd_jdfactory
+  "$repo1"_jd_crazy_joy
+  "$repo1"_jd_jdzz
+  "$repo1"_jd_jxnc
+  "$repo1"_jd_bookshop
+  "$repo1"_jd_cash
+  "$repo1"_jd_sgmh
+  "$repo1"_jd_cfd
+  "$repo1"_jd_health
+  "$repo1"_jd_carnivalcity
+  "$repo1"_jd_city
 )
 
 name_config=(
