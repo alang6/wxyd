@@ -8,12 +8,11 @@ dir_shell=/ql/shell
 repo1='panghu999'
 repo2='JDHelloWorld'
 repo3='chinnkarahoi'
-if [ "$(ls $dir_log |grep panghu999_jd_scripts | wc -l)" -gt 0 ]; then
+if [ "$(ls $dir_log |grep acoolbook_lxkwz | wc -l)" -gt 0 ]; then
     repo=$repo1
-elif [ "$(ls $dir_log |grep JDHelloWorld | wc -l)" -gt 0 ]; then
+
+elif [ "$(ls $dir_log |grep acoolbook_scripts | wc -l)" -gt 0 ]; then
     repo=$repo2
-elif [ "$(ls $dir_log |grep chinnkarahoi | wc -l)" -gt 0 ]; then
-    repo=$repo3
 else
     repo=''
 fi
@@ -74,21 +73,21 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  "$repo"_jd_scripts_jd_fruit
-  "$repo"_jd_scripts_jd_pet
-  "$repo"_jd_scripts_jd_plantBean
-  "$repo"_jd_scripts_jd_dreamFactory
-  "$repo"_jd_scripts_jd_jdfactory
-  "$repo"_jd_scripts_jd_crazy_joy
-  "$repo"_jd_scripts_jd_jdzz
-  "$repo"_jd_scripts_jd_jxnc
-  "$repo"_jd_scripts_jd_bookshop
-  "$repo"_jd_scripts_jd_cash
-  "$repo"_jd_scripts_jd_sgmh
-  "$repo"_jd_scripts_jd_cfd
-  "$repo"_jd_scripts_jd_health
-  "$repo"_jd_scripts_jd_carnivalcity
-  "$repo"_jd_scripts_jd_city
+  "$repo"_jd_fruit
+  "$repo"_jd_pet
+  "$repo"_jd_plantBean
+  "$repo"_jd_dreamFactory
+  "$repo"_jd_jdfactory
+  "$repo"s_jd_crazy_joy
+  "$repo"_jd_jdzz
+  "$repo"_jd_jxnc
+  "$repo"_jd_bookshop
+  "$repo"_jd_cash
+  "$repo"_jd_sgmh
+  "$repo"_jd_cfd
+  "$repo"_jd_health
+  "$repo"_jd_carnivalcity
+  "$repo"_jd_city
 )
 
 name_config=(
