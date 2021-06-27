@@ -5,19 +5,21 @@ dir_shell=/ql/shell
 . $dir_shell/share.sh
 
 ## 判断仓库类别及日志存在与否
-repo1='acoolbook_lxkwz'
-repo2='acoolbook_scripts'
-
-if [ "$(ls $dir_log |grep acoolbook_lxkwz | wc -l)" -gt 0 ]; then
+repo1='panghu999'
+repo2='JDHelloWorld'
+repo3='chinnkarahoi'
+if [ "$(ls $dir_log |grep panghu999_jd_scripts | wc -l)" -gt 0 ]; then
     repo=$repo1
-elif [ "$(ls $dir_log |grep acoolbook_script | wc -l)" -gt 0 ]; then
+elif [ "$(ls $dir_log |grep JDHelloWorld | wc -l)" -gt 0 ]; then
     repo=$repo2
+elif [ "$(ls $dir_log |grep chinnkarahoi | wc -l)" -gt 0 ]; then
+    repo=$repo3
 else
     repo=''
 fi
 
 ## 调试模式开关，默认是0，表示关闭；设置为1，表示开启
-DEBUG="1"
+DEBUG="0"
 
 ## 备份配置文件开关，默认是1，表示开启；设置为0，表示关闭
 BAKUP="1"
@@ -77,7 +79,7 @@ name_js=(
   "$repo"_jd_plantBean
   "$repo"_jd_dreamFactory
   "$repo"_jd_jdfactory
-  "$repo"s_jd_crazy_joy
+  "$repo"_jd_crazy_joy
   "$repo"_jd_jdzz
   "$repo"_jd_jxnc
   "$repo"_jd_bookshop
