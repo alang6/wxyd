@@ -29,7 +29,7 @@
 const $ = new Env('东东电竞经理');
 let cookiesArr = [], cookie = '', isBox = false, notify, newShareCodes, allMessage = '';
 let tasks = [], shareCodes = [], first = true;
-
+beizhuli = ""
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -99,7 +99,7 @@ async function main() {
         getAssist()
         await $.wait(1000)
         // } else {
-        console.log(`第${$.index}个账号${$.UserName}去助力第${Math.floor(($.index - 1) / 6) + 1}个账号。`)
+        console.log(`第${$.index}个账号${$.UserName}去助力第${beizhuli}个账号。`)
         doAssist()
         await $.wait(1000)
         // }
@@ -170,6 +170,7 @@ function getShareCode(token) {
 }
 
 function doAssist() {
+  beizhuli=Math.floor(Math.random() * 14 )
   return new Promise(resolve => {
     $.post({
       url: 'https://xinruidddj-isv.isvjcloud.com/api/task/do_assist_task',
@@ -181,7 +182,7 @@ function doAssist() {
         'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;10.0.2;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
         'Accept-Language': 'zh-cn',
       },
-      body: `token=${shareCodes[Math.floor(($.index - 1) / 6)].tid}&inviter=${Math.floor(($.index - 1) / 6).uid}`
+      body: `token=${shareCodes[beizhuli].tid}&inviter=${beizhuli.uid}`
     }, (err, resp, data) => {
       try {
         data = $.toObj(data)
