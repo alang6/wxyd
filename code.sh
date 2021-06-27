@@ -5,24 +5,19 @@ dir_shell=/ql/shell
 . $dir_shell/share.sh
 
 ## 判断仓库类别及日志存在与否
-repo1='panghu999'
-repo2='JDHelloWorld'
-repo3='chinnkarahoi'
-if [ "$(ls $dir_log |grep panghu999_jd_scripts | wc -l)" -gt 0 ]; then
-    repo=$repo1
+if [ "$(ls $dir_log |grep acoolbook_lx | wc -l)" -gt 0 ]; then
+    repo='acoolbook'
 elif [ "$(ls $dir_log |grep JDHelloWorld | wc -l)" -gt 0 ]; then
-    repo=$repo2
+    repo='JDHelloWorld'
 elif [ "$(ls $dir_log |grep chinnkarahoi | wc -l)" -gt 0 ]; then
-    repo=$repo3
+    repo='chinnkarahoi'
 else
     repo=''
 fi
 
-## 调试模式开关，默认是0，表示关闭；设置为1，表示开启
-DEBUG="0"
-
-## 备份配置文件开关，默认是1，表示开启；设置为0，表示关闭
-BAKUP="1"
+#读取最新日志,导入环境变量
+code_log_newest=`ls -at $dir_code/*  | head -n 1`
+source $code_log_newest
 
 ## 定义 jcode 脚本导出的互助码模板样式（选填）
 ## 不填 使用“按编号顺序助力模板”，Cookie编号在前的优先助力
@@ -74,21 +69,21 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  "$repo"_jd_fruit
-  "$repo"_jd_pet
-  "$repo"_jd_plantBean
-  "$repo"_jd_dreamFactory
-  "$repo"_jd_jdfactory
-  "$repo"_jd_crazy_joy
-  "$repo"_jd_jdzz
-  "$repo"_jd_jxnc
-  "$repo"_jd_bookshop
-  "$repo"_jd_cash
-  "$repo"_jd_sgmh
-  "$repo"_jd_cfd
-  "$repo"_jd_health
-  "$repo"_jd_carnivalcity
-  "$repo"_jd_city
+  "$repo"_lxkwz_jd_fruit
+  "$repo"_lxkwz_jd_pet
+  "$repo"_lxkwz_jd_plantBean
+  "$repo"_lxkwz_jd_dreamFactory
+  "$repo"_lxkwz_jd_jdfactory
+  "$repo"_lxkwz_jd_crazy_joy
+  "$repo"_lxkwz_jd_jdzz
+  "$repo"_lxkwz_jd_jxnc
+  "$repo"_lxkwz_jd_bookshop
+  "$repo"_lxkwz_jd_cash
+  "$repo"_lxkwz_jd_sgmh
+  "$repo"_lxkwz_jd_cfd
+  "$repo"_lxkwz_jd_health
+  "$repo"_lxkwz_jd_carnivalcity
+  "$repo"_lxkwz_jd_city
 )
 
 name_config=(
@@ -130,7 +125,7 @@ name_chinese=(
 ## 生成pt_pin清单
 gen_pt_pin_array() {
   local envs=$(eval echo "\$JD_COOKIE")
-  local array=($(echo $envs | sed 's/ //g' | sed 's/&/ /g'))
+  local array=($(echo $envs | sed 's/&/ /g'))
   local tmp1 tmp2 i pt_pin_temp
   for i in "${!array[@]}"; do
     pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
@@ -147,7 +142,7 @@ export_codes_sub() {
     local config_name_for_other=ForOther$config_name
     local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
     local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/ //g' | sed 's/&/ /g'))
+    local array=($(echo $envs | sed 's/&/ /g'))
     local user_sum=${#array[*]}
     if cd $dir_log/$task_name &>/dev/null && [[ $(ls) ]]; then
         ## 寻找所有互助码以及对应的pt_pin
@@ -247,7 +242,6 @@ export_codes_sub() {
 ## 汇总输出
 export_all_codes() {
     gen_pt_pin_array
-    [[ $DEBUG = "1" ]] && echo "# 当前 code.sh 的线程数：$(ps | grep code.sh | grep -v grep | wc -l)"
     echo -e "\n# 从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n# 即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
     echo -n "# 你选择的互助码模板为："
     case $HelpType in
@@ -264,18 +258,19 @@ export_all_codes() {
         echo "按账号编号优先。"
         ;;
     esac
-    if [ "$(ps | grep code.sh | grep -v grep | wc -l)" -gt 8 ]; then
-        echo -e "\n# 检测到 code.sh 的线程过多 ，请稍后再试！"
+    if [ "$(ps | grep code.sh | grep -v grep | wc -l)" -gt 5 ]; then
+        echo -e "\n# 检测到 code.sh 正在运行，请稍后再试！"
 		exit
     elif [ -z $repo ]; then
         echo -e "\n# 未检测到兼容的活动脚本日志，无法读取互助码，退出！"
 		exit
     else
-        echo -e "\n# 优先读取 $repo 的脚本日志，格式化导出互助码，生成互助规则！"
+        echo -e "\n# 正在读取 $repo 的脚本日志，格式化导出互助码，生成互助规则！"
         for ((i = 0; i < ${#name_js[*]}; i++)); do
             echo -e "\n## ${name_chinese[i]}："
             export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
         done
+        update_help
     fi
 }
 
@@ -287,11 +282,11 @@ if [ -z "$(cat $file_task_before | grep "^My$1\d")" ]; then
    echo "" >> $file_task_before
 fi
 local envs=$(eval echo "\$JD_COOKIE")
-local array=($(echo $envs | sed 's/ //g' | sed 's/&/ /g'))
+local array=($(echo $envs | sed 's/&/ /g'))
 local user_sum=${#array[*]}
 for ((i=1; i<=$user_sum; i++)); do
-   new_code=`cat $code_log_newest | grep "^My$1$i=.*'$" | sed "s/.*'\(.*\)'.*/\1/"`
-   old_code=`cat $file_task_before | grep "^My$1$i=.*'$" | sed "s/.*'\(.*\)'.*/\1/"`
+   new_code=`cat $code_log_newest | grep "^My$1$i=" | sed "s/.*'\(.*\)'.*/\1/"`
+   old_code=`cat $file_task_before | grep "^My$1$i=" | sed "s/.*'\(.*\)'.*/\1/"`
    if [ -z "$(grep "^My$1$i" $file_task_before)" ]; then
       sed -i "/^My$1$[$i-1]='.*'/ s/$/\nMy$1$i=\'\'/" $file_task_before
    fi
@@ -310,11 +305,11 @@ if [ -z "$(cat $file_task_before | grep "^ForOther$1\d")" ]; then
    echo "" >> $file_task_before
 fi
 local envs=$(eval echo "\$JD_COOKIE")
-local array=($(echo $envs | sed 's/ //g' | sed 's/&/ /g'))
+local array=($(echo $envs | sed 's/&/ /g'))
 local user_sum=${#array[*]}
 for ((i=1; i<=$user_sum; i++)); do
-   new_rule=`cat $code_log_newest | grep "^ForOther$1$i=.*\"$" | sed 's/.*"\(.*\)".*/\1/'`
-   old_rule=`cat $file_task_before | grep "^ForOther$1$i=.*\"$" | sed 's/.*"\(.*\)".*/\1/'`
+   new_rule=`cat $code_log_newest | grep "^ForOther$1$i=" | sed 's/.*"\(.*\)".*/\1/'`
+   old_rule=`cat $file_task_before | grep "^ForOther$1$i=" | sed 's/.*"\(.*\)".*/\1/'`
    if [ -z "$(grep "^ForOther$1$i" $file_task_before)" ]; then
       sed -i "/^ForOther$1$[$i-1]=".*"/ s/$/\nForOther$1$i=\"\"/" $file_task_before
    fi
@@ -328,13 +323,9 @@ done
 
 #更新互助码和互助规则
 update_help(){
-code_log_newest=`ls -at $dir_code/*  | head -n 1`
-source $code_log_newest
 case $UpdateType in
     1)        
         if [ -f $code_log_newest ] && [ -f $file_task_before ]; then
-            mkdir -p $dir_config/bak
-            [[ $BAKUP = "1" ]] && cp $file_task_before $dir_config/bak/task_before_$log_time.sh
             echo -e "\n# 开始更新配置文件的互助码和互助规则"
             help_codes Fruit
             help_rules Fruit
@@ -384,6 +375,3 @@ log_time=$(date "+%Y-%m-%d-%H-%M-%S")
 log_path="$dir_code/$log_time.log"
 make_dir "$dir_code"
 export_all_codes | perl -pe "{s|京东种豆|种豆|; s|crazyJoy任务|疯狂的JOY|}" | tee $log_path
-sleep 5
-update_help
-
