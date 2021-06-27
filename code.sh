@@ -5,12 +5,11 @@ dir_shell=/ql/shell
 . $dir_shell/share.sh
 
 ## 判断仓库类别及日志存在与否
-repo1='panghu999'
-repo2='JDHelloWorld'
-repo3='chinnkarahoi'
+repo1='acoolbook_lxkwz'
+repo2='acoolbook_scripts'
+
 if [ "$(ls $dir_log |grep acoolbook_lxkwz | wc -l)" -gt 0 ]; then
     repo=$repo1
-
 elif [ "$(ls $dir_log |grep acoolbook_scripts | wc -l)" -gt 0 ]; then
     repo=$repo2
 else
