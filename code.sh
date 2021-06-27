@@ -10,7 +10,7 @@ repo2='acoolbook_scripts'
 
 if [ "$(ls $dir_log |grep acoolbook_lxkwz | wc -l)" -gt 0 ]; then
     repo=$repo1
-elif [ "$(ls $dir_log |grep acoolbook_scripts | wc -l)" -gt 0 ]; then
+elif [ "$(ls $dir_log |grep acoolbook_script | wc -l)" -gt 0 ]; then
     repo=$repo2
 else
     repo=''
