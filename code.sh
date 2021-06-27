@@ -6,14 +6,8 @@ dir_shell=/ql/shell
 
 ## 判断仓库类别及日志存在与否
 repo1='acoolbook_lxkwz'
-repo2='JDHelloWorld'
-repo3='chinnkarahoi'
 if [ "$(ls $dir_log |grep acoolbook | wc -l)" -gt 0 ]; then
     repo=$repo1
-elif [ "$(ls $dir_log |grep JDHelloWorld | wc -l)" -gt 0 ]; then
-    repo=$repo2
-elif [ "$(ls $dir_log |grep chinnkarahoi | wc -l)" -gt 0 ]; then
-    repo=$repo3
 else
     repo=''
 fi
