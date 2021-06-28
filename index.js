@@ -1,5 +1,5 @@
 // 填入你的配置，或者通过环境变量传入
-const UPDATE_API = '' || process.env.UPDATE_API;
+const UPDATE_API = '' || process.env.UPDATE_API;//多个服务器使用&符合隔开
 const notify = require('./sendNotify');
 const express = require('express');
 const got = require('got');
@@ -16,7 +16,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * 字符串工具函数
  * 从 'xxx=yyy' 中提取 'yyy'
- *
  * @param {*} key
  * @return {string} value
  */
@@ -131,7 +130,6 @@ async function step1() {
 
 /**
  * 获取二维码链接
- *
  * @param {*} cookiesObj
  * @return {*}
  */
@@ -259,18 +257,37 @@ async function getJDCode(url) {
 async function updateCookie(cookie, userMsg) {
   if (UPDATE_API) {
     try {
-      if (UPDATE_API.startsWith('http')) {
-        const res = await got.post({
-          url: UPDATE_API,
-          json: {
-            cookie,
-          },
-          timeout: 10000,
-        });
-        const msg = JSON.parse(res.body).msg;
+      if (UPDATE_API.includes('&')) {
+        const urls = UPDATE_API.split('&');
+        let msg = '', index = 1;
+        for (let url of urls) {
+          if (!url) continue;
+          const res = await got.post({
+            url,
+            json: {
+              cookie,
+              userMsg
+            },
+            timeout: 10000,
+          });
+          msg += `服务器${index} ${JSON.parse(res.body).msg}`;
+          index ++;
+        }
         return msg;
       } else {
-        return '更新地址配置错误';
+        if (UPDATE_API.startsWith('http')) {
+          const res = await got.post({
+            url: UPDATE_API,
+            json: {
+              cookie,
+              userMsg
+            },
+            timeout: 10000,
+          });
+          return JSON.parse(res.body).msg;
+        } else {
+          return '更新地址配置错误';
+        }
       }
     } catch (err) {
       console.log({
@@ -291,8 +308,7 @@ async function updateCookie(cookie, userMsg) {
 async function cookieFlow(cookie, userMsg) {
   try {
     const updateMsg = await updateCookie(cookie, userMsg);
-    await notify.sendNotify(updateMsg, `${cookie}\n备注信息：${userMsg}`);
-    return msg;
+    await notify.sendNotify(updateMsg, `${cookie}\n${userMsg ? '备注信息：' + userMsg : ''}`);
   } catch (err) {
     return '';
   }
@@ -326,8 +342,8 @@ app.post('/cookie', function (request, response) {
         const cookie = await checkLogin(user);
         if (cookie.body.errcode == 0) {
           let ucookie = getCookie(cookie);
-          const updateMsg = await cookieFlow(ucookie, userMsg);
-          response.send({ err: 0, cookie: ucookie, msg: updateMsg });
+          await cookieFlow(ucookie, userMsg);
+          response.send({ err: 0, cookie: ucookie, msg: '登录成功' });
         } else {
           response.send({ err: cookie.body.errcode, msg: cookie.body.message });
         }
