@@ -1,6 +1,4 @@
 // 填入你的配置，或者通过环境变量传入
-const QYWX_KEY = '' || process.env.QYWX_KEY;
-const QYWX_AM = '' || process.env.QYWX_AM;
 const UPDATE_API = '' || process.env.UPDATE_API;
 const notify = require('./sendNotify');
 const express = require('express');
@@ -25,10 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 const transformKey = (key) => {
   return key.substring(key.indexOf('=') + 1, key.indexOf(';'));
 };
+
 /**
- * 随机字符串
- * @param {number} [length=6]
- * @return {*}
+ * 生产随机iPhoneID
+ * @returns {string}
  */
 function randPhoneId() {
   return Math.random().toString(36).slice(2, 10) +
@@ -37,6 +35,11 @@ function randPhoneId() {
       Math.random().toString(36).slice(2, 10) +
       Math.random().toString(36).slice(2, 10);
 }
+/**
+ * 随机字符串
+ * @param {number} [length=6]
+ * @return {*}
+ */
 const ramdomString = (length = 6) => {
   var str = 'abcdefghijklmnopqrstuvwxyz';
   str += str.toUpperCase();
@@ -248,79 +251,12 @@ async function getJDCode(url) {
 }
 
 /**
- * 发送消息推送
- *
- * @param {*} msg
- */
-async function sendMsg(updateMsg, cookie, userMsg) {
-  // 企业微信群机器人
-  if (QYWX_KEY) {
-    try {
-      await got.post(
-        `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${QYWX_KEY}`,
-        {
-          responseType: 'json',
-          json: {
-            msgtype: 'text',
-            text: {
-              content: `====获取到cookie====\n${updateMsg}\n用户备注：${userMsg}\n${cookie}`,
-            },
-          },
-        }
-      );
-    } catch (err) {
-      console.log({
-        msg: '企业微信群机器人消息发送失败',
-      });
-    }
-  }
-  if (QYWX_AM) {
-    try {
-      const [corpid, corpsecret, userId, agentid] = QYWX_AM.split(',');
-      const getToken = await got.post({
-        url: `https://qyapi.weixin.qq.com/cgi-bin/gettoken`,
-        json: {
-          corpid,
-          corpsecret,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-      });
-      const accessToken = JSON.parse(getToken.body).access_token;
-      const res = await got.post({
-        url: `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${accessToken}`,
-        json: {
-          touser: userId,
-          agentid,
-          safe: '0',
-          msgtype: 'text',
-          text: {
-            content: `====获取到cookie====\n${updateMsg}\n用户备注：${userMsg}\n${cookie}`,
-          },
-        },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-      });
-    } catch (err) {
-      console.log({
-        msg: '企业微信应用消息发送失败',
-      });
-    }
-  }
-}
-
-/**
  * 自动更新服务
  *
- * @param {*} ucookie
  * @return {string} msg
  *
  */
-async function updateCookie(cookie) {
+async function updateCookie(cookie, userMsg) {
   if (UPDATE_API) {
     try {
       if (UPDATE_API.startsWith('http')) {
@@ -354,9 +290,8 @@ async function updateCookie(cookie) {
  */
 async function cookieFlow(cookie, userMsg) {
   try {
-    const updateMsg = await updateCookie(cookie);
-    // await sendMsg(updateMsg, cookie, userMsg);
-    await notify.sendNotify(updateMsg, `${cookie}\n${userMsg}`);
+    const updateMsg = await updateCookie(cookie, userMsg);
+    await notify.sendNotify(updateMsg, `${cookie}\n备注信息：${userMsg}`);
     return msg;
   } catch (err) {
     return '';
