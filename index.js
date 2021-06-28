@@ -270,7 +270,7 @@ async function updateCookie(cookie, userMsg) {
             },
             timeout: 10000,
           });
-          msg += `服务器${index} ${JSON.parse(res.body).msg}`;
+          msg += `服务器${index} ${JSON.parse(res.body).msg}${urls.length === index ? '' : '\n'}`;
           index ++;
         }
         return msg;
