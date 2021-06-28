@@ -8,6 +8,7 @@ const got = require('got');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const JD_UA = `jdapp;android;10.0.5;8.0.0;${randPhoneId()};network/wifi;Mozilla/5.0 (Linux; Android 8.0.0; HTC U-3w Build/OPR6.170623.013; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36`;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -29,6 +30,13 @@ const transformKey = (key) => {
  * @param {number} [length=6]
  * @return {*}
  */
+function randPhoneId() {
+  return Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10);
+}
 const ramdomString = (length = 6) => {
   var str = 'abcdefghijklmnopqrstuvwxyz';
   str += str.toUpperCase();
@@ -110,7 +118,7 @@ async function step1() {
         'https://plogin.m.jd.com/login/login?appid=300' +
         `&returnurl=https://wq.jd.com/passport/LoginRedirect?state=${timeStamp}` +
         '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
-      'User-Agent': 'jdapp;android;10.0.5;8.0.0;network/wifi;Mozilla/5.0 (Linux; Android 8.0.0; HTC U-3w Build/OPR6.170623.013; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36',
+      'User-Agent': JD_UA,
       Host: 'plogin.m.jd.com',
     },
   });
@@ -152,7 +160,7 @@ async function step2(cookiesObj) {
         'https://plogin.m.jd.com/login/login?appid=300' +
         `&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=${timeStamp}` +
         '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
-      'User-Agent': 'jdapp;android;10.0.5;8.0.0;network/wifi;Mozilla/5.0 (Linux; Android 8.0.0; HTC U-3w Build/OPR6.170623.013; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36',
+      'User-Agent': JD_UA,
       Host: 'plogin.m.jd.com',
     },
   });
@@ -192,7 +200,7 @@ async function checkLogin(user) {
       Connection: 'Keep-Alive',
       'Content-Type': 'application/x-www-form-urlencoded; Charset=UTF-8',
       Accept: 'application/json, text/plain, */*',
-      'User-Agent': 'jdapp;android;10.0.5;8.0.0;network/wifi;Mozilla/5.0 (Linux; Android 8.0.0; HTC U-3w Build/OPR6.170623.013; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36',
+      'User-Agent': JD_UA,
     },
   });
   return response;
@@ -233,7 +241,7 @@ async function getJDCode(url) {
       Host: 'api.m.jd.com',
       accept: '*/*',
       'accept-language': 'zh-cn',
-      'User-Agent': 'jdapp;android;10.0.5;8.0.0;network/wifi;Mozilla/5.0 (Linux; Android 8.0.0; HTC U-3w Build/OPR6.170623.013; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36',
+      'User-Agent': JD_UA,
     },
   });
   return response.body;
