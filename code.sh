@@ -351,8 +351,7 @@ case $UpdateType in
             help_rules Sgmh
             help_codes Cfd
             help_rules Cfd
-            help_codes Health
-            help_rules Health
+
             help_codes Carni
             help_rules Carni
             help_codes City
