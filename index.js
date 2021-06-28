@@ -254,7 +254,7 @@ async function getJDCode(url) {
  * @return {string} msg
  *
  */
-async function updateCookie(cookie, userMsg) {
+async function updateCookie(cookie, userMsg, cookieTime) {
   if (UPDATE_API) {
     try {
       if (UPDATE_API.includes('&')) {
@@ -266,7 +266,8 @@ async function updateCookie(cookie, userMsg) {
             url,
             json: {
               cookie,
-              userMsg
+              userMsg,
+              cookieTime
             },
             timeout: 10000,
           });
@@ -280,7 +281,8 @@ async function updateCookie(cookie, userMsg) {
             url: UPDATE_API,
             json: {
               cookie,
-              userMsg
+              userMsg,
+              cookieTime
             },
             timeout: 10000,
           });
@@ -290,6 +292,7 @@ async function updateCookie(cookie, userMsg) {
         }
       }
     } catch (err) {
+      console.error(err)
       console.log({
         msg: 'Cookie 更新接口失败',
       });
@@ -303,11 +306,13 @@ async function updateCookie(cookie, userMsg) {
  * 对ck进行处理的流程
  *
  * @param {*} cookie
+ * @param userMsg
+ * @param cookieTime
  * @return {*}
  */
-async function cookieFlow(cookie, userMsg) {
+async function cookieFlow(cookie, userMsg, cookieTime) {
   try {
-    const updateMsg = await updateCookie(cookie, userMsg);
+    const updateMsg = await updateCookie(cookie, userMsg, cookieTime) || 'Cookie更新成功';
     await notify.sendNotify(updateMsg, `${cookie}\n${userMsg ? '备注信息：' + userMsg : ''}`);
   } catch (err) {
     return '';
@@ -341,8 +346,9 @@ app.post('/cookie', function (request, response) {
       try {
         const cookie = await checkLogin(user);
         if (cookie.body.errcode == 0) {
+          let cookieTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;//获取ck成功时的时间戳
           let ucookie = getCookie(cookie);
-          await cookieFlow(ucookie, userMsg);
+          await cookieFlow(ucookie, userMsg, cookieTime);
           response.send({ err: 0, cookie: ucookie, msg: '登录成功' });
         } else {
           response.send({ err: cookie.body.errcode, msg: cookie.body.message });

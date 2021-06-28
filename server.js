@@ -906,13 +906,16 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
  * */
 app.post('/updateCookie', function (request, response) {
   if (request.body.cookie) {
-    const { cookie, userMsg } = request.body; //cookie和扫描时填写的备注信息
+    let { cookie, userMsg, cookieTime } = request.body; //cookie和扫描时填写的备注信息以及扫描时cookie时间戳
+    if (!cookieTime) cookieTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;
+    const cookieExpireTime = cookieTime + 60 * 60 * 1000 * 24 * 25;//cookie过期的时间戳(这里以25天计算)
     const content = getFileContentByName(confFile);
     const lines = content.split('\n');
     const pt_pin = cookie.match(/pt_pin=.+?;/)[0];
     let updateFlag = false;
     let lastIndex = 0;
     let maxCookieCount = 0;
+    let msg = `${userMsg ? ' #用户备注：' + userMsg + ' 过期时间(25天)：' + new Date(cookieExpireTime).toLocaleString() : '#过期时间(25天)：' + new Date(cookieExpireTime).toLocaleString()}`;
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       if (line.startsWith('Cookie')) {
@@ -923,14 +926,14 @@ app.post('/updateCookie', function (request, response) {
             line.match(/pt_pin=.+?;/)[0] == pt_pin
         ) {
           const head = line.split('=')[0];
-          const newLine = [head, '=', '"', cookie, '"', `${userMsg ? ' #' + userMsg : ''}`].join('');
+          const newLine = [head, '=', '"', cookie, '"', `${msg}`].join('');
           lines[i] = newLine;
           updateFlag = true;
         }
       }
     }
     if (!updateFlag) {
-      const newLine = `Cookie${Number(maxCookieCount) + 1}="${cookie}" ${userMsg ? ' #' + userMsg : ''}`;
+      const newLine = `Cookie${Number(maxCookieCount) + 1}="${cookie}" ${msg}`;
       lines.splice(lastIndex + 1, 0, newLine);
     }
     saveNewConf('config.sh', lines.join('\n'));
