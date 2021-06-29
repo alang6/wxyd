@@ -915,7 +915,7 @@ app.post('/updateCookie', function (request, response) {
     let updateFlag = false;
     let lastIndex = 0;
     let maxCookieCount = 0;
-    let msg = `${userMsg ? ' #用户备注：' + userMsg + ' 过期时间(25天)：' + new Date(cookieExpireTime).toLocaleString() : ' #过期时间(25天)：' + new Date(cookieExpireTime).toLocaleString()}`;
+    let msg = `${userMsg ? ' #用户备注：' + userMsg + ' 过期时间(25天)：' + new Date(cookieExpireTime).toLocaleDateString() : ' #过期时间(25天)：' + new Date(cookieExpireTime).toLocaleDateString()}`;
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       if (line.startsWith('Cookie')) {

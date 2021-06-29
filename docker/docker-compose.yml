@@ -7,9 +7,9 @@ services:
     ports:
       - 6789:6789
     environment:
-      #服务器ip+端口，多个服务器 使用&符号隔开。
-      #例如：http://127.0.0.1:8080/updateCookie&http://127.0.0.2:8080/updateCookie
-      - UPDATE_API=http://127.0.0.1:8080/updateCookie
+      #控制面板的服务器ip+端口，多个服务器 使用&符号隔开。
+      #例如：http://127.0.0.1:8080&http://127.0.0.2:8080
+      - UPDATE_API=http://127.0.0.1:8080
       #下面为通知，通知方式见sendNotify.js
       #- QYWX_KEY=
       #- QYWX_AM=

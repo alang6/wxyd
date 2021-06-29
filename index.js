@@ -1,5 +1,5 @@
 // 填入你的配置，或者通过环境变量传入
-const UPDATE_API = '' || process.env.UPDATE_API;//多个服务器使用&符合隔开
+let UPDATE_API = '' || process.env.UPDATE_API;//多个服务器使用&符合隔开
 const notify = require('./sendNotify');
 const express = require('express');
 const got = require('got');
@@ -262,6 +262,7 @@ async function updateCookie(cookie, userMsg, cookieTime) {
         let msg = '', index = 1;
         for (let url of urls) {
           if (!url) continue;
+          if (!url.includes('updateCookie')) url += '/updateCookie';
           const res = await got.post({
             url,
             json: {
@@ -277,6 +278,7 @@ async function updateCookie(cookie, userMsg, cookieTime) {
         return msg;
       } else {
         if (UPDATE_API.startsWith('http')) {
+          if (!UPDATE_API.includes('updateCookie')) UPDATE_API += '/updateCookie';
           const res = await got.post({
             url: UPDATE_API,
             json: {
@@ -312,8 +314,11 @@ async function updateCookie(cookie, userMsg, cookieTime) {
  */
 async function cookieFlow(cookie, userMsg, cookieTime) {
   try {
-    const updateMsg = await updateCookie(cookie, userMsg, cookieTime) || 'Cookie更新成功';
-    await notify.sendNotify(updateMsg, `${cookie}\n${userMsg ? '备注信息：' + userMsg : ''}`);
+    const updateMsg = await updateCookie(cookie, userMsg, cookieTime);
+    if (updateMsg) {
+      console.log(`\nCookie：${cookie}\n${updateMsg}\n`);
+      await notify.sendNotify(updateMsg, `${cookie}\n${userMsg ? '备注信息：' + userMsg : ''}`);
+    }
   } catch (err) {
     return '';
   }
