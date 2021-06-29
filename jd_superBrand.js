@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #特物Z|万物皆可国创
-30 11 1-18 6 * https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js, tag=特物Z|万物皆可国创, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+30 11 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_superBrand.js, tag=特物Z|万物皆可国创, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "37 11,21 1-18 6 *" script-path=https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js tag=特物Z|万物皆可国创
+cron "30 11 * * *" script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_superBrand.js tag=特物Z|万物皆可国创
 
 ===============Surge=================
-特物Z|万物皆可国创 = type=cron,cronexp="30 11 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js
+特物Z|万物皆可国创 = type=cron,cronexp="30 11 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_superBrand.js
 
 ============小火箭=========
-特物Z|万物皆可国创 = type=cron,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js, cronexpr="30 11 * * *", timeout=3600, enable=true
+特物Z|万物皆可国创 = type=cron,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_superBrand.js, cronexpr="30 11 * * *", timeout=3600, enable=true
 
  */
 const $ = new Env('特物Z|万物皆可国创');
@@ -81,12 +81,14 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                 await getCode("secondfloor", $.actid)
                 if ($.taskList) {
                     for (task of $.taskList) {
-                        if (task.assignmentType == 3) {
+                        if (task.assignmentType == 3) {  //关注店铺 
                         //    console.log(task)
-                            await doTask("secondfloor", $.enpid, task.encryptAssignmentId, task.ext.followShop[0].itemId, task.assignmentType)
-                        } else{ 
-                        if(Opencardtw){
-                            await doTask("secondfloor", $.enpid, task.encryptAssignmentId, task.ext.brandMemberList[0].itemId, task.assignmentType)
+                            await doTask("secondfloor", $.enpid, task.encryptAssignmentId, task.ext.followShop[0].itemId, 3)
+                        } else if (task.assignmentType == 0){ // 分享任务 
+                            await doTask("secondfloor", $.enpid, task.encryptAssignmentId, null, 0)             
+                        }else{ 
+                        if(Opencardtw){  //领取开卡奖励
+                            await doTask("secondfloor", $.enpid, task.encryptAssignmentId, task.ext.brandMemberList[0].itemId, 7)
                         }else{console.log("默认不执行开卡任务") }
                         }
                     }
@@ -95,10 +97,9 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                 await $.wait(500);
                 await superBrandTaskLottery()
                 await $.wait(1000);
-                await doTask("sign", signenpid, signdataeid, 1, 5)
-                await $.wait(1000);
-                await superBrandTaskLottery("sign", signactid, signenpid, signeid)
-
+   //             await doTask("sign", signenpid, signdataeid, 1, 5)
+           //     await $.wait(1000);
+             //   await superBrandTaskLottery("sign", signactid, signenpid, signeid)
             }
         }
     }
@@ -191,8 +192,8 @@ function getCode(source, actid) {
                     //  console.log(data.data.result)
                     if (data && data.data && data.code === "0" && source === "secondfloor") {
                         if (data.data.result && data.data.result.taskList) {
-                            $.taskList = data.data.result.taskList.filter(x => x.assignmentType == 3 || x.assignmentType == 7)
-                            //    console.log($.taskList)
+                            $.taskList = data.data.result.taskList.filter(x => x.assignmentType == 3 || x.assignmentType == 7 || x.assignmentType == 0)
+                       //       console.log(data.data.result.taskList)
                             let result = data.data.result.taskList.filter(x => x.assignmentType == 2)[0]
                             let encryptAssignmentId = result.encryptAssignmentId
                             let itemid = result.ext.assistTaskDetail.itemId
@@ -220,8 +221,9 @@ function getCode(source, actid) {
 
 function doTask(source, pid, encryptAssignmentId, id, type) {
     return new Promise(async (resolve) => {
-        const options = taskPostUrl(`superBrandDoTask`, `{"source":"${source}","activityId":${$.actid},"encryptProjectId":"${pid}","encryptAssignmentId":"${encryptAssignmentId}","assignmentType":${type},"itemId":"${id}","actionType":0}`)
-        //    console.log(options)
+            body =  `{"source":"${source}","activityId":${$.actid},"encryptProjectId":"${pid}","encryptAssignmentId":"${encryptAssignmentId}","assignmentType":${type},"itemId":"${id}","actionType":0}`   
+            if(type === 0){    body =        `{"source":"${source}","activityId":${$.actid},"encryptProjectId":"${pid}","encryptAssignmentId":"${encryptAssignmentId}","assignmentType":${type},"completionFlag":1,"itemId":"${id}","actionType":0}` }  
+            const options = taskPostUrl(`superBrandDoTask`, body)
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
