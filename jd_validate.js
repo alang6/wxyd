@@ -498,7 +498,7 @@ class MousePosFaker {
 !(async () => {
   fs.writeFileSync('./validate.txt', '', 'utf-8')
   let validate = '';
-  let num = process.env.validate_num ? process.env.validate_num : 5;
+  let num = process.env.validate_num ? process.env.validate_num : 15;
   for (let i = 0; i < num; i++) {
     validate = await new JDJRValidator().run();
     console.log(`第${i + 1}个生成成功`)
