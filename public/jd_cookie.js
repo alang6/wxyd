@@ -1,4 +1,4 @@
-var oMask, qrcontainer, qrbox, qrcode, refresh, tip, time = null, time2 = null, jdCode = '', loginUrl = '', msgInput = '';
+var oMask, qrcontainer, qrbox, qrcode, refresh, tip, time = null, time2 = null, jdCode = '', loginUrl = '', msgInput = '', jumpMsg = '';
 window.qrLogin = function (api = '.') {
   // var script = document.createElement('script');
   // script.type = 'text/javascript';
@@ -165,6 +165,8 @@ window.jdCodeLogin = function (api) {
 }
 window.jumpAppLogin = function (api) {
   if (loginUrl) {
+    jumpMsg = window.prompt('请输入备注信息，方便识别账号');
+    console.log('备注的信息', jumpMsg);
     const confirm = window.confirm("即将跳转到京东APP，如无跳转请使用手机自带浏览器打开\n\n京东APP点登录后再返回到此处")
     if (confirm) {
       window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
@@ -204,7 +206,7 @@ function checkLogin2(user, api) {
     ajax({
       url: api + '/cookie?t=' + timeStamp,
       method: 'post',
-      data: { user, msg: document.getElementById('msg').value || '' },
+      data: { user, msg: jumpMsg || '' },
       success: function (data) {
         if (data.err === 0) {
           clearInterval(time2);
@@ -215,7 +217,7 @@ function checkLogin2(user, api) {
           if (document.getElementById('res')) document.getElementById('res').style.display = 'flex';
           if (document.getElementById('cookie')) document.getElementById('cookie').innerHTML =
               '<span>' +
-              document.getElementById('msg').value +
+              jumpMsg +
               '</span>' +
               '<p>' +
               data.cookie +
@@ -233,7 +235,6 @@ function checkLogin2(user, api) {
             }
           };
         } else if (data.err === 21) {
-          document.getElementById('tip').style.display = 'flex';
           const confirm = window.confirm("已超时，刷新浏览器重新操作？")
           clearInterval(time2);
           jdCode = '';
