@@ -167,7 +167,7 @@ window.jdCodeLogin = function (api) {
 }
 window.jumpAppLogin = function (api) {
   if (loginUrl) {
-    jumpMsg = window.prompt('请输入京东账号信息，方便识别账号');
+    jumpMsg = window.prompt('请输入您的备注信息，方便识别账号');
     console.log('备注的信息', jumpMsg);
     const confirm = window.confirm("即将跳转到京东APP，如无跳转请使用手机自带浏览器打开\n\n京东APP点登录后再返回到此处")
     if (confirm) {
