@@ -165,7 +165,7 @@ window.jdCodeLogin = function (api) {
 }
 window.jumpAppLogin = function (api) {
   if (loginUrl) {
-    const confirm = window.confirm("即将跳转到京东APP，登录后记得返回到此页面")
+    const confirm = window.confirm("即将跳转到京东APP，如无跳转请使用手机自带浏览器打开\n\n京东APP点登录后再返回到此处")
     if (confirm) {
       window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
           JSON.stringify({
