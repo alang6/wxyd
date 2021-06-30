@@ -129,8 +129,10 @@ window.qrLogin = function (api = '.') {
     msgInput = document.createElement('input');
     msgInput.id = 'msg';
     msgInput.placeholder = '请输入备注信息，方便识别账号';
-    msgInput.style.width = '100%';
-    msgInput.style.height = '24px';
+    msgInput.style.width = '256px';
+    msgInput.style.height = '30px';
+    msgInput.style.lineHeight = '30px';
+    msgInput.style.boxSizing = 'border-box';
     msgInput.style.marginTop = '16px';
     qrcontainer.appendChild(msgInput);
 
