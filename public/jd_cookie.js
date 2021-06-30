@@ -139,7 +139,7 @@ window.qrLogin = function (api = '.') {
     tip.style.wordBreak = 'break-word';
     tip.style.paddingTop = '16px';
     tip.innerHTML =
-      '请使用京东APP扫码<br>或截图用京东APP扫码<br>完成后请回到此页面复制cookie<br>请无视升级提示';
+      '请使用京东APP扫码<br>或截图用京东APP扫码<br><br><span style="color: red">请无视京东APP升级提示</span>';
     qrcontainer.appendChild(tip);
 
     get_code();
@@ -165,7 +165,7 @@ window.jdCodeLogin = function (api) {
 }
 window.jumpAppLogin = function (api) {
   if (loginUrl) {
-    jumpMsg = window.prompt('请输入备注信息，方便识别账号');
+    jumpMsg = window.prompt('请输入京东账号信息，方便识别账号');
     console.log('备注的信息', jumpMsg);
     const confirm = window.confirm("即将跳转到京东APP，如无跳转请使用手机自带浏览器打开\n\n京东APP点登录后再返回到此处")
     if (confirm) {
