@@ -939,7 +939,7 @@ app.post('/updateCookie', function (request, response) {
     saveNewConf('config.sh', lines.join('\n'));
     response.send({
       err: 0,
-      msg: updateFlag ? `Cookie更新成功，当前Cookie数量：${Number(maxCookieCount)}个` : `Cookie新增成功，当前Cookie数量：${Number(maxCookieCount) + 1}个`,
+      msg: updateFlag ? `Cookie更新成功，当前京东账号数量：${Number(maxCookieCount)}个` : `Cookie新增成功，当前京东账号数量：${Number(maxCookieCount) + 1}个`,
     });
   } else {
     response.send({ msg: '参数错误', err: -1 });
