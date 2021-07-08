@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>lxk0301</title>
+    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
+    <script type="text/javascript" src="./jd_cookie.js"></script>
+    <link rel="stylesheet" href="index.css">
+  </head>
+
+  <body>
+    <div class="container">
+<!--      <input-->
+<!--              id="msg"-->
+<!--              type="text"-->
+<!--              placeholder="请输入备注信息，方便识别账号"-->
+<!--      />-->
+      <button class="btn primary" id="jd_cookie" title="手机扫描二维码登录">
+        二维码登录
+      </button>
+<!--      <button class="btn" id="jdcode">口令登录</button>-->
+      <button class="btn info" id="jumpapp">京东APP登录</button>
+    </div>
+    <div id="res" class="qr">
+      <div class="qrcontainer">
+        <div id="cookie" class="des"></div>
+      </div>
+    </div>
+    <script>
+      // iOS 10+ js监听手势控制来实现禁止页面缩放
+      document.addEventListener('gesturestart', function (event) {
+        event.preventDefault()
+      })
+      // 后端服务接口
+      var apiHost = '.';
+      get_code2(apiHost);
+      document.getElementById('jd_cookie').addEventListener('click', function () {
+        qrLogin(apiHost);
+      });
+      // document.getElementById('jdcode').addEventListener('click', function () {
+      //   jdCodeLogin(apiHost);
+      // });
+      document.getElementById('jumpapp').addEventListener('click', function () {
+        jumpAppLogin(apiHost);
+      });
+    </script>
+  </body>
+</html>
