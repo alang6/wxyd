@@ -1,7 +1,7 @@
 /**
  * export validate_num = 5
  * 默认预存5个validate
- * cron 58 7,15,23 * * *
+ * cron 57 7,15,23 * * *
  */
 
 const http = require('http');
