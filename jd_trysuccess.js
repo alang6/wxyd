@@ -13,12 +13,13 @@ cron "2 8,21 * * *" script-path=https://github.com/acoolbook/scripts/edit/main/j
 # 京东价格保护
 30 10 * * * https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js, tag=京东试用, img-url=https://raw.githubusercontent.com/ZCY01/img/master/jdtryv1.png, enabled=true
  */
-const $ = new Env('京东试用')
+const $ = new Env('京东试用申请成功查询')
 let cookiesArr = [],
 	cookie = '',
 	jdNotify = false,
 	jdDebug = false,
 	notify
+const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 const selfdomain = 'https://try.m.jd.com'
 let allGoodList = []
 let allmessage = ''
@@ -29,6 +30,15 @@ let typeList = ["普通试用", "闪电试用"]
 let goodFilters = "教程后膜@贝尔思力@神皂@美少女@英语@俄语@四级@六级@在线@阴道炎@宫颈@延时@糜烂@早早孕@延时喷剂@自慰@震动@振动@跳蛋@增长@增时".split('@')
 let minPrice = 6.6
 
+function randomString(e) {
+    e = e || 32;
+    let t = "abcdefhijkmnprstwxyz2345678",
+        a = t.length,
+        n = "";
+    for (i = 0; i < e; i++)
+        n += t.charAt(Math.floor(Math.random() * a));
+    return n
+}
 const cidsMap = {
 	"全部商品": "0",
 	"家用电器": "737",
@@ -243,14 +253,7 @@ async function filterGoodList() {
 }
 
 
-/*按双属性排序样板
-async function sortBy(field1,field2) {
-	return function(a,b) {
-		if (a.field1 == b.field1) return b.field2 - a.field2
-		return b.field1 - a.field1
-	}
-}
-*/
+
 
 async function getApplyStateByActivityIds() {
 	function opt(ids) {
@@ -357,22 +360,6 @@ function followShop(good) {
 	})
 }
 
-async function tryGoodList() {
-	console.log(`⏰ 即将申请 ${$.goodList.length} 个商品`)
-	$.running = true
-	$.stopMsg = '申请完毕'
-	for (let i = 0; i < $.goodList.length && $.running; i++) {
-		let good = $.goodList[i]
-		if (!await canTry(good)) continue
-		// 如果没有关注且关注失败
-		if (good.shopId && !await isFollowed(good) && !await followShop(good)) continue
-		// 两个申请间隔不能太短，放在下面有利于确保 follwShop 完成
-		await $.wait(Math.floor(Math.random() * 30000 + 5000))
-		// 关注完毕，即将试用
-		await doTry(good)
-	}
-}
-
 async function doTry(good) {
 	return new Promise((resolve, reject) => {
 		$.get(taskurl(`${selfdomain}/migrate/apply?activityId=${good.id}&source=1&_s=m`, good.id), (err, resp, data) => {
@@ -408,7 +395,7 @@ async function getSuccessList() {
 			headers: {
 				'Host': 'try.jd.com',
 				'Connection': 'keep-alive',
-				'UserAgent': 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Mobile Safari/537.36',
+				'UserAgent': ua,
 				'Accept': '*/*',
 				'Referer': 'https://try.m.jd.com/',
 				'Accept-Encoding': 'gzip, deflate, br',
@@ -432,6 +419,7 @@ async function getSuccessList() {
 						})
 						$.successList.forEach(function(v){ $.successListb.push(v.trialName);})	//试用名称
 						$.successListc=$.successListb.map((e,i)=>{return [e,$.successListaa[i]]})
+                                                                                      console.log(`京东账号${$.index} ${$.nickname || $.UserName}\n🎉  ${$.successList.length}个商品待领取🤩\n🎉为：${$.successListc }`)
 						allmessage += `京东账号${$.index} ${$.nickname || $.UserName}\n🎉  ${$.successList.length}个商品待领取🤩\n🎉为：${$.successListc }${$.index !== cookiesArr.length ? '\n\n' : '\n\n'}`
 						//$.successListb = data.map(function (item) {
 						//	return item.trialName
