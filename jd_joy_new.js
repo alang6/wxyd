@@ -562,7 +562,7 @@ $.post = injectToRequest($.post.bind($))
       subTitle = '';
 
       await getFriends();
-      break
+      //break
 
       await run('detail/v2');
       await run();
