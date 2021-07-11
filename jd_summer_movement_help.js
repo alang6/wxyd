@@ -74,16 +74,16 @@ const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT :
       $.isLogin = true;
       $.nickName = $.UserName;
       $.hotFlag = false; //是否火爆
-      // console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
-      // console.log(`\n如有未完成的任务，请多执行几次\n`);
-      // await movement()
+      console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
+      console.log(`\n如有未完成的任务，请多执行几次\n`);
+      await movement()
       if($.hotFlag)$.secretpInfo[$.UserName] = false;//火爆账号不执行助力
     }
   }
   // 助力
   let res = [], res2 = [];
-  //$.innerShInviteList = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement_one.json');
-  //res2 = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement.json');
+  $.innerShInviteList = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement_one.json');
+  res2 = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement.json');
   $.ShInviteLists = []
   if (ShHelpAuthorFlag) {
     $.innerShInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length);
