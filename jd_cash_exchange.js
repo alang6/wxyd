@@ -10,6 +10,9 @@ let cookiesArr = []
 //let exchangeAccounts  //不指定默认为所有账号兑换10红包，部分账号会出现参数错误的提示
 let allMessage = ""
 let exchangeAccounts = {
+    "jd_42e0a29e31832": 2,//十元
+    "jd_sNwckLRthfIF": 2,//十元
+    "H189178": 10,//十元
 
 
 }
