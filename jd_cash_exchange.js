@@ -7,6 +7,7 @@ TG学习交流群https://t.me/cdles
 const $ = new Env("签到领现金兑换")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
+let allMessage = ""
 var exchangeAccounts = process.env.exchangeAccounts ?? ""
 !(async () => {
     if(exchangeAccounts) {
@@ -31,6 +32,9 @@ var exchangeAccounts = process.env.exchangeAccounts ?? ""
         }
     }
     await $.wait(3000)
+    if (allMessage) {		
+        if ($.isNode()) await notify.sendNotify($.name, allMessage);		
+    }
 })()
 function exchange(cookie,amount,pt_pin) {
     body = ""
@@ -61,7 +65,8 @@ function exchange(cookie,amount,pt_pin) {
                  if(data.data.bizMsg.indexOf("success")!=-1){
                     data.data.bizMsg = `成功兑换${amount}元红包`
                  }
-                 notify.sendNotify(`签到领现金账号 ${decodeURIComponent(pt_pin)}`, data.data.bizMsg);
+                 allMessage += `京东账号${decodeURIComponent(pt_pin)}领现金\n${data.data.bizMsg}\n\n`;
+                 //notify.sendNotify(`签到领现金账号 ${decodeURIComponent(pt_pin)}`, data.data.bizMsg);
             }
             if(data.errorMessage){
                console.log(data.errorMessage)
