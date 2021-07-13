@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Build 20210710-001
+#Build 20210712-003
 
 ## 导入通用变量与函数
 dir_shell=/ql/shell
@@ -9,11 +9,12 @@ dir_shell=/ql/shell
 ## 预设的仓库及默认调用仓库设置
 ## 将"repo=$repo1"改成repo=$repo2"或其他，以默认调用其他仓库脚本日志
 ## 也可自行搜索本脚本内的"name_js=("和"name_js_only",将"repo"改成"repo2"或其他，用以自由组合调用仓库的脚本日志
-repo1='acoolbook_lxkwz'      #预设的 panghu999 仓库
-repo2='acoolbook_scripts'   #预设的 JDHelloWorld 仓库
-repo3='he1pu_JDHelp'              #预设的 he1pu 仓库
-repo4='shufflewzc_faker2'         #预设的 shufflewzc 仓库
-repo=$repo1                       #默认调用 panghu999 仓库脚本日志
+repo1='acoolbook'                       #预设的 panghu999 仓库
+repo2='JDHelloWorld_jd_scripts'                    #预设的 JDHelloWorld 仓库
+repo3='he1pu_JDHelp'                               #预设的 he1pu 仓库
+repo4='shufflewzc_faker2'                          #预设的 shufflewzc 仓库
+repo5='Wenmoux_scripts_wen_chinnkarahoi'           #预设的 Wenmoux 仓库，用于读取口袋书店互助码。需提前拉取温某人的仓库或口袋书店脚本并完整运行。
+repo=$repo1                                        #默认调用 panghu999 仓库脚本日志
 
 ## 调试模式开关，默认是0，表示关闭；设置为1，表示开启
 DEBUG="1"
@@ -23,7 +24,7 @@ BACKUP="1"
 ## 是否删除指定天数以前的备份文件开关，默认是1，表示开启；设置为0，表示关闭。删除路径 /ql/config/bak/
 CLEANBAK="1"
 ## 定义删除指定天数以前的备份文件
-CLEANBAK_DAYS="3"
+CLEANBAK_DAYS="2"
 
 ## 定义 jcode 脚本导出的互助码模板样式（选填）
 ## 不填 使用“按编号顺序互助模板”，Cookie编号在前的优先助力
@@ -40,13 +41,13 @@ DiyHelpType="0"
 diy_help_rules(){
     case $1 in
         Fruit)
-            tmp_helptype="0"            # 东东农场使用“全部一致互助模板”，所有账户要助力的码全部一致
+            tmp_helptype=""            # 东东农场使用“全部一致互助模板”，所有账户要助力的码全部一致
             ;;
         DreamFactory | JdFactory)
-            tmp_helptype="1"            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
+            tmp_helptype=""            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
             ;;
         Jdzz | Joy)
-            tmp_helptype="2"            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
+            tmp_helptype=""            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
             ;;
         *)
             tmp_helptype=$HelpType      # 其他活动仍按默认互助模板生产互助规则。
@@ -58,13 +59,13 @@ diy_help_rules(){
 ## 设定值为 BreakHelpType="1" 表示启用屏蔽模式；不填或填其他内容表示不开启功能。
 ## 自定义屏蔽账号序号或序号区间。当 BreakHelpType="1"时生效。
 ## 设定值为一个或多个不相同正整数，每个正整数不大于账号总数；也可以设置正整数区间，最大正整数不大于账号总数；
-## 如：a) 设定为 BreakHelpNum="3" 表示从第 3 个账号不被助力；
-##     b) 设定为 BreakHelpNum="5 7 8 10" 表示从第 5 7 8 10 个账号均不被助力；
-##     c) 设定为 BreakHelpNum="6-12" 表示从第 6 个账号到第 12 个账号均不被助力；
+## 如：a) 设定为 BreakHelpNum="3" 表示第 3 个账号不被助力；
+##     b) 设定为 BreakHelpNum="5 7 8 10" 表示第 5 7 8 10 个账号均不被助力；
+##     c) 设定为 BreakHelpNum="6-12" 表示从第 6 至 12 个账号均不被助力；
 ##     d) 设定为 BreakHelpNum="4 9-14 15~18 19_21" 表示第4个账号、第9至14账号、第15至18账号、第19至21账号均不被助力。注意序号区间连接符仅支持 - ~ _；
 ## 不按示例填写可能引发报错。
 BreakHelpType="0"                  ## 屏蔽模式
-BreakHelpNum="4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
+BreakHelpNum=""  ## 屏蔽账号序号或序号区间
 
 ## 定义是否自动更新配置文件中的互助码和互助规则，默认为1，表示更新；留空或其他数值表示不更新。
 UpdateType="1"
@@ -110,21 +111,21 @@ var_name=(
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
 ## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
 name_js=(
-  "$repo"_jd_fruit
-  "$repo"_jd_pet
-  "$repo"_jd_plantBean
-  "$repo"_jd_dreamFactory
-  "$repo"_jd_jdfactory
-  "$repo"_jd_crazy_joy
-  "$repo"_jd_jdzz
-  "$repo"_jd_jxnc
-  "$repo"_jd_bookshop
-  "$repo"_jd_cash
-  "$repo"_jd_sgmh
-  "$repo"_jd_cfd
-  "$repo"_jd_health
-  "$repo"_jd_carnivalcity
-  "$repo"_jd_city
+  "$repo"_lxkwz_jd_fruit
+  "$repo"_lxkwz_jd_pet
+  "$repo"_lxkwz_jd_plantBean
+  "$repo"_lxkwz_jd_dreamFactory
+  "$repo"_lxkwz_jd_jdfactory
+  "$repo"_lxkwz_jd_crazy_joy
+  "$repo"_lxkwz_jd_jdzz
+  "$repo"_lxkwz_jd_jxnc
+  "$repo"_lxkwz_jd_bookshop
+  "$repo_lxkwz"_lxkwz_jd_cash
+  "$repo"_lxkwz_jd_sgmh
+  acoolbook_scripts_jd_cfd
+  "$repo"_lxkwz_jd_health
+  "$repo"_lxkwz_jd_carnivalcity
+  "$repo"_lxkwz_jd_city
 )
 
 name_config=(
@@ -165,7 +166,7 @@ name_chinese=(
 
 #仅输出互助码的环境变量
 name_js_only=(
-  "$repo"_jd_cfd
+  acoolbook_scripts_jd_cfd
 )
 
 name_config_only=(
@@ -198,7 +199,7 @@ export_codes_sub() {
     local BreakHelpInterval=$(echo $BreakHelpNum | perl -pe "{s|~|-|; s|_|-|}" | sed 's/\(\d\+\)-\(\d\+\)/{\1..\2}/g')
     local BreakHelpNumArray=($(eval echo $BreakHelpInterval))
     local BreakHelpNumVerify=$(echo $BreakHelpNum | sed 's/ //g' | perl -pe "{s|-||; s|~||; s|_||}" | sed 's/^\d\+$//g')
-    local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
+    local i j k m n t pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
     local envs=$(eval echo "\$JD_COOKIE")
     local array=($(echo $envs | sed 's/&/ /g'))
     local user_sum=${#array[*]}
@@ -243,11 +244,10 @@ export_codes_sub() {
                     j=$((m + 1))
                     if [ $BreakHelpType = 1 ]; then
                         if [ "$BreakHelpNumVerify" = "" ]; then
-                            if [[ "${BreakHelpNumArray[@]}" =~ "$j" ]]; then
-                                tmp_for_other="$tmp_for_other"
-                            elif [[ ! "${BreakHelpNumArray[@]}" =~ "$j" ]]; then
-                                tmp_for_other="$tmp_for_other@\${$config_name_my$j}"
-                            fi
+                            for ((t = 0; t < ${#BreakHelpNumArray[*]}; t++)); do
+                                [[ "${BreakHelpNumArray[t]}" = "$j" ]] && continue 2
+                            done
+                            tmp_for_other="$tmp_for_other@\${$config_name_my$j}"
                         else
                             echo -e "\n#$cur_time 变量值填写不规范，请检查后重试！"
                             tmp_for_other="$tmp_for_other@\${$config_name_my$j}"
@@ -278,11 +278,10 @@ export_codes_sub() {
                         fi
                         if [ $BreakHelpType = 1 ]; then
                             if [ "$BreakHelpNumVerify" = "" ]; then
-                                if [[ "${BreakHelpNumArray[@]}" =~ "$k" ]]; then
-                                    tmp_for_other="$tmp_for_other"
-                                elif [[ ! "${BreakHelpNumArray[@]}" =~ "$k" ]]; then
-                                    tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
-                                fi
+                                for ((t = 0; t < ${#BreakHelpNumArray[*]}; t++)); do
+                                    [[ "${BreakHelpNumArray[t]}" = "$k" ]] && continue 2
+                                done
+                                tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
                             else
                                 echo -e "\n#$cur_time 变量值填写不规范，请检查后重试！"
                                 tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
@@ -306,11 +305,10 @@ export_codes_sub() {
                         [[ $j -eq $n ]] && continue
                         if [ $BreakHelpType = 1 ]; then
                             if [ "$BreakHelpNumVerify" = "" ]; then
-                                if [[ "${BreakHelpNumArray[@]}" =~ "$n" ]]; then
-                                    tmp_for_other="$tmp_for_other"
-                                elif [[ ! "${BreakHelpNumArray[@]}" =~ "$n" ]]; then
-                                    tmp_for_other="$tmp_for_other@\${$config_name_my$n}"
-                                fi
+                                for ((t = 0; t < ${#BreakHelpNumArray[*]}; t++)); do
+                                    [[ "${BreakHelpNumArray[t]}" = "$n" ]] && continue 2
+                                done
+                                tmp_for_other="$tmp_for_other@\${$config_name_my$n}"
                             else
                                 echo -e "\n#$cur_time 变量值填写不规范，请检查后重试！"
                                 tmp_for_other="$tmp_for_other@\${$config_name_my$n}"
@@ -334,11 +332,10 @@ export_codes_sub() {
                         k=$((n + 1))
                         if [ $BreakHelpType = 1 ]; then
                             if [ "$BreakHelpNumVerify" = "" ]; then
-                                if [[ "${BreakHelpNumArray[@]}" =~ "$k" ]]; then
-                                    tmp_for_other="$tmp_for_other"
-                                elif [[ ! "${BreakHelpNumArray[@]}" =~ "$k" ]]; then
-                                    tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
-                                fi
+                                for ((t = 0; t < ${#BreakHelpNumArray[*]}; t++)); do
+                                    [[ "${BreakHelpNumArray[t]}" = "$k" ]] && continue 2
+                                done
+                                tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
                             else
                                 echo -e "\n#$cur_time 变量值填写不规范，请检查后重试！"
                                 tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
@@ -384,7 +381,7 @@ export_all_codes() {
             ;;
         esac
     fi
-    [[ $BreakHelpType = 1 ]] && echo -e "\n#$cur_time 您已启用屏蔽助力功能！"
+    [[ $BreakHelpType = 1 ]] && echo -e "\n#$cur_time 您已启用屏蔽模式，账号 $BreakHelpNum 将不被助力！"
     if [ "$ps_num" -gt 7 ]; then
         echo -e "\n#$cur_time 检测到 code.sh 的线程过多 ，请稍后再试！"
         exit
@@ -419,18 +416,26 @@ local i j k
 if [ -z "$(cat $file_task_before | grep "^$config_name_my\d")" ]; then
    echo -e "\n${config_name_my}1=''\n" >> $file_task_before
 fi
-for ((i=1; i<=$user_sum; i++)); do
-    if [ ! -z "$(cat $log_path | grep "^$config_name_my$i=.*'$")" ]; then
+for ((i=1; i<=100; i++)); do
+    if [[ $i -le $user_sum ]] && [[ ! -z "$(cat $log_path | grep "^$config_name_my$i=.*'$")" ]]; then
         new_code="$(cat $log_path | grep "^$config_name_my$i=.*'$" | sed "s/.*'\(.*\)'.*/\1/")"
         old_code="$(cat $file_task_before | grep "^$config_name_my$i=.*'$" | sed "s/.*'\(.*\)'.*/\1/")"
         if [ -z "$(grep "^$config_name_my$i" $file_task_before)" ]; then
             sed -i "/^$config_name_my$[$i-1]='.*'/ s/$/\n$config_name_my$i=\'\'/" $file_task_before
         fi
-        if [[ "$new_code" != "" ]] && [[ "$new_code" != "undefined" ]] && [[ "$new_code" != "{}" ]]; then
-            if [ "$new_code" != "$old_code" ]; then
-                sed -i "s/^$config_name_my$i='$old_code'$/$config_name_my$i='$new_code'/" $file_task_before
-            fi
+        if [ "$new_code" != "$old_code" ]; then
+#            if [ $1 = "BookShop" ]; then
+#                if [[ "$new_code" != "undefined" ]] && [[ "$new_code" != "{}" ]] && [[ "$new_code" != "" ]]; then
+#                    sed -i "s/^$config_name_my$i='$old_code'$/$config_name_my$i='$new_code'/" $file_task_before
+#                fi
+#            else
+                if [[ "$new_code" != "undefined" ]] && [[ "$new_code" != "{}" ]] || [[ "$new_code" = "" ]]; then
+                    sed -i "s/^$config_name_my$i='$old_code'$/$config_name_my$i='$new_code'/" $file_task_before
+                fi
+#            fi
         fi
+    elif [[ $i -gt $user_sum ]] && [[ ! -z "$(cat $file_task_before | grep "^$config_name_my$i")" ]]; then
+        sed -i "/^$config_name_my$i/d" $file_task_before
     fi
 done
 
@@ -438,18 +443,18 @@ done
 if [ -z "$(cat $file_task_before | grep "^$config_name_for_other\d")" ]; then
    echo -e "${config_name_for_other}1=\"\"\n" >> $file_task_before
 fi
-for ((j=1; j<=$user_sum; j++)); do
-    if [ ! -z "$(cat $log_path | grep "^$config_name_for_other$j=.*\"$")" ]; then
+for ((j=1; j<=100; j++)); do
+    if [[ $j -le $user_sum ]] && [[ ! -z "$(cat $log_path | grep "^$config_name_for_other$j=.*\"$")" ]]; then
         new_rule="$(cat $log_path | grep "^$config_name_for_other$j=.*\"$" | sed "s/.*\"\(.*\)\".*/\1/")"
         old_rule="$(cat $file_task_before | grep "^$config_name_for_other$j=.*\"$" | sed "s/.*\"\(.*\)\".*/\1/")"
         if [ -z "$(grep "^$config_name_for_other$j" $file_task_before)" ]; then
             sed -i "/^$config_name_for_other$[$j-1]=".*"/ s/$/\n$config_name_for_other$j=\"\"/" $file_task_before
         fi
-        if [ "$new_rule" != "" ]; then
-            if [ "$new_rule" != "$old_rule" ]; then
-                sed -i "s/^$config_name_for_other$j=\"$old_rule\"$/$config_name_for_other$j=\"$new_rule\"/" $file_task_before
-            fi
+        if [ "$new_rule" != "$old_rule" ]; then
+            sed -i "s/^$config_name_for_other$j=\"$old_rule\"$/$config_name_for_other$j=\"$new_rule\"/" $file_task_before
         fi
+    elif [[ $j -gt $user_sum ]] && [[ ! -z "$(cat $file_task_before | grep "^$config_name_for_other$j")" ]]; then
+        sed -i "/^$config_name_for_other$j/d" $file_task_before
     fi
 done
 }
@@ -467,18 +472,20 @@ local i j k
 if [ -z "$(cat $file_task_before | grep "^$config_name\d")" ]; then
    echo -e "\n${config_name}1=''\n" >> $file_task_before
 fi
-for ((k=1; k<=$user_sum; k++)); do
-    if [ ! -z "$(cat $log_path | grep "^$config_name$k=.*'$")" ]; then
+for ((k=1; k<=100; k++)); do
+    if [[ $k -le $user_sum ]] && [[ ! -z "$(cat $log_path | grep "^$config_name$k=.*'$")" ]]; then
         new_code="$(cat $log_path | grep "^$config_name$k=.*'$" | sed "s/.*'\(.*\)'.*/\1/")"
         old_code="$(cat $file_task_before | grep "^$config_name$k=.*'$" | sed "s/.*'\(.*\)'.*/\1/")"
         if [ -z "$(grep "^$config_name$k" $file_task_before)" ]; then
             sed -i "/^$config_name$[$k-1]='.*'/ s/$/\n$config_name$k=\'\'/" $file_task_before
         fi
-        if [[ "$new_code" != "" ]] && [[ "$new_code" != "undefined" ]] && [[ "$new_code" != "{}" ]]; then
-            if [ "$new_code" != "$old_code" ]; then
+        if [ "$new_code" != "$old_code" ]; then
+            if [[ "$new_code" != "undefined" ]] && [[ "$new_code" != "{}" ]] || [[ "$new_code" = "" ]]; then
                 sed -i "s/^$config_name$k='$old_code'$/$config_name$k='$new_code'/" $file_task_before
             fi
         fi
+    elif [[ $k -gt $user_sum ]] && [[ ! -z "$(cat $file_task_before | grep "^$config_name$k")" ]]; then
+        sed -i "/^$config_name$k/d" $file_task_before
     fi
 done
 }
@@ -578,6 +585,13 @@ log_time=$(date "+%Y-%m-%d-%H-%M-%S")
 log_path="$dir_code/$log_time.log"
 make_dir "$dir_code"
 ps_num="$(ps | grep code.sh | grep -v grep | wc -l)"
+[[ ! -z "$(ps -ef|grep -w 'code.sh'|grep -v grep)" ]] && ps -ef|grep -w 'code.sh'|grep -v grep|awk '{print $3}'|xargs kill -9
 export_all_codes | perl -pe "{s|京东种豆|种豆|; s|crazyJoy任务|疯狂的JOY|}" | tee $log_path
 sleep 5
 update_help
+
+## 修改curtinlv京东超市兑换脚本的参数
+#sed -i "21c cookies='$(echo $JD_COOKIE | sed "s/&/ /g; s/\S*\(pt_key=\S\+;\)\S*\(pt_pin=\S\+;\)\S*/\1\2/g;" | perl -pe "s| |&|g")'" /ql/scripts/curtinlv_JD-Script_jd_blueCoin.py
+
+## 修改curtinlv入会领豆配置文件的参数
+
