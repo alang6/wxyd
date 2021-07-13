@@ -26,7 +26,7 @@ const $ = new Env('特物Z|万物皆可国创');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const randomCount = $.isNode() ? 20 : 5;
 const Opencardtw= $.isNode() ? (process.env.Opencardtw?process.env.Opencardtw:false):false
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotify') : ''
 let merge = {}
 let codeList = []
 //IOS等用户直接用NobyDa的jd cookie
@@ -80,6 +80,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
             if ($.cando && $.enpid) {
                 await getCode("secondfloor", $.actid)
                 if ($.taskList) {
+                console.log(`剩余 ${$.taskList.length}个任务待完成`)
                     for (task of $.taskList) {
                         if (task.assignmentType == 3) {  //关注店铺 
                         //    console.log(task)
@@ -192,7 +193,7 @@ function getCode(source, actid) {
                     //  console.log(data.data.result)
                     if (data && data.data && data.code === "0" && source === "secondfloor") {
                         if (data.data.result && data.data.result.taskList) {
-                            $.taskList = data.data.result.taskList.filter(x => x.assignmentType == 3 || x.assignmentType == 7 || x.assignmentType == 0)
+                            $.taskList = data.data.result.taskList.filter(x => (x.assignmentType == 3 || x.assignmentType == 7 || x.assignmentType == 0)&& !x.completionFlag)
                        //       console.log(data.data.result.taskList)
                             let result = data.data.result.taskList.filter(x => x.assignmentType == 2)[0]
                             let encryptAssignmentId = result.encryptAssignmentId
