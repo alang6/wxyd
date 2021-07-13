@@ -120,7 +120,7 @@ name_js=(
   "$repo"_lxkwz_jd_jdzz
   "$repo"_lxkwz_jd_jxnc
   "$repo"_lxkwz_jd_bookshop
-  "$repo_lxkwz"_lxkwz_jd_cash
+  "$repo"_lxkwz_jd_cash
   "$repo"_lxkwz_jd_sgmh
   acoolbook_scripts_jd_cfd
   "$repo"_lxkwz_jd_health
