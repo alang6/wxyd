@@ -16,7 +16,7 @@ repo4='shufflewzc_faker2'                          #预设的 shufflewzc 仓库
 repo5='Wenmoux_scripts_wen_chinnkarahoi'           #预设的 Wenmoux 仓库，用于读取口袋书店互助码。需提前拉取温某人的仓库或口袋书店脚本并完整运行。
 repo=$repo1                                        #默认调用 panghu999 仓库脚本日志
 
-## 调试模式开关，默认是0，表示关闭；设置为1，表示开启
+## 调试模式开关，默认是0，表示关闭；设置为1， 表示开启 
 DEBUG="1"
 
 ## 备份配置文件开关，默认是1，表示开启；设置为0，表示关闭。备份路径 /ql/config/bak/
