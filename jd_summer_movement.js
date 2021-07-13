@@ -22,9 +22,16 @@ if ($.isNode() && process.env.summer_movement_joinjoinjoinhui) {
   summer_movement_joinjoinjoinhui = process.env.summer_movement_joinjoinjoinhui;
 }
 
+// 百元守卫战SH
 let summer_movement_ShHelpFlag = 1;// 0不开启也不助力 1开启并助力 2开启但不助力
 if ($.isNode() && process.env.summer_movement_ShHelpFlag) {
   summer_movement_ShHelpFlag = process.env.summer_movement_ShHelpFlag;
+}
+
+// 邀请助力
+let summer_movement_HelpHelpHelpFlag = false;// 是否只执行邀请助力  true 是，false 不是
+if ($.isNode() && process.env.summer_movement_HelpHelpHelpFlag) {
+  summer_movement_HelpHelpHelpFlag = process.env.summer_movement_HelpHelpHelpFlag;
 }
 
 
@@ -36,7 +43,8 @@ $.inviteList = [];
 $.secretpInfo = {};
 $.ShInviteList = [];
 $.innerShInviteList = [
- 
+  '',
+
 ];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -48,8 +56,15 @@ if ($.isNode()) {
 }
 
 $.appid = 'o2_act';
-const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "JD4iPhone/9.3.5 CFNetwork/1209 Darwin/20.2.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "JD4iPhone/9.3.5 CFNetwork/1209 Darwin/20.2.0")
+const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : `jdpingou;iPhone;4.11.0;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`) : ($.getdata('JDUA') ? $.getdata('JDUA') : `jdpingou;iPhone;10.0.6;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`)
 
+function randomString(e) {
+  e = e || 32;
+  let t = "abcdefhijkmnprstwxyz2345678", a = t.length, n = "";
+  for (i = 0; i < e; i++)
+    n += t.charAt(Math.floor(Math.random() * a));
+  return n
+}
 
 !(async () => {
   if (!cookiesArr[0]) {
@@ -64,9 +79,10 @@ const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT :
       '新增 微信任务\n' +
       '移除百元守卫战 请到help食用\n' +
       '活动时间：2021-07-08至2021-08-08\n' +
-      '脚本更新时间：2021年7月10日 02点00分\n'
+      '脚本更新时间：2021年7月10日 23点00分\n'
       );
-      if(`${summer_movement_joinjoinjoinhui}` === "true") console.log('您设置了入会')
+      if(`${summer_movement_joinjoinjoinhui}` === "true") console.log('您设置了入会\n')
+      if(`${summer_movement_HelpHelpHelpFlag}` === "true") console.log('您设置了只执行邀请助力\n')
       if(Number(summer_movement_ShHelpFlag) === 1){
         console.log('您设置了 【百元守卫战SH】✅ || 互助✅')
       }else if(Number(summer_movement_ShHelpFlag) === 2){
@@ -140,6 +156,16 @@ async function movement() {
     await takePostRequest('olympicgames_home');
     if($.homeData.result) $.userInfo = $.homeData.result.userActBaseInfo
     if($.userInfo){
+      if($.homeData.result.popWindows) {
+        let res = $.homeData.result.popWindows
+        if(res.type == 'continued_sign_pop'){
+          console.log(`签到获得: ${JSON.stringify($.homeData.result.popWindows.data || '')}`)
+        }else if(res.type == 'limited_time_hundred_pop'){
+          console.log(`百元守卫战: ${JSON.stringify($.homeData.result.popWindows || '')}`)
+        }else{
+          console.log(`弹窗信息: ${JSON.stringify($.homeData.result.popWindows)}`)
+        }
+      }
       // console.log(JSON.stringify($.homeData.result.trainingInfo))
       console.log(`\n签到${$.homeData.result.continuedSignDays}天 待兑换金额：${Number($.userInfo.poolMoney)} 当前等级:${$.userInfo.medalLevel}  ${$.userInfo.poolCurrency}/${$.userInfo.exchangeThreshold}(攒卡领${Number($.userInfo.cash)}元)\n`);
       await $.wait(1000);
@@ -188,6 +214,7 @@ async function movement() {
     
     console.log(`\n做任务\n`);
     await takePostRequest('olympicgames_getTaskDetail');
+    if(`${summer_movement_HelpHelpHelpFlag}` === "true") return
     await $.wait(1000);
     //做任务
     for (let i = 0; i < $.taskList.length && !$.hotFlag; i++) {
@@ -733,7 +760,7 @@ async function getPostRequest(type, body) {
     'Cookie': $.cookie,
     "Origin": "https://wbbny.m.jd.com",
     "Referer": "https://wbbny.m.jd.com/",
-    "User-Agent": "jdapp;iPhone;9.2.0;14.1;",
+    "User-Agent": UA,
 
   };
   return {url: url, method: method, headers: headers, body: body};
@@ -751,7 +778,7 @@ function callbackResult(info) {
         'Connection': `keep-alive`,
         'Accept': `*/*`,
         'Host': `api.m.jd.com`,
-        'User-Agent': "jdapp;iPhone;10.0.2;14.3;8a0d1837f803a12eb217fcf5e1f8769cbb3f898d;network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167694;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
+        'User-Agent': UA,
         'Accept-Encoding': `gzip, deflate, br`,
         'Accept-Language': `zh-cn`,
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -786,7 +813,7 @@ function joinjoinjoinhui(url,Referer) {
         "Host": "api.m.jd.com",
         "Referer": Referer,
         "Cookie": $.cookie,
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;10.0.2;14.3;8a0d1837f803a12eb217fcf5e1f8769cbb3f898d;network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167694;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;10.0.2;14.3;8a0d1837f803a12eb217fcf5e1f8769cbb3f898d;network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167694;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        "User-Agent": UA,
       }
     }
     $.get(taskjiaruUrl, async(err, resp, data) => {
