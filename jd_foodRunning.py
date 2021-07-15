@@ -1,123 +1,210 @@
-import json
-import time
-import requests
-from jdEnv import *
+import axios from "axios";
+import USER_AGENT, {TotalBean} from "./TS_USER_AGENTS";
 
+const notify = require('./sendNotify')
 
-class FoodRunning:
-    def __init__(self, cookie):
-        self.cooke = cookie
-        self.buyerNick = ''
-        self.token = ''
-        self.buyerNick = ''
+let cookie: string = '', cookiesArr: string[] = [], res: any;
+let token2: string = '', buyerNick: string = '', UserName: string;
+let index: number, remain: number = 0;
 
-    def get_token(self):
-        res = requests.post(
-            'https://api.m.jd.com/client.action?functionId=isvObfuscator&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934998790&sign=e571148c8dfb456a1795d249c6aa3956&sv=100',
-            headers={
-                'Host': 'api.m.jd.com',
-                'accept': '*/*',
-                'user-agent': USER_AGENTS,
-                'content-type': 'application/x-www-form-urlencoded',
-                'Cookie': self.cooke
-            }, data='body=%7B%22id%22%3A%22%22%2C%22url%22%3A%22https%3A//xinruidddj-isv.isvjcloud.com%22%7D').json()
-        return res['token']
+!(async () => {
+  await requireConfig();
+  for (let i = 0; i < cookiesArr.length; i++) {
+    cookie = cookiesArr[i];
+    UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
+    index = i + 1;
+    let {isLogin, nickName}: any = await TotalBean(cookie)
+    if (!isLogin) {
+      notify.sendNotify(__filename.split('/').pop(), `cookie已失效\n京东账号${index}：${nickName || UserName}`)
+      continue;
+    }
+    console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
+    await getIsvToken2();
+    res = await api('setMixNick');
+    buyerNick = res.data.data.msg
 
-    def api(self, fn):
-        headers = {
-            'Accept-Language': 'zh-cn',
-            'Referer': 'https://jinggengjcq-isv.isvjcloud.com/paoku/index.html',
-            'Connection': 'keep-alive',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Host': 'jinggengjcq-isv.isvjcloud.com',
-            'User-Agent': USER_AGENTS,
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json',
-            'Origin': 'https://jinggengjcq-isv.isvjcloud.com',
+    res = await api('UserInfo')
+    console.log('total:', res.data.data.totalChance, 'remain:', res.data.data.remainChance)
+    remain = res.data.data.remainChance
+    // 换豆
+    if (remain > 50000) {
+      console.log('乞丐版暂无换豆功能！')
+    }
+
+    // 333 * 3
+    res = await api('SendCoinNum')
+    if (res.data.data.missionTypes.hasGotNum !== res.data.data.missionTypes.dayTop) {
+      for (let i = 0; i < 3; i++) {
+        res = await mission('treeCoin', i, 'treeCoin')
+        console.log(res)
+        await wait(5000)
+      }
+    }
+
+    // 日常任务
+    let tasks: any = await api('DailyTask')
+    for (let t of tasks.data.data) {
+      if (t.dayTop !== t.hasGotNum) {
+        // 没做完
+        if (t.type === 'viewBanner') {
+          for (let i = 1; i < 4; i++) {
+            res = await mission('', i, t.type)
+            if (res.errorCode === 200 || res.errorCode === '200') {
+              console.log('任务完成，获得：', res.data.data.sendNum)
+            } else {
+              console.log('任务失败：', res)
+            }
+            await wait(5000)
+          }
         }
-        params = (
-            ('open_id', ''),
-            ('mix_nick', ''),
-            ('bizExtString', ''),
-            ('user_id', '10299171'),
-        )
-        data = json.dumps({
-            "jsonRpc": "2.0",
-            "params": {
-                "commonParameter": {"appkey": "51B59BB805903DA4CE513D29EC448375", "m": "POST",
-                                    "sign": "b27575d69359ec1294677f3072b5c442", "timestamp": 1625133905908,
-                                    "userId": 10299171},
-                "admJson": {"strTMMixNick": self.token, "method": "/foodRunning/" + fn, "actId": "jd_food_running",
-                            "buyerNick": self.buyerNick, "pushWay": 1, "userId": 10299171}}})
-        res = requests.post(f'https://jinggengjcq-isv.isvjcloud.com/dm/front/foodRunning/{fn}', headers=headers,
-                            params=params, data=data).json()
-        return res
-
-    def mission(self, method, body=None):
-        if body is None:
-            body = {}
-        headers = {
-            'User-Agent': USER_AGENTS,
-            'Accept': 'application/json',
-            'Origin': 'https://jinggengjcq-isv.isvjcloud.com',
-            'Referer': 'https://jinggengjcq-isv.isvjcloud.com/paoku/index.html',
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Host': 'jinggengjcq-isv.isvjcloud.com',
+        if (t.type === 'viewShop') {
+          console.log(t.missionName)
+          let shopList: any = await api('ShopList')
+          for (let s of shopList.data.data) {
+            console.log(s.id, s.shopTitle)
+            res = await mission('', s.id, t.type)
+            if (res.errorCode === 200 || res.errorCode === '200') {
+              console.log('任务完成，获得：', res.data.data.sendNum)
+            } else {
+              console.log('任务失败：', res)
+            }
+            await wait(5000)
+          }
         }
-        params = (
-            ('open_id', ''),
-            ('mix_nick', ''),
-            ('bizExtString', ''),
-            ('user_id', '10299171'),
-        )
-        data = {"jsonRpc": "2.0", "params": {"commonParameter": {"appkey": "51B59BB805903DA4CE513D29EC448375", "m": "POST", "sign": "ce81175e149f37713f7bcb4cd72f8ad6", "timestamp": round(time.time() * 1000), "userId": 10299171}, "admJson": {"method": "/foodRunning/" + method, "actId": "jd_food_running", "buyerNick": self.buyerNick, "pushWay": 1, "userId": 10299171}}}
-        for k, v in body.items():
-            print(k, v)
-            data['params']['admJson'].update({k: v})
-        res = requests.post('https://jinggengjcq-isv.isvjcloud.com/dm/front/foodRunning/' + method, headers=headers, params=params, data=json.dumps(data)).json()
-        return res
+        if (t.type === 'viewGoods') {
+          for (let i = 1; i < 5; i++) {
+            res = await mission('', i, t.type)
+            if (res.errorCode === 200 || res.errorCode === '200') {
+              console.log('任务完成，获得：', res.data.data.sendNum)
+            } else {
+              console.log('任务失败：', res)
+            }
+            await wait(5000)
+          }
+        }
+      } else {
+        console.log(`${t.missionName}--已全部完成`)
+      }
+    }
+  }
+})()
 
-    def run(self):
-        self.token = self.get_token()
-        self.buyerNick = self.api('setMixNick')['data']['data']['msg']
-        tasks = self.api('DailyTask')['data']['data']
-        print(tasks)
+function mission(fn: string, goodsNumId: number, missionType: string) {
+  let body: any = {
+    "jsonRpc": "2.0",
+    "params": {
+      "commonParameter": {
+        "appkey": "51B59BB805903DA4CE513D29EC448375",
+        "m": "POST",
+        "sign": "0028b0b0431cdff0e69353b74a3aad8e",
+        "timestamp": Date.now(),
+        "userId": 10299171
+      },
+      "admJson": {
+        "missionType": missionType,
+        "method": "/foodRunning/complete/mission",
+        "actId": "jd_food_running",
+        "buyerNick": buyerNick,
+        "pushWay": 1,
+        "userId": 10299171
+      }
+    }
+  }
+  if (fn === 'jdAward1') {
+    Object.assign(body.params.admJson, {awardId: fn})
+  } else if (fn === 'treeCoin') {
+    Object.assign(body.params.admJson, {which: goodsNumId})
+  } else {
+    Object.assign(body.params.admJson, {goodsNumId: goodsNumId})
+  }
+  return new Promise(async resolve => {
+    let {data} = await axios.post(`https://jinggengjcq-isv.isvjcloud.com/dm/front/foodRunning/complete/mission?open_id=&mix_nick=&bizExtString=&user_id=10299171`,
+      JSON.stringify(body), {
+        headers: {
+          'Origin': 'https://jinggengjcq-isv.isvjcloud.com',
+          'X-Requested-With': 'XMLHttpRequest',
+          'User-Agent': USER_AGENT,
+          'Referer': 'https://jinggengjcq-isv.isvjcloud.com/paoku/index.html',
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Host': 'jinggengjcq-isv.isvjcloud.com',
+        }
+      })
+    resolve(data)
+  })
+}
 
-        '''
-        shop_list = self.mission('ShopList')['data']['data']
-        for s in shop_list:
-            print(s['id'],s['shopTitle'])
-            print('view shop')
-            res = self.mission('ViewShop')
-            print(res)
-            break
-        '''
+function api(fn: string) {
+  return new Promise(async resolve => {
+    let {data} = await axios.post(`https://jinggengjcq-isv.isvjcloud.com/dm/front/foodRunning/${fn}?open_id=&mix_nick=&bizExtString=&user_id=10299171`,
+      JSON.stringify({
+        "jsonRpc": "2.0",
+        "params": {
+          "commonParameter": {
+            "appkey": "51B59BB805903DA4CE513D29EC448375",
+            "m": "POST",
+            "sign": "c29adb1d2c970d64c233d66cbcf3fcdf",
+            "timestamp": Date.now(),
+            "userId": "10299171"
+          },
+          "admJson": {
+            "source": "01",
+            "strTMMixNick": token2,
+            "method": `/foodRunning/${fn}`,
+            "actId": "jd_food_running",
+            "buyerNick": buyerNick,
+            "pushWay": 1,
+            "userId": "10299171"
+          }
+        }
+      }), {
+        headers: {
+          'Origin': 'https://jinggengjcq-isv.isvjcloud.com',
+          'X-Requested-With': 'XMLHttpRequest',
+          'User-Agent': USER_AGENT,
+          'Referer': 'https://jinggengjcq-isv.isvjcloud.com/paoku/index.html',
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Host': 'jinggengjcq-isv.isvjcloud.com',
+        }
+      })
+    resolve(data);
+  })
+}
 
-        # print(self.mission('complete/mission', {'goodsNumId': 3, 'missionType': 'viewGoods'}))
+function getIsvToken2() {
+  return new Promise<void>(async resolve => {
+    let {data} = await axios.post("https://api.m.jd.com/client.action?functionId=isvObfuscator&clientVersion=10.0.2&client=android&uuid=818aa057737ba6a4&st=1623934998790&sign=e571148c8dfb456a1795d249c6aa3956&sv=100", 'body=%7B%22id%22%3A%22%22%2C%22url%22%3A%22https%3A//xinruidddj-isv.isvjcloud.com%22%7D', {
+      headers: {
+        'Host': 'api.m.jd.com',
+        'user-agent': USER_AGENT,
+        'content-type': 'application/x-www-form-urlencoded',
+        'Cookie': cookie
+      }
+    })
+    token2 = data.token;
+    cookie += 'IsvToken=' + token2 + ';'
+    resolve();
+  })
+}
 
-        can_do = ['viewBanner', 'viewShop', 'viewGoods', 'addCart']
-        for t in tasks:
-            if t['hasGotNum'] == '':
-                times = t['dayTop']
-            else:
-                times = t['dayTop'] - t['hasGotNum']
-            if t['type'] in can_do:
-                print(t['type'], times)
+function requireConfig() {
+  return new Promise(resolve => {
+    console.log('\n====================Hello World====================\n');
+    console.log('开始获取配置文件\n');
+    const jdCookieNode = require('./jdCookie.js');
+    Object.keys(jdCookieNode).forEach((item) => {
+      if (jdCookieNode[item]) {
+        cookiesArr.push(jdCookieNode[item]);
+      }
+    })
+    console.log(`共${cookiesArr.length}个京东账号\n`);
+    resolve(0);
+  })
+}
 
-        print('开始任务！')
-        time.sleep(3)
-        print('任务失败！')
-        coin = random.randint(245, 295) * 5
-        point = random.randint(1514, 1798)
-        print(self.mission('SendCoin', {'coin': coin, 'point': point}))
-        print(f'跑酷完成：{point}分，{coin}币')
-        for i in range(1, 4):
-            res = self.mission('OpenBox', {"awardId": f"jdRunningBox{i}"})
-            print('拆盒子：', res['data']['data']['msg'])
-
-
-if __name__ == '__main__':
-    if root():
-        ck = cookies[0]
-        fr = FoodRunning(ck)
-        fr.run()
+function wait(t: number) {
+  return new Promise<void>(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, t)
+  })
+}
