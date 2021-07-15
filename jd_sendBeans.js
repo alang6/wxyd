@@ -2,6 +2,7 @@
 * 来客有礼小程序
 * cron 45 4 * * *
 * 至少需要11个ck
+* 搬运大佬
 * */
 const $ = new Env('送豆得豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
