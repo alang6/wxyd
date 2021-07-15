@@ -1,7 +1,7 @@
 version: '2.0'
 services:
   jd_cookie:
-    image: lxk0301/jd_cookie
+    image: abcdjd/jd_cookie
     container_name: jd_cookie
     restart: always
     ports:
