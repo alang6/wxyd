@@ -141,7 +141,7 @@ window.qrLogin = function (api = '.') {
     tip.style.wordBreak = 'break-word';
     tip.style.paddingTop = '16px';
     tip.innerHTML =
-      '请使用京东APP扫码<br>或截图用京东APP扫码<br><br><span style="color: red">请无视京东APP升级提示</span>';
+      '请使用京东APP扫码<br>或截图用京东APP扫码<br>无需复制，自动更新或者新增<br><span style="color: red">请无视京东APP升级提示</span>';
     qrcontainer.appendChild(tip);
 
     get_code();
