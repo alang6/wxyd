@@ -38,7 +38,6 @@ $.result = [];
 $.shareCodes = [];
 let cookiesArr = [], cookie = '', token;
 let allMessage = '', message = ''
-$.money = 0
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -91,6 +90,7 @@ let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 
         continue
       }
       $.info = {}
+      $.money = 0
       token = await getJxToken()
       await cfd();
     }
