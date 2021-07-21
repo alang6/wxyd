@@ -153,7 +153,7 @@ async function cfd() {
       let vo = $.info.buildInfo.buildList[key]
       let body = `strBuildIndex=${vo.strBuildIndex}`
       await getBuildInfo(body, vo)
-      await $.wait(1000)
+      await $.wait(2000)
     }
 
     //合成珍珠
@@ -514,7 +514,7 @@ async function querystorageroom(dwSceneId) {
                 strTypeCnt += `${bags[j]}|`
               }
             }
-            await $.wait(1000)
+            await $.wait(2000)
             await sellgoods(`strTypeCnt=${strTypeCnt}&dwSceneId=${dwSceneId}`)
           } else {
             console.log(`背包是空的，快去捡贝壳吧\n`)
@@ -571,7 +571,7 @@ async function getTakeAggrPage(type) {
                   if (vo.dwStatus !== 1) {
                     const body = `ddwCoin=${vo.ddwCoin}&ddwMoney=${vo.ddwMoney}&dwPrizeType=${vo.dwPrizeType}&strPrizePool=${vo.strPrizePool}&dwPrizeLv=${vo.dwBingoLevel}`
                     await rewardSign(body)
-                    await $.wait(1000)
+                    await $.wait(2000)
                   } else {
                     console.log(`今日已签到\n`)
                     break
@@ -902,7 +902,7 @@ async function employTourGuideInfo() {
               }
               const body = `strBuildIndex=${vo.strBuildIndex}&dwIsFree=${dwIsFree}&ddwConsumeCoin=${vo.ddwCostCoin}`
               await employTourGuide(body, buildNmae)
-              await $.wait(1000)
+              await $.wait(2000)
             } else if (vo.strBuildIndex !== 'food') {
               console.log(`【${buildNmae}】无可雇佣导游`)
             }
@@ -1269,7 +1269,7 @@ function browserTask(taskType) {
           } else {
             //领奖励
             await awardTask(1, taskinfo);
-            await $.wait(1000);
+            await $.wait(2000);
           }
         }
         break;
@@ -1496,7 +1496,7 @@ function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
-      url: `http://share.turinglabs.net/api/v3/jxbfd/query/0/`,
+      url: `http://share.turinglabs.net/api/v3/jxbfd/query/${randomCount}/`,
       'timeout': 10000
     }, (err, resp, data) => {
       try {
@@ -1505,7 +1505,7 @@ function readShareCode() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取0个码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
