@@ -970,8 +970,8 @@ async function tuanActivity() {
   }
 }
 async function joinLeaderTuan() {
-  let res = await updateTuanIdsCDN(), res2 = await updateTuanIdsCDN("http://adguard.a.freefrp.net/jd_updateFactoryTuanId.jsonn")
-  if (!res) res = await updateTuanIdsCDN('http://adguard.a.freefrp.net/jd_updateFactoryTuanId.json');
+  let res = await updateTuanIdsCDN(), res2 = await updateTuanIdsCDN("http://adguard.ipq.co/jd_updateFactoryTuanId.jsonn")
+  if (!res) res = await updateTuanIdsCDN('http://adguard.ipq.co/jd_updateFactoryTuanId.json');
   $.authorTuanIds = [...(res && res.tuanIds || []),...(res2 && res2.tuanIds || [])]
   if ($.authorTuanIds && $.authorTuanIds.length) {
     for (let tuanId of $.authorTuanIds) {
@@ -1200,7 +1200,7 @@ function tuanAward(activeId, tuanId, isTuanLeader = true) {
   })
 }
 
-function updateTuanIdsCDN(url = 'http://adguard.a.freefrp.net/jd_updateFactoryTuanId.json') {
+function updateTuanIdsCDN(url = 'http://adguard.ipq.co/jd_updateFactoryTuanId.json') {
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {
@@ -1356,7 +1356,7 @@ function requireConfig() {
         console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)
       } else {
         if (!$.tuanConfigs) {
-          await updateTuanIdsCDN('http://adguard.a.freefrp.net/jd_updateFactoryTuanId.json');
+          await updateTuanIdsCDN('http://adguard.ipq.co/jd_updateFactoryTuanId.json');
           if ($.tuanConfigs && $.tuanConfigs['tuanActiveId']) {
             tuanActiveId = $.tuanConfigs['tuanActiveId'];
             console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)

@@ -50,11 +50,11 @@ let allMessage = '';
     return;
   }
   await requireConfig()
-  $.authorCode = await getAuthorShareCode('http://adguard.a.freefrp.net/jd_cash.json')
+  $.authorCode = await getAuthorShareCode('http://adguard.ipq.co/jd_cash.json')
   if (!$.authorCode) {
-    $.http.get({url: 'http://adguard.a.freefrp.net/jd_cash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    $.http.get({url: 'http://adguard.ipq.co/jd_cash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
-    $.authorCode = await getAuthorShareCode('http://adguard.a.freefrp.net/jd_cash.json') || []
+    $.authorCode = await getAuthorShareCode('http://adguard.ipq.co/jd_cash.json') || []
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {

@@ -77,11 +77,11 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
       await smallHome();
     }
   }
-  $.inviteCodes = await getAuthorShareCode('http://adguard.a.freefrp.net/jd_updateSmallHomeInviteCode.json')
+  $.inviteCodes = await getAuthorShareCode('http://adguard.ipq.co/jd_updateSmallHomeInviteCode.json')
   if (!$.inviteCodes) {
-    $.http.get({url: 'http://adguard.a.freefrp.net/jd_updateSmallHomeInviteCode.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    $.http.get({url: 'http://adguard.ipq.co/jd_updateSmallHomeInviteCode.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
-    $.inviteCodes = await getAuthorShareCode('http://adguard.a.freefrp.net/jd_updateSmallHomeInviteCode.json')
+    $.inviteCodes = await getAuthorShareCode('http://adguard.ipq.co/jd_updateSmallHomeInviteCode.json')
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {

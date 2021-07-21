@@ -187,7 +187,7 @@ function requireConfig() {
 
     try {
       let options = {
-        "url": `http://adguard.a.freefrp.net/jxnc.txt`,
+        "url": `http://adguard.ipq.co/jxnc.txt`,
         "headers": {
           "Accept": "application/json,text/plain, */*",
           "Content-Type": "application/x-www-form-urlencoded",

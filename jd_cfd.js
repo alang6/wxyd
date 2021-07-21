@@ -58,11 +58,11 @@ $.appId = 10028;
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
   await $.wait(1000)
-  let res = await getAuthorShareCode('http://adguard.a.freefrp.net/cfd.json')
+  let res = await getAuthorShareCode('http://adguard.ipq.co/cfd.json')
   if (!res) {
-    $.http.get({url: 'http://adguard.a.freefrp.net/cfd.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: 'http://adguard.ipq.co/cfd.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('http://adguard.a.freefrp.net/cfd.json')
+    res = await getAuthorShareCode('http://adguard.ipq.co/cfd.json')
   }
   $.strMyShareIds = [...(res && res.shareId || [])]
   for (let i = 0; i < cookiesArr.length; i++) {

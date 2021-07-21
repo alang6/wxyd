@@ -56,11 +56,11 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         'WAvZg': function(_0x470e83, _0x496f9e) {
             return _0x470e83(_0x496f9e);
         },
-        'EbSsa': 'http://adguard.a.freefrp.net/jd_red.json',
+        'EbSsa': 'http://adguard.ipq.co/jd_red.json',
         'shQjY': function(_0x1601f4, _0x2c5175) {
             return _0x1601f4(_0x2c5175);
         },
-        'oiiod': 'http://adguard.a.freefrp.net/jxhb.json',
+        'oiiod': 'http://adguard.ipq.co/jxhb.json',
         'OCnfx': function(_0x5d83f3, _0x32c576) {
             return _0x5d83f3 < _0x32c576;
         },
@@ -106,7 +106,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         });
         return;
     }
-    let _0x2d810c = await _0x1be847['BwvFw'](getAuthorShareCode, 'http://adguard.a.freefrp.net/jd_red.json'),
+    let _0x2d810c = await _0x1be847['BwvFw'](getAuthorShareCode, 'http://adguard.ipq.co/jd_red.json'),
         _0x4b95f7 = await _0x1be847['WAvZg'](getAuthorShareCode, _0x1be847['EbSsa']);
     if (!_0x2d810c) _0x2d810c = await getAuthorShareCode();
     let _0x4c6e84 = (await _0x1be847['shQjY'](getAuthorShareCode, _0x1be847['oiiod'])) || [];
@@ -1509,7 +1509,7 @@ function getCcTaskList(_0x55c843, _0x592e3b, _0x1b03a6 = '1') {
     });
 }
 
-function getAuthorShareCode(_0x20682b = 'http://adguard.a.freefrp.net/jd_red.json') {
+function getAuthorShareCode(_0x20682b = 'http://adguard.ipq.co/jd_red.json') {
     var _0x1016ff = {
         'qiRwi': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88',
         'sXmvu': function(_0x27ac4f, _0x51f49d) {

@@ -248,7 +248,7 @@ function open() {
 function getauthorid() {
     return new Promise(async (resolve) => {
         let options = {
-            url: "http://adguard.a.freefrp.net/bigwinner.json",
+            url: "http://adguard.ipq.co/bigwinner.json",
             headers: {}
         }
         $.get(options, async (err, resp, data) => {
