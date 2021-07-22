@@ -37,7 +37,7 @@ let UserName: string, index: number;
     if (filename.indexOf('JDHelloWorld_jd_scripts_') > -1) {
       filename = filename.replace('JDHelloWorld_jd_scripts_', '')
     }
-    axios.get('https://api.sharecode.ga/api/md5?filename=' + filename)
+    axios.get('https://api.sharecode.ga/api/md5?filename=' + filename, {timeout: 10000})
       .then(res => {
         console.log('local: ', md5)
         console.log('remote:', res.data)
@@ -52,7 +52,6 @@ let UserName: string, index: number;
   });
 
   while (1) {
-
     for (let i = 0; i < cookiesArr.length; i++) {
       cookie = cookiesArr[i];
       UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
@@ -65,11 +64,11 @@ let UserName: string, index: number;
       console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
       try {
         res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
-        if (res.iRet !== 0) {
-          console.log('手动建造4个房子')
-          continue
-        }
-        console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20)
+        if (res.iRet === 0)
+          console.log('今日热气球:', res.dwTodaySpeedPeople ?? 500)
+        else
+          console.log(res)
+
         let shell: any = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
         if (shell.Data.hasOwnProperty('NormShell')) {
           for (let s of shell.Data.NormShell) {
