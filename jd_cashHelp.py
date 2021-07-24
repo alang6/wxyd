@@ -7,13 +7,13 @@ Author: Curtin
 Date: 2021/7/4 上午09:35
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-update 2021.7.4 18:26
+update 2021.7.24 14:02
 '''
 
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 cookies = ''
-# 设置被助力的账号可填用户名 或 pin的值不要;
-cash_zlzh = ['', '']
+# 设置被助力的账号可填用户名 或 pin的值不要; env 设置 export cash_zlzh="用户1&用户N"
+cash_zlzh = ['Your JD_User', '买买买']
 
 # Env环境设置 通知服务
 # export BARK=''                   # bark服务,苹果商店自行搜索;
@@ -43,7 +43,7 @@ import random
 try:
     import requests
 except Exception as e:
-    print(e, "\n缺少requests 模块，请执行命令安装：python3 -m pip install requests")
+    print(e, "\n缺少requests 模块，请执行命令安装：pip3 install requests")
     exit(3)
 from urllib.parse import unquote, quote
 import json
@@ -55,23 +55,57 @@ t = time.time()
 aNum = 0
 cashCount = 0
 cashCountdict = {}
+
+
+def getEnvs(label):
+    try:
+        if label == 'True' or label == 'yes' or label == 'true' or label == 'Yes':
+            return True
+        elif label == 'False' or label == 'no' or label == 'false' or label == 'No':
+            return False
+    except Exception as e:
+        pass
+    try:
+        if '.' in label:
+            return float(label)
+        elif '&' in label:
+            return label.split('&')
+        elif '@' in label:
+            return label.split('@')
+        else:
+            return int(label)
+    except:
+        return label
+
 class getJDCookie(object):
     # 适配各种平台环境ck
+
     def getckfile(self):
-        if os.path.exists(pwd + 'JDCookies.txt'):
-            return pwd + 'JDCookies.txt'
-        elif os.path.exists('/ql/config/env.sh'):
+        global v4f
+        curf = pwd + 'JDCookies.txt'
+        v4f = '/jd/config/config.sh'
+        ql_new = '/ql/config/env.sh'
+        ql_old = '/ql/config/cookie.sh'
+        if os.path.exists(curf):
+            with open(curf, "r", encoding="utf-8") as f:
+                cks = f.read()
+                f.close()
+            r = re.compile(r"pt_key=.*?pt_pin=.*?;", re.M | re.S | re.I)
+            cks = r.findall(cks)
+            if len(cks) > 0:
+                return curf
+            else:
+                pass
+        if os.path.exists(ql_new):
             print("当前环境青龙面板新版")
-            return '/ql/config/env.sh'
-        elif os.path.exists('/ql/config/cookie.sh'):
+            return ql_new
+        elif os.path.exists(ql_old):
             print("当前环境青龙面板旧版")
-            return '/ql/config/env.sh'
-        elif os.path.exists('/jd/config/config.sh'):
+            return ql_old
+        elif os.path.exists(v4f):
             print("当前环境V4")
-            return '/jd/config/config.sh'
-        elif os.path.exists(pwd + 'JDCookies.txt'):
-            return pwd + 'JDCookies.txt'
-        return pwd + 'JDCookies.txt'
+            return v4f
+        return curf
 
     # 获取cookie
     def getCookie(self):
@@ -90,7 +124,10 @@ class getJDCookie(object):
                             print("当前获取使用 JDCookies.txt 的cookie")
                         cookies = ''
                         for i in cks:
-                            cookies += i
+                            if 'pt_key=xxxx' in i:
+                                pass
+                            else:
+                                cookies += i
                         return
             else:
                 with open(pwd + 'JDCookies.txt', "w", encoding="utf-8") as f:
@@ -170,51 +207,89 @@ class getJDCookie(object):
 getCk = getJDCookie()
 getCk.getCookie()
 
+# 获取v4环境 特殊处理
+if os.path.exists('/jd/config/config.sh'):
+    try:
+        with open('/jd/config/config.sh', 'r', encoding='utf-8') as f:
+            curenv = locals()
+            for i in f.readlines():
+                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
+                r = r.findall(i)
+                if len(r) > 0:
+                    for i in r:
+                        if i[0] != 'JD_COOKIE':
+                            curenv[i[0]] = getEnvs(i[1])
+    except:
+        pass
+
 if "cash_zlzh" in os.environ:
     if len(os.environ["cash_zlzh"]) > 1:
         cash_zlzh = os.environ["cash_zlzh"]
-        cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split(',')
+        if '&' in cash_zlzh:
+            cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split('&')
+        elif ',' in cash_zlzh:
+            cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split(',')
         print("已获取并使用Env环境 cash_zlzh:", cash_zlzh)
+if not isinstance(cash_zlzh, list):
+    cash_zlzh = cash_zlzh.split(" ")
 
-######## 获取通知模块
-message_info = ''''''
-def message(str_msg):
-    global message_info
-    print(str_msg)
-    message_info = "{}\n{}".format(message_info, str_msg)
-    sys.stdout.flush()
-def getsendNotify(a=0):
-    if a == 0:
-        a += 1
-    try:
-        url = 'https://gitee.com/curtinlv/Public/raw/master/sendNotify.py'
-        response = requests.get(url)
-        if 'main' in response.text:
-            with open('sendNotify.py', "w+", encoding="utf-8") as f:
-                f.write(response.text)
-        else:
+
+## 获取通知服务
+class msg(object):
+    def __init__(self, m):
+        self.str_msg = m
+        self.message()
+    def message(self):
+        global msg_info
+        print(self.str_msg)
+        try:
+            msg_info = "{}\n{}".format(msg_info, self.str_msg)
+        except:
+            msg_info = "{}".format(self.str_msg)
+        sys.stdout.flush()
+    def getsendNotify(self, a=0):
+        if a == 0:
+            a += 1
+        try:
+            url = 'https://gitee.com/curtinlv/Public/raw/master/sendNotify.py'
+            response = requests.get(url)
+            if 'curtinlv' in response.text:
+                with open('sendNotify.py', "w+", encoding="utf-8") as f:
+                    f.write(response.text)
+            else:
+                if a < 5:
+                    a += 1
+                    return self.getsendNotify(a)
+                else:
+                    pass
+        except:
             if a < 5:
                 a += 1
-                return getsendNotify(a)
+                return self.getsendNotify(a)
             else:
                 pass
-    except:
-        if a < 5:
-            a += 1
-            return getsendNotify(a)
+    def main(self):
+        global send
+        cur_path = os.path.abspath(os.path.dirname(__file__))
+        sys.path.append(cur_path)
+        if os.path.exists(cur_path + "/sendNotify.py"):
+            try:
+                from sendNotify import send
+            except:
+                self.getsendNotify()
+                try:
+                    from sendNotify import send
+                except:
+                    print("加载通知服务失败~")
         else:
-            pass
-cur_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(cur_path)
-if os.path.exists(cur_path + "/sendNotify.py"):
-    from sendNotify import send
-else:
-    getsendNotify()
-    try:
-        from sendNotify import send
-    except:
-        print("加载通知服务失败~")
-###################
+            self.getsendNotify()
+            try:
+                from sendNotify import send
+            except:
+                print("加载通知服务失败~")
+        ###################
+msg("").main()
+##############
 
 def userAgent():
     """
@@ -275,11 +350,18 @@ def helpCode(header, inviteCode, shareDate, uNUm, user, name):
         resp = requests.post(url=url, headers=header,  verify=False, timeout=30).json()
         if resp['data']['success']:
             print(f'用户{uNUm}【{user}】助力【{name}】{resp["data"]["bizMsg"]} -> 您也获得{resp["data"]["result"]["cashStr"]}现金')
+            return False
         else:
             print(f'用户{uNUm}【{user}】助力【{name}】{resp["data"]["bizMsg"]}')
+            if '晚' in resp["data"]["bizMsg"]:
+                return True
+            else:
+                return False
+
     except Exception as e:
         print("helpCode Error", e)
         print(f'用户{uNUm}【{user}】助力【{name}】报错了！')
+        return False
 
 def cash_exchangePage(ck):
     try:
@@ -313,7 +395,7 @@ def start():
             ckNum = userNameList.index(ckname)
         except Exception as e:
             try:
-                ckNum = pinNameList.index(ckname)
+                ckNum = pinNameList.index(unquote(ckname))
             except:
                 print(f"请检查被助力账号【{ckname}】名称是否正确？提示：助力名字可填pt_pin的值、也可以填账号名。")
                 continue
@@ -328,7 +410,9 @@ def start():
             if i == cookiesList[ckNum]:
                 u += 1
                 continue
-            helpCode(buildHeader(i), inviteCode, shareDate, u+1, userNameList[u], userNameList[ckNum])
+            result = helpCode(buildHeader(i), inviteCode, shareDate, u+1, userNameList[u], userNameList[ckNum])
+            if result:
+                break
             time.sleep(sleepNum)
             u += 1
         totalMoney = cash_exchangePage(cookiesList[ckNum])
@@ -337,10 +421,10 @@ def start():
 
     print("\n-------------------------")
     for i in cashCountdict.keys():
-        message(f"账号【{i}】当前现金: ￥{cashCountdict[i]}")
-    message("## 总累计获得 ￥%.2f" % cashCount)
+        msg(f"账号【{i}】当前现金: ￥{cashCountdict[i]}")
+    msg("## 总累计获得 ￥%.2f" % cashCount)
     try:
-        send(scriptName, message_info)
+        send(scriptName, msg_info)
     except:
         pass
 
