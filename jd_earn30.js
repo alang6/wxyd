@@ -1,69 +1,99 @@
 /*
-真·抢京豆
-更新时间：2021-7-24
-备注：高速并发抢京豆，专治偷助力。设置环境变量angryBeanPins为指定账号助力，默认不助力。环境变量angryBeanMode可选值priority和speed，默认speed模式。
+赚30元
+更新时间：2021-7-19
+入口：我的-赚30
+备注：赚30元每日签到红包、天降红包助力，在earn30Pins环境变量中填入需要签到和接受助力的账号。
+技巧：每月可以提现100元，但需要邀请一个新人下首单。可以用已注册手机号重新注册为新人账号，切换ip可以提高成功率。
 TG学习交流群：https://t.me/cdles
-0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryBean.js
+3 1,6 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_earn30.js
 */
-const $ = new Env("真·抢京豆")
+const $ = new Env("赚30元")
+const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
-var pins = $.isNode() ? (process.env.angryBeanPins ? process.env.angryBeanPins : "") : "";
+var pins = process.env.earn30Pins ? process.env.earn30Pins : '';
 let cookiesArr = [];
 var helps = [];
 var tools = [];
-var maxTimes = 3;
-var finished = [];
-var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed" ) : "priority";
+var timeout = 0;
 !(async () => {
-     if ($.isNode() && !pins) {
-          console.log("请在环境变量中填写需要助力的账号")
-          return
+     if (!pins) {
+          console.log("未填写环境变量earn30Pins，默认所有账号")
      }
-     console.log(`开启${mode}模式`)
      requireConfig()
      for (let i in cookiesArr) {
+          i = +i
           cookie = cookiesArr[i]
-          if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
-               await requestApi('signGroupHit', cookie, {
-                    activeType: 2
+          if (!pins || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
+               var data = await requestApi('createSplitRedPacket', cookie, {
+                    scene: 3
                });
-               var data = await requestApi('signBeanGroupStageIndex', cookie, {
-                    rnVersion: "3.9",
-                    fp: "-1",
-                    shshshfp: "-1",
-                    shshshfpa: "-1",
-                    referUrl: "-1",
-                    userAgent: "-1",
-                    jda: "-1",
-                    monitor_source: "bean_m_bean_index"
-               });
-               if (data && data.data && data.data.shareCode) {
-                    console.log(`${i+1} 可以被助力`)
-                    helps.push({
-                         id: +i,
-                         cookie: cookie,
-                         groupCode: data.data.groupCode,
-                         shareCode: data.data.shareCode,
-                         activityId: data.data.activityMsg.activityId,
-                         success: false,
-                    })
-               }else{
-                    console.log(`${i+1} 不可以被助力`)
+               if(data){
+                    if (data.code === 0 && data.SplitRedPacketInfo) {
+                         helps.push({
+                              redPacketId: data.SplitRedPacketInfo.redPacketId,
+                              shareCode: data.SplitRedPacketInfo.shareCode,
+                              id: i,
+                              cookie: cookie
+                         })
+                    } else if (data.code === 1) {
+                         data = await requestApi('getSplitRedPacket', cookie);
+                         if (data && data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
+                              helps.push({
+                                   redPacketId: data.SplitRedPacketInfo.redPacketId,
+                                   shareCode: data.SplitRedPacketInfo.shareCode,
+                                   id: i,
+                                   cookie: cookie
+                              })
+                         }
+                    }
                }
+               data = await requestApi('fpSign', cookie);
+               if (data) {
+                    if (data.code === 1) {
+                         console.log(`${i+1} 已经签到过了`)
+                    } else if (data.code === '0') {
+                         console.log(`${i+1} 签到获得${data.money}`)
+                    } else {
+                         console.log(`${i+1} 签到失败`)
+                    }
+               }               
           }
           tools.push({
-               id: +i,
+               id: i,
                cookie: cookie,
-               helps: [],
+               helps:[],
                times: 0,
-               timeout: 0,
           })
      }
-     for (let help of helps) {
-          await open(help)
+     timeout = helps.length*2
+     for(let help of helps){
+          while (tools.length) {
+               var tool = tools.pop()
+               tool.times++
+               var data = await requestApi('splitRedPacket', tool.cookie, {shareCode:help.shareCode,groupCode:help.redPacketId});
+               if(data){
+                    if(tool.times >= timeout){
+                         break
+                    }
+                    console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
+                    if(tool.helps.indexOf(help.id) != -1){
+                         break
+                    }
+                    if(data.text == "我的红包已拆完啦"){
+                         tools.unshift(tool)
+                         break
+                    }
+                    if(data.text.indexOf("帮拆出错")!=-1 && tool.id != help.id){
+                         continue
+                    }
+                    if(data.text.indexOf("帮拆次数已达上限")!=-1){
+                         continue
+                    }
+                    tool.helps.push(help.id)
+                    tools.unshift(tool)
+               }
+          }
      }
-     while (finished.length != helps.length)
-          await $.wait(100)
 })().catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
      })
@@ -71,118 +101,24 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
           $.done();
      })
 
-async function open(help) {
-     var tool = tools.pop()
-     if (!tool) {
-          finished.push(help.id)
-          return
-     }
-     if(tool.id==help.id){
-          if(tools.length==0){
-               finished.push(help.id)
-               return
-          } else {
-               if(mode != "speed"){
-                    await open(help)
-               }else{
-                    open(help)
-               }
-               return
-          }
-     }
-     var helpNum = 0
-     for (let helpId of tool.helps) {
-          if (helpId==help.id) {
-               helpNum++
-          }
-     }
-     if(mode != "speed"){
-          if(helpNum>0){
-               finished.push(help.id)
-               return
-          }
-     } else {
-          if(helpNum>2){
-               finished.push(help.id)
-               return
-          }
-     }
-     async function handle(data) {
-          var helpToast = undefined
-          if (data && data.data && data.data.helpToast) {
-               helpToast = data.data.helpToast
-          }
-          tool.timeout++
-          if (helpToast) {
-               console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
-               if (helpToast.indexOf("助力成功") != -1) { //助力成功
-                    tool.times++
-               }
-               if (helpToast.indexOf("满") != -1) { //该团已经满啦~去帮别人助力吧~
-                    help.success = true
-               }
-               if (helpToast.indexOf("今日助力次数已达上限") != -1) { //您今日助力次数已达上限~
-                    tool.times = maxTimes
-               }
-               if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
-                    tool.times = maxTimes
-               }
-               if(mode=="speed"){
-                    if(tool.timeout >= helps.length * 2) {
-                         tool.times = maxTimes
-                    }
-               }
-               if (tool.times < maxTimes) {
-                    if (Array.from(new Set(tool.helps)).length != helps.length) {
-                         tools.unshift(tool)
-                    }
-               }
-          }
-          tool.helps.push(help.id)
-          if (!help.success) {
-               await open(help)
-          } else {
-               finished.push(help.id)
-          }
-     }
-     var params = {
-          activeType: 2,
-          groupCode: help.groupCode,
-          shareCode: help.shareCode,
-          activeId: help.activityId + "",
-          source: "guest",
-     }
-     if (mode != "speed") {
-
-          data = await requestApi('signGroupHelp', tool.cookie, params)
-          await handle(data)
-     } else {
-          requestApi('signGroupHelp', tool.cookie, params).then(handle)
-     }
-}
-
 function requestApi(functionId, cookie, body = {}) {
-     var url = `https://api.m.jd.com/client.action?functionId=${functionId}&body=${JSON.stringify(body)}&appid=ld&client=apple&clientVersion=10.0.4&networkType=wifi&osVersion=13.7&uuid=&openudid=`
      return new Promise(resolve => {
-          $.get({
-               url: url,
+          $.post({
+               url: `${JD_API_HOST}?functionIdTest=${functionId}`,
                headers: {
                     "Cookie": cookie,
-                    "Accept": '*/*',
-                    "Connection": 'keep-alive',
-                    'Referer': 'https://h5.m.jd.com/rn/3MQXMdRUTeat9xqBSZDSCCAE9Eqz/index.html?has_native=0',
-                    "origin": "https://h5.m.jd.com",
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    "X-Requested-With": "com.jingdong.app.mall",
-                    "User-Agent": ua,
                     "Host": "api.m.jd.com",
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    "User-Agent": ua,
                },
-               timeout: 1000,
+               body: `functionId=${functionId}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=1.0.0`,
           }, (_, resp, data) => {
-               if (data) {
-                    resolve(JSON.parse(data))
-               } else {
-                    resolve(0)
+               try {
+                    data = JSON.parse(data)
+               } catch (e) {
+                    $.logErr('Error: ', e, resp)
+               } finally {
+                    resolve(data)
                }
           })
      })
