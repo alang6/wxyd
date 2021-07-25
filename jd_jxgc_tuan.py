@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*
+#京喜工厂开团
 '''
 项目名称: JD-Script / jd_jxgc_tuan
 Author: Curtin
 功能：京喜工厂开团，支持指定账号开团，跑一次脚本默认开3次团，，如未指定账号默认给账号1开团。
+cron: 10 0,7 * * *
 Date: 2021/7/17 下午9:40
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
@@ -205,12 +207,12 @@ getCk = getJDCookie()
 getCk.getCookie()
 
 # 获取v4环境 特殊处理
-if os.path.exists('/jd/config/config.sh'):
+if os.path.exists(v4f):
     try:
-        with open('/jd/config/config.sh', 'r', encoding='utf-8') as f:
+        with open(v4f, 'r', encoding='utf-8') as f:
             curenv = locals()
             for i in f.readlines():
-                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
+                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#!&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
                 r = r.findall(i)
                 if len(r) > 0:
                     for i in r:
@@ -498,7 +500,7 @@ def CreateTuan(ck):
             getResult(r)
             return tuanId, surplusOpenTuanNum
         else:
-            return False, surplusOpenTuanNum
+            return tuanId, surplusOpenTuanNum
     except Exception as e:
         print("CreateTuan Error", e)
 
@@ -576,6 +578,7 @@ def start():
                 print(f'用户【{userName}】，今天已完成所有团。')
                 break
             s += 1
+        Award(cookiesList[ckNum], "")
     try:
         u = 1
         for name in countElectric.keys():
