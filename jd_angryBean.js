@@ -1,6 +1,6 @@
 /*
 真·抢京豆
-更新时间：2021-7-24
+更新时间：2021-7-25
 备注：高速并发抢京豆，专治偷助力。设置环境变量angryBeanPins为指定账号助力，默认不助力。环境变量angryBeanMode可选值priority(优先模式)、smart(智能模式)和speed(极速模式)，默认speed模式。默认推送通知，如要屏蔽通知需将环境变量enableAngryBeanNotify的值设为false。
 TG学习交流群：https://t.me/cdles
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryBean.js
@@ -76,7 +76,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      helps.sort((i, j) => {
           return i.address > j.address ? 1 : -1
      })
-     for (var k = 0; k < (mode == smart ? 6 : 1); k++) {
+     for (var k = 0; k < (mode == smart ? 50 : 1); k++) {
           for (let help of helps) {
                if (k != 0) {
                     if (help.success) break
@@ -145,12 +145,20 @@ async function open(help) {
           tool.timeout++
           ecpt = new Set(tool.helps, finished)
           diff = new Set(init.filter(hid => !ecpt.has(hid)))
-          if (diff.size == 0 || tool.helps.has(help.id)) {
-               if (diff.size != 0 && tool.timeout < 10) {
-                    tools.unshift(tool)
-               }
+          if (tool.timeout > maxTimes * 2) { //超时处理
                open(help)
                return
+          }
+          if (diff.size == 0) { //助力完成
+               open(help)
+               return
+          } else {
+               if (tool.helps.has(help.id)) { //阻止自己给自己助力
+                    tools.unshift(tool)
+                    open(help)
+                    return
+               }
+               //ok
           }
      } else {
           if (tool.helps.has(help.id)) {
@@ -169,10 +177,8 @@ async function open(help) {
      async function handle(data) {
           var helpToast = undefined
           if (data && data.data && data.data.helpToast) {
+               tool.helps.add(help.id)
                helpToast = data.data.helpToast
-          }
-          if (helpToast) {
-               console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
                     tool.times++
                     help.notYet--
@@ -189,8 +195,15 @@ async function open(help) {
                if (tool.times < maxTimes) {
                     tools.unshift(tool)
                }
+          } else {
+               if (data && data.errorMessage == "用户未登录") {
+                    helpToast = "用户未登录"
+               } else {
+                    tools.unshift(tool)
+                    helpToast = "异常"
+               }
           }
-          tool.helps.add(help.id)
+          console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
           if (!help.success) {
                await open(help)
           } else {
@@ -231,7 +244,8 @@ function requestApi(functionId, cookie, body = {}, time = 0) {
                timeout: 2500,
           }, (_, resp, data) => {
                if (data) {
-                    resolve(JSON.parse(data))
+                    data = JSON.parse(data)
+                    resolve(data)
                } else {
                     if (time == 5) {
                          resolve(0)
