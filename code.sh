@@ -591,7 +591,7 @@ sleep 5
 update_help
 
 ## 修改curtinlv京东超市兑换脚本的参数
-sed -i "21c cookies='$(echo $JD_COOKIE | sed "s/&/ /g; s/\S*\(pt_key=\S\+;\)\S*\(pt_pin=\S\+;\)\S*/\1\2/g;" | perl -pe "s| |&|g")'" /ql/scripts/acoolbook_scripts_jd_blueCoin.py
+##sed -i "21c cookies='$(echo $JD_COOKIE | sed "s/&/ /g; s/\S*\(pt_key=\S\+;\)\S*\(pt_pin=\S\+;\)\S*/\1\2/g;" | perl -pe "s| |&|g")'" /ql/scripts/acoolbook_scripts_jd_blueCoin.py
 
 ## 修改curtinlv入会领豆配置文件的参数
 
