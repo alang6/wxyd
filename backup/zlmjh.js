@@ -19,9 +19,9 @@ X = type=cron,cronexp="3 0/1 * * *",wake-system=1,timeout=3600,script-path=X.js
 X = type=cron,script-path=X.js, cronexpr="3 0/1 * * *", timeout=3600, enable=true
 */
 const $ = new Env('X');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
