@@ -25,7 +25,7 @@ const zooFaker = require('./utils/ZooFaker_Necklace').utils;
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html%22%20%7D`
-let message = '', joyToken = '';
+let message = '', joyToken = '', UA = '', uuid = '';
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000);
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', hasSend = false;
@@ -64,6 +64,8 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         }
         continue
       }
+      UA = `jdapp;iPhone;10.0.8;14.4.2;${randomString()};network/wifi;ADID/3F74A88A-71D3-404B-BBDF-8C0575E680EC;model/iPhone10,2;addressid/4091160336;appBuild/167741;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
+      uuid = UA.split(';') && UA.split(';')[4] || ''
       await jd_necklace();
     }
   }
@@ -121,11 +123,12 @@ async function doTask() {
     if (item.taskStage === 0) {
       console.log(`\n【${item.taskName}】 任务未领取,开始领取此任务`);
       const res = await necklace_startTask(item.id);
+      await $.wait(2000);
       if (res && res.rtn_code !== 0) continue
       console.log(`【${item.taskName}】 任务领取成功,开始完成此任务`);
-      await $.wait(1000);
+      await $.wait(2000);
       await reportTask(item);
-      await $.wait(1000);
+      await $.wait(2000);
     } else if (item.taskStage === 2) {
       console.log(`【${item.taskName}】 任务已做完,奖励未领取`);
     } else if (item.taskStage === 3) {
@@ -133,7 +136,7 @@ async function doTask() {
     } else if (item.taskStage === 1) {
       console.log(`\n【${item.taskName}】 任务已领取但未完成,开始完成此任务`);
       await reportTask(item);
-      await $.wait(1000);
+      await $.wait(2000);
     }
   }
 }
@@ -150,11 +153,15 @@ async function receiveBubbles() {
   }
 }
 async function sign() {
-  if ($.signInfo.todayCurrentSceneSignStatus === 1) {
-    console.log(`\n开始每日签到`)
-    await necklace_sign();
+  if ($.signInfo && $.signInfo.todayCurrentSceneSignStatus) {
+    if ($.signInfo.todayCurrentSceneSignStatus === 1) {
+      console.log(`\n开始每日签到`)
+      await necklace_sign();
+    } else {
+      console.log(`已签到\n`)
+    }
   } else {
-    console.log(`已签到\n`)
+    console.log(`未获取到签到信息\n`)
   }
 }
 async function reportTask(item = {}) {
@@ -190,7 +197,7 @@ function formatInt(num, prec = 1, ceil = false) {
 //每日签到福利
 function necklace_sign() {
   return new Promise(async resolve => {
-    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'sign', 'joyToken': joyToken });
+    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'sign', 'joyToken': joyToken, 'uuid': uuid });
     $.post(taskPostUrl("necklace_sign", body), async (err, resp, data) => {
       try {
         if (err) {
@@ -223,7 +230,7 @@ function necklace_sign() {
 //兑换无门槛红包
 function necklace_exchangeGift(scoreNums) {
   return new Promise(async resolve => {
-    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'exchangeGift', 'id': scoreNums, 'joyToken': joyToken });
+    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'exchangeGift', 'id': scoreNums, 'joyToken': joyToken, 'uuid': uuid });
     console.log(`\n使用${scoreNums}个点点券兑换${scoreNums / 1000}元无门槛红包`);
     $.post(taskPostUrl("necklace_exchangeGift", body), async (err, resp, data) => {
       try {
@@ -257,7 +264,7 @@ function necklace_exchangeGift(scoreNums) {
 //领取奖励
 function necklace_chargeScores(bubleId) {
   return new Promise(async resolve => {
-    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'chargeScores', 'id': bubleId, 'giftConfigId': $.giftConfigId, 'joyToken': joyToken });
+    const body = await zooFaker.getBody({ 'cookie': cookie, 'action': 'chargeScores', 'id': bubleId, 'giftConfigId': $.giftConfigId, 'joyToken': joyToken, 'uuid': uuid });
     $.post(taskPostUrl("necklace_chargeScores", body), async (err, resp, data) => {
       try {
         if (err) {
@@ -293,7 +300,7 @@ function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = 
       currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
     }
     if (functionId === 'necklace_startTask') {
-      body = await zooFaker.getBody({ 'id': taskId, 'cookie': cookie, 'action': 'startTask', 'joyToken': joyToken })
+      body = await zooFaker.getBody({ 'id': taskId, 'cookie': cookie, 'action': 'startTask', 'joyToken': joyToken, 'uuid': uuid })
     }
     if (itemId && functionId === 'necklace_reportTask') body['itemId'] = itemId;
     $.post(taskPostUrl(functionId, body), async (err, resp, data) => {
@@ -374,7 +381,7 @@ function necklace_homePage() {
                 $.exchangeGiftConfigs = data.data.result.exchangeGiftConfigs || [];
                 $.lastRequestTime = data.data.result.lastRequestTime;
                 $.bubbles = data.data.result.bubbles;
-                $.signInfo = data.data.result.signInfo;
+                $.signInfo = data.data.result.signInfo || {};
                 $.totalScore = data.data.result.totalScore;
                 const config = $.exchangeGiftConfigs.filter(item => item['giftType'] === 1);
                 if (config && config[0]) {
@@ -443,7 +450,7 @@ function getCcTaskList(functionId, body, type = '3') {
         "Origin": "https://h5.m.jd.com",
         "Cookie": cookie,
         "Referer": "https://h5.m.jd.com/babelDiy/Zeus/4ZK4ZpvoSreRB92RRo8bpJAQNoTq/index.html",
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        "User-Agent": UA,
       }
     }
     $.post((options), async (err, resp, data) => {
@@ -454,7 +461,7 @@ function getCcTaskList(functionId, body, type = '3') {
         } else {
           if (safeGet(data)) {
             if (type === '3' && functionId === 'reportCcTask') console.log(`点击首页领券图标(进入领券中心浏览15s)任务:${data}`)
-            if (type === '4' && functionId === 'reportCcTask') console.log(`点击“券后9.9”任务:${data}`)
+            if (type === '4' && functionId === 'reportSinkTask') console.log(`点击“券后9.9”任务:${data}`)
             data = JSON.parse(data);
             //异常情况：{"code":"600","echo":"signature verification failed"}
             if (data['code'] === '600' && !hasSend) {
@@ -482,7 +489,7 @@ function getCcTaskList(functionId, body, type = '3') {
 function taskPostUrl(function_id, body = {}) {
   const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   return {
-    url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&body=${escape(JSON.stringify(body))}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
+    url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&body=${escape(JSON.stringify(body))}&uuid=${uuid}`,
     // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
     headers: {
       "accept": "*/*",
@@ -495,9 +502,16 @@ function taskPostUrl(function_id, body = {}) {
       "sec-fetch-dest": "empty",
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-site",
-      "user-agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+      "user-agent": UA
     }
   }
+}
+function randomString() {
+  return Math.random().toString(16).slice(2, 10) +
+    Math.random().toString(16).slice(2, 10) +
+    Math.random().toString(16).slice(2, 10) +
+    Math.random().toString(16).slice(2, 10) +
+    Math.random().toString(16).slice(2, 10)
 }
 function getToken(timeout = 0){
   return new Promise((resolve) => {
@@ -507,7 +521,7 @@ function getToken(timeout = 0){
         headers : {
           'Content-Type' : `text/plain;charset=UTF-8`
         },
-        body : `content={"appname":"50082","whwswswws":"","jdkey":"-a45046de9fbf-0a4fc8ec9548a7f9","body":{"platform":"1"}}`
+        body : `content={"appname":"50082","whwswswws":"","jdkey":"","body":{"platform":"1"}}`
       }
       $.post(url, async (err, resp, data) => {
         try {
