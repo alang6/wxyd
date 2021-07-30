@@ -49,7 +49,7 @@ waterNum = 0, waterTimes = 0, shareCode = '', hzstr = '', msgStr = '';
                 url: 'https://bean.m.jd.com/bean/signIndex.action'
             });
             if ($.env.isNode && '' + isNotify + '' == 'true') {
-                await notify.sendNotify('第' + (i + 1) + '个账号cookie过期', '请访问\nhttps://bean.m.jd.com/bean/signIndex.action\n抓取cookie')
+                //await notify.sendNotify('第' + (i + 1) + '个账号cookie过期', '请访问\nhttps://bean.m.jd.com/bean/signIndex.action\n抓取cookie')
             }
             continue
         }
