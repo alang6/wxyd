@@ -28,7 +28,7 @@ waterNum = 0, waterTimes = 0, shareCode = '', hzstr = '', msgStr = '';
     }
     if (!$.env.isNode) isNotify = $.read('#jddj_isNotify');
     else notify = require('./sendNotify');
-    let accountNum = cookies.length > Math.sqrt(400) ? Math.sqrt(400) : cookies.length;
+    let accountNum = cookies.length > Math.sqrt(1600) ? Math.sqrt(1600) : cookies.length;
     for (let i = 0; i < accountNum; i++) {
         console.log('\r\n★★★★★开始执行第' + (i + 1) + '个账号,共' + cookies.length + '个账号★★★★★');
         thiscookie = cookies[i];
@@ -37,10 +37,20 @@ waterNum = 0, waterTimes = 0, shareCode = '', hzstr = '', msgStr = '';
         deviceid = _uuid();
         let option = taskLoginUrl(deviceid, thiscookie);
         await $.http.get(option).then(response => {
+                        hd = JSON.parse(JSON.stringify(response.headers));
+                let o2o_m_h5_sid = hd['set-cookie'][0]
+    o2o_m_h5_sid = o2o_m_h5_sid.substring(o2o_m_h5_sid.indexOf("=") + 1, o2o_m_h5_sid.indexOf(";"))
+    let PDJ_H5_JDPIN = hd['set-cookie'][1]
+    PDJ_H5_JDPIN = PDJ_H5_JDPIN.substring(PDJ_H5_JDPIN.indexOf("=") + 1, PDJ_H5_JDPIN.indexOf(";"))
+        let PDJ_H5_MOBILE = hd['set-cookie'][2]
+    PDJ_H5_MOBILE = PDJ_H5_MOBILE.substring(PDJ_H5_MOBILE.indexOf("=") + 1, PDJ_H5_MOBILE.indexOf(";"))
+        let PDJ_H5_PIN = hd['set-cookie'][3]
+    PDJ_H5_PIN = PDJ_H5_PIN.substring(PDJ_H5_PIN.indexOf("=") + 1, PDJ_H5_PIN.indexOf(";"))
+
+    cookie1 = "o2o_m_h5_sid=" + o2o_m_h5_sid + ";PDJ_H5_JDPIN=" + PDJ_H5_JDPIN + ";"+"PDJ_H5_MOBILE="+PDJ_H5_MOBILE+";"+"PDJ_H5_PIN="+PDJ_H5_PIN;
             let data = JSON.parse(response.body);
             if (data.code == 0) {
-                thiscookie = 'deviceid_pdj_jd=' + deviceid + '; PDJ_H5_PIN=' + data.result.PDJ_H5_PIN + '; o2o_m_h5_sid=' + data.result.o2o_m_h5_sid + ';';
-                sid = data.result.o2o_m_h5_sid
+     thiscookie = thiscookie + cookie1;
             } else thiscookie = 'aabbcc'
         });
         let userdata = await userinfo();
@@ -49,7 +59,7 @@ waterNum = 0, waterTimes = 0, shareCode = '', hzstr = '', msgStr = '';
                 url: 'https://bean.m.jd.com/bean/signIndex.action'
             });
             if ($.env.isNode && '' + isNotify + '' == 'true') {
-                //await notify.sendNotify('第' + (i + 1) + '个账号cookie过期', '请访问\nhttps://bean.m.jd.com/bean/signIndex.action\n抓取cookie')
+                await notify.sendNotify('第' + (i + 1) + '个账号cookie过期', '请访问\nhttps://bean.m.jd.com/bean/signIndex.action\n抓取cookie')
             }
             continue
         }
@@ -484,19 +494,15 @@ function urlTask(url, body) {
     return option
 }
 function taskLoginUrl(deviceid, thiscookie) {
+
     return {
-        url: 'https://daojia.jd.com/client?_jdRandom=' + (+new Date()) + '&functionId=xapp/loginByPtKeyNew&body=' + escape(JSON.stringify({
-            "fromSource": 5,
-            "businessChannel": 150,
-            "subChannel": "",
-            "regChannel": ""
-        })) + 'channel=ios&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&code=011UYn000apwmL1nWB000aGiv74UYn03&deviceId=' + deviceid + '&deviceToken=' + deviceid + '&deviceModel=appmodel',
+        url: 'https://daojia.jd.com/client?_jdrandom=' + (+new Date()) + '&_funid_=login/treasure&functionId=login/treasure&body={}&lat=&lng=&lat_pos=&lng_pos=&city_id=&channel=h5&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&isNeedDealError=false&traceId=' + deviceid + '&deviceToken=' + deviceid + '&deviceId=' + deviceid + '&_jdrandom=1627648796622&_funid_=login/treasure',
         headers: {
             "Cookie": 'deviceid_pdj_jd=' + deviceid + ';' + thiscookie + ';',
             "Host": "daojia.jd.com",
             "referer": "https://daojia.jd.com/taroh5/h5dist/",
             'Content-Type': 'application/x-www-form-urlencoded',
-            "User-Agent": 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148________appName=jdLocal&platform=iOS&commonParams={"sharePackageVersion":"2"}&djAppVersion=8.7.5&supportDJSHWK'
+            "User-Agent": 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)'
         }
     }
 }
