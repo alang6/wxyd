@@ -15,8 +15,8 @@ TG群:https://t.me/passerbyb2021
 //[Script]
 //cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit_collectWater.js,tag=京东到家果园水车收水滴
 //
+const $ = new API("jd_jddj_fruit_collectWater");
 
-const $ = new API("jddj_fruit_collectWater");
 let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 let cookies = [];
 let thiscookie = '', deviceid = '';
@@ -55,10 +55,20 @@ let cityid = Math.round(Math.random() * (1500 - 1000) + 1000);
         deviceid = _uuid();
         let option = taskLoginUrl(deviceid, thiscookie);
         await $.http.get(option).then(response => {
+                              hd = JSON.parse(JSON.stringify(response.headers));
+                let o2o_m_h5_sid = hd['set-cookie'][0]
+    o2o_m_h5_sid = o2o_m_h5_sid.substring(o2o_m_h5_sid.indexOf("=") + 1, o2o_m_h5_sid.indexOf(";"))
+    let PDJ_H5_JDPIN = hd['set-cookie'][1]
+    PDJ_H5_JDPIN = PDJ_H5_JDPIN.substring(PDJ_H5_JDPIN.indexOf("=") + 1, PDJ_H5_JDPIN.indexOf(";"))
+        let PDJ_H5_MOBILE = hd['set-cookie'][2]
+    PDJ_H5_MOBILE = PDJ_H5_MOBILE.substring(PDJ_H5_MOBILE.indexOf("=") + 1, PDJ_H5_MOBILE.indexOf(";"))
+        let PDJ_H5_PIN = hd['set-cookie'][3]
+    PDJ_H5_PIN = PDJ_H5_PIN.substring(PDJ_H5_PIN.indexOf("=") + 1, PDJ_H5_PIN.indexOf(";"))
+
+    cookie1 = "o2o_m_h5_sid=" + o2o_m_h5_sid + ";PDJ_H5_JDPIN=" + PDJ_H5_JDPIN + ";"+"PDJ_H5_MOBILE="+PDJ_H5_MOBILE+";"+"PDJ_H5_PIN="+PDJ_H5_PIN;
             let data = JSON.parse(response.body);
             if (data.code == 0) {
-                thiscookie = 'deviceid_pdj_jd=' + deviceid + '; PDJ_H5_PIN=' + data.result.PDJ_H5_PIN + '; o2o_m_h5_sid=' + data.result.o2o_m_h5_sid + ';';
-                sid = data.result.o2o_m_h5_sid;
+               thiscookie = thiscookie + cookie1;
             }
             else thiscookie = 'aabbcc';
         });
@@ -226,8 +236,9 @@ function urlTask(url, body) {
 }
 
 function taskLoginUrl(deviceid, thiscookie) {
+
     return {
-        url: 'https://daojia.jd.com/client?_jdRandom=' + (+new Date()) + '&functionId=xapp/loginByPtKeyNew&body=' + escape(JSON.stringify({ "fromSource": 5, "businessChannel": 150, "subChannel": "", "regChannel": "" })) + 'channel=ios&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&code=011UYn000apwmL1nWB000aGiv74UYn03&deviceId=' + deviceid + '&deviceToken=' + deviceid + '&deviceModel=appmodel',
+        url: 'https://daojia.jd.com/client?_jdrandom=' + (+new Date()) + '&_funid_=login/treasure&functionId=login/treasure&body={}&lat=&lng=&lat_pos=&lng_pos=&city_id=&channel=h5&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&isNeedDealError=false&traceId=' + deviceid + '&deviceToken=' + deviceid + '&deviceId=' + deviceid + '&_jdrandom=1627648796622&_funid_=login/treasure',
         headers: {
             "Cookie": 'deviceid_pdj_jd=' + deviceid + ';' + thiscookie + ';',
             "Host": "daojia.jd.com",
@@ -237,7 +248,6 @@ function taskLoginUrl(deviceid, thiscookie) {
         }
     }
 }
-
 function _uuid() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
