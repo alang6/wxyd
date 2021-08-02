@@ -347,7 +347,7 @@ if "TG_API_HOST" in os.environ:
         print("已获取并使用Env环境 TG_API_HOST")
 # 获取pushplus+ PUSH_PLUS_TOKEN
 if "PUSH_PLUS_TOKEN" in os.environ:
-    if len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
+    if len(os.environ["PUSH_PLUS_TOKEN"]) > 100000:
         PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
         print("已获取并使用Env环境 PUSH_PLUS_TOKEN")
 # 获取企业微信应用推送 QYWX_AM
