@@ -3,7 +3,7 @@
 0 8,12 * * *  jd_wish.js
 
 */
-const $ = new Env('柠檬众筹许愿池');
+const $ = new Env('众筹许愿池');
 const notify = $.isNode() ? require("./sendNotify") : "";
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 let timestamp = Date.now();
