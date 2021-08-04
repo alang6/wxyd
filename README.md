@@ -10,7 +10,7 @@
 ####2.配置文件--config
 ![img.png](backup/img1.png)
 ####拉到文件的最下面，在最下面粘贴以下代码
-```aidl
+```
 env_name=(
   FRUITSHARECODES
   PETSHARECODES
@@ -103,7 +103,7 @@ name_chinese=(
 
 ####4.配置文件--task_before.sh 修改为如下 直接覆盖！
 
-```aidl
+```
 #!/usr/bin/env bash
 
 ##helpStart
