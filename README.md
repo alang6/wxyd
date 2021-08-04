@@ -5,9 +5,9 @@
 
 #关于2.8 傻瓜智障版自动互助方法
 #如果你是小白，又不知道2。8如何互助，何不尝试一下我这个不用动脑系列互助配置
-####1.根据上述拉取仓库后,青龙添加如下任务
+# 1.根据上述拉取仓库后,青龙添加如下任务
 ![img](https://user-images.githubusercontent.com/28201662/128215495-7381af44-af86-4fea-81ef-1558c30b4cf9.png)
-####2.配置文件--config
+# 2.配置文件--config
 ![img1](https://user-images.githubusercontent.com/28201662/128215529-bf9d1f70-48dd-45fa-8434-1830d6d4e68e.png)
 ####拉到文件的最下面，在最下面粘贴以下代码
 ```
@@ -91,17 +91,17 @@ name_chinese=(
   东东健康社区
 )
 ```
-####3.粘贴后的xxxxx需要修改为你这些脚本js的仓库主的前缀
-#####比如种豆得豆得豆是这样的 ![img3](https://user-images.githubusercontent.com/28201662/128215559-e029028c-ea3f-449a-9556-94b91c6de730.png)
-#####task JDHelloWorld_jd_scripts_jd_plantBean.js	
-#####那上面 xxxxxxxx_jd_scripts_jd_plantBean
-#####改成 JDHelloWorld_jd_scripts_jd_plantBean
+# 3.粘贴后的xxxxx需要修改为你这些脚本js的仓库主的前缀
+##### 比如种豆得豆得豆是这样的 ![img3](https://user-images.githubusercontent.com/28201662/128215559-e029028c-ea3f-449a-9556-94b91c6de730.png)
+##### task JDHelloWorld_jd_scripts_jd_plantBean.js	
+##### 那上面 xxxxxxxx_jd_scripts_jd_plantBean
+##### 改成 JDHelloWorld_jd_scripts_jd_plantBean
 
 #####请举一反三
 
 
 
-####4.配置文件--task_before.sh 修改为如下 直接覆盖！
+# 4.配置文件--task_before.sh 修改为如下 直接覆盖！
 
 ```
 #!/usr/bin/env bash
@@ -138,7 +138,7 @@ combine_all() {
 combine_all
 ```
 
-####5.不动脑互助配置完成
+# 5.不动脑互助配置完成
 
 
-#如果有问题加入QQ群交流群554072417
+# 如果有问题加入QQ群交流群554072417
