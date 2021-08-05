@@ -68,7 +68,7 @@ message = ""
   if (process.env.guaopencard_addSku5 == "false") {
     console.log('如需加购请设置环境变量[guaopencard_addSku5]为"true"')
   }
-  //$.shareUuid = 'e3b48e5703544ec094b727e3e65b6672'
+  $.shareUuid = '72a7dcbac13e429abcb8ffb1ce078c36'
   $.activityId = '5a1b7bc1f22e4bc5b5686bb54749de2e'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
