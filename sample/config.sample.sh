@@ -1,6 +1,6 @@
-## Version: v4.2.4
-## Date: 2021-04-27
-## Update Content: 调整环境变量清单的获取来源。
+## Version: v4.4.1
+## Date: 2021-05-13
+## Update Content: EnableTaskFinishShell=true时，给task_finish.sh增加一个参考文件的链接。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -13,12 +13,6 @@ Cookie2=""
 ## js脚本每日签到提供3种通知方式，分别为：关闭通知，请填入0；简洁通知，请填入1；长通知，请填入2
 NotifyBeanSign=""
 
-## UN_SUBSCRIBES（选填，由脚本去export，无需在config.sh中export）
-goodPageSize=""   ## 商品取关数量
-shopPageSize=""   ## 店铺取关数量
-jdUnsubscribeStopGoods=""  ## 遇到此商品不再取关此商品以及它后面的商品，需去商品详情页长按拷贝商品信息
-jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后面的店铺，请从头开始输入店铺名称
-
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第一区域：jd_scripts脚本特有变量填写区域（需要shell转换的） ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 
@@ -27,7 +21,7 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 
 ## 请在本区域补充其他你需要用到变量，export 变量名="变量值"，或：export 变量名='变量值'
 ## 创建容器后在容器内运行 `cat /jd/scripts/githubAction.md` 可查看环境变量清单
-## 该链接中除JD_COOKIE、JD_BEAN_SIGN_STOP_NOTIFY、JD_BEAN_SIGN_NOTIFY_SIMPLE、UN_SUBSCRIBES这四个变量以及所有互助码类变量外，其他所有变量请在本区域自行补充
+## 该链接中除JD_COOKIE、JD_BEAN_SIGN_STOP_NOTIFY、JD_BEAN_SIGN_NOTIFY_SIMPLE这三个变量以及所有互助码类变量外，其他所有变量请在本区域自行补充
 
 
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第二区域：jd_scripts脚本特有变量填写区域（不需要shell转换的） ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -99,10 +93,17 @@ HelpType=""
 ## 当检测到scripts/githubAction.md文件发生变化时是否发送通知，该文件是jd_scripts所有环境变量的清单，填 true 则发送
 EnvChangeNotify=""
 
-## 是否添加你自己写的 shell 脚本（选填）
+## 是否在运行jup后再额外运行你自己写的 shell 脚本（选填）
 ## 如果你自己会写 shell 脚本，并且希望在每次 jup 这个脚本运行时，额外运行你的 shell 脚本，请赋值为 "true"
 ## 同时，请务必将你的脚本命名为 diy.sh (只能叫这个文件名)，放在 config 目录下
-EnableExtraShell=""
+EnableJupDiyShell=""
+
+## 是否在运行jtask/otask/mtask后再额外运行你自己写的 shell 脚本（选填）
+## 如果你自己会写 shell 脚本，并且希望在每次 jtask/otask/mtask 脚本后，额外运行你的 shell 脚本，请赋值为 "true"
+## 同时，请务必将你的脚本命名为 task_finish.sh (只能叫这个文件名)，放在 config 目录下
+## 注意：只在正常依次运行单个任务时才会额外运行 task_finish.sh，账号并发运行，或运行所有脚本时不会额外运行
+## 参考文件：https://gitee.com/evine/my_scripts/blob/master/task_finish.sh ，千万千万不要照搬
+EnableTaskFinishShell=""
 
 ## 启用其他开发者的仓库方式一（选填）：完整更新整个仓库，针对同一个仓库，方式一和方式二只能选择一种
 ## OwnRepoUrl：仓库地址清单，必须从1开始依次编号

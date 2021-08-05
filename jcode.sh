@@ -7,22 +7,10 @@ dir_root=$dir_shell
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 导入配置文件，检测平台，确定命令
+## 导入配置文件等
 import_config_and_check
 count_user_sum
-detect_termux
-
-## 生成pt_pin清单
-gen_pt_pin_array () {
-    local tmp1 tmp2 i pt_pin_temp
-    for ((user_num=1; user_num<=$user_sum; user_num++)); do
-        tmp1=Cookie$user_num
-        tmp2=${!tmp1}
-        i=$(($user_num - 1))
-        pt_pin_temp=$(echo $tmp2 | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
-        [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp
-    done
-}
+gen_pt_pin_array
 
 ## 导出互助码的通用程序，$1：去掉后缀的脚本名称，$2：config.sh中的后缀，$3：活动中文名称
 export_codes_sub () {
@@ -37,7 +25,7 @@ export_codes_sub () {
         i=0
         pt_pin_in_log=()
         code=()
-        pt_pin_and_code=$(ls -r *.log | xargs awk -v var="的$chinese_name好友互助码" 'BEGIN{FS="[（ ）】]+"; OFS="&"} $3~var {print $2,$4}')
+        pt_pin_and_code=$(ls -r *.log | xargs awk -F '（|）|】' -v var="的${chinese_name}好友互助码"  '$3~var {print $2"&"$4}')
         for line in $pt_pin_and_code; do
             pt_pin_in_log[i]=$(echo $line | awk -F "&" '{print $1}')
             code[i]=$(echo $line | awk -F "&" '{print $2}')
@@ -129,7 +117,6 @@ export_codes_sub () {
 
 ## 汇总输出
 export_all_codes () {
-    gen_pt_pin_array
     echo -e "\n# 从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n# 即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
     echo -n "# 你选择的互助码模板为："
     case $HelpType in

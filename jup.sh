@@ -3,8 +3,8 @@
 ## 文件路径、脚本网址
 dir_shell=$(dirname $(readlink -f "$0"))
 dir_root=$dir_shell
-url_shell=${JD_SHELL_URL:-https://github.com/gys619/jd_shell}
-url_scripts=${JD_SCRIPTS_URL:-git@jd_scripts_gitee:lxk0301/jd_scripts.git}
+url_shell=${JD_SHELL_URL:-https://ghproxy.com/https://gitee.com/jiulan0229/jd_shell.git}
+url_scripts=${JD_SCRIPTS_URL:-https://ghproxy.com/https://gitee.com/jiulan0229/jd_scripts.git}
 send_mark=$dir_shell/send_mark
 
 ## 导入通用变量与函数
@@ -15,7 +15,6 @@ detect_termux
 detect_macos
 link_shell
 define_cmd
-fix_config
 import_config_no_check jup
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
@@ -77,7 +76,7 @@ git_pull_scripts () {
     git fetch --all
     exit_status=$?
     git reset --hard
-    git pull --rebase=true
+    git pull
     cd $dir_current
 }
 
@@ -99,7 +98,7 @@ count_own_repo_sum () {
 gen_own_dir_and_path () {
     local scripts_path_num="-1"
     local repo_num tmp1 tmp2 tmp3 tmp4 tmp5 dir
-    
+
     if [[ $own_repo_sum -ge 1 ]]; then
         for ((i=1; i<=$own_repo_sum; i++)); do
             repo_num=$((i - 1))
@@ -123,7 +122,6 @@ gen_own_dir_and_path () {
             fi
         done
     fi
-
     if [[ ${#OwnRawFile[*]} -ge 1 ]]; then
         let scripts_path_num++
         array_own_scripts_path[$scripts_path_num]=$dir_raw  # 只有own脚本所在绝对路径附加了raw文件夹，其他数组均不附加
@@ -140,22 +138,22 @@ gen_list_task () {
 ## 生成 own 脚本的绝对路径清单
 gen_list_own () {
     local dir_current=$(pwd)
+    local own_scripts_tmp
     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
     for ((i=0; i<${#array_own_scripts_path[*]}; i++)); do
         cd ${array_own_scripts_path[i]}
         if [[ $(ls *.js 2>/dev/null) ]]; then
             for file in $(ls *.js); do
                 if [ -f $file ]; then
-                    perl -ne "{
-                        print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*\/?$file/
-                    }" $file | \
-                    perl -pe "{
-                        s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file.*|${array_own_scripts_path[i]}/$file|g
-                    }" | head -1 >> $list_own_scripts
+                    perl -ne "print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*\/?$file/" $file |
+                    perl -pe "s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file.*|${array_own_scripts_path[i]}/$file|g" |
+                    sort -u | head -1 >> $list_own_scripts
                 fi
             done
         fi
     done
+    own_scripts_tmp=$(sort -u $list_own_scripts)
+    echo "$own_scripts_tmp" > $list_own_scripts
     grep -E " $cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
 }
@@ -167,30 +165,32 @@ diff_cron () {
     local list_task="$2"
     local list_add="$3"
     local list_drop="$4"
-    if [ -s $list_task ]; then
-        grep -vwf $list_task $list_scripts > $list_add
+    if [ -s $list_task ] && [ -s $list_scripts ]; then
+        diff $list_scripts $list_task | grep "<" | awk '{print $2}' > $list_add
+        diff $list_scripts $list_task | grep ">" | awk '{print $2}' > $list_drop
     elif [ ! -s $list_task ] && [ -s $list_scripts ]; then
         cp -f $list_scripts $list_add
-    fi
-    if [ -s $list_scripts ]; then
-        grep -vwf $list_scripts $list_task > $list_drop
-    else
+    elif [ -s $list_task ] && [ ! -s $list_scripts ]; then
         cp -f $list_task $list_drop
     fi
 }
 
-## 更新docker-entrypoint，docker专用
-update_docker_entrypoint () {
-    if [[ $JD_DIR ]] && [[ $(diff $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh) ]]; then
-        cp -f $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-        chmod 777 /usr/local/bin/docker-entrypoint.sh
-    fi
-}
-
-## 更新bot.py，docker专用
-update_bot_py () {
-    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_config/bot.py ] && [[ $(diff $dir_root/bot/bot.py $dir_config/bot.py) ]]; then
-        cp -f $dir_root/bot/bot.py $dir_config/bot.py
+## 更新docker通知
+update_docker () {
+    if [[ $JD_DIR ]]; then
+        apk update -f &>/dev/null
+        if [[ $(readlink -f /usr/bin/diff) != /usr/bin/diff ]]; then
+            apk --no-cache add -f diffutils
+        fi
+        if [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
+            if ! type jq &>/dev/null; then
+                apk --no-cache add -f jq
+            fi
+            jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+            if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
+                notify_telegram "检测到BOT程序有更新，将在15秒内完成重启。\n\n友情提醒：如果当前有从BOT端发起的正在运行的任务，将被中断。\n\n本条消息由jup程序通过BOT发出。"
+            fi
+        fi
     fi
 }
 
@@ -272,9 +272,9 @@ del_cron () {
     local detail type2 detail2
     if [ -s $list_drop ] && [ -s $list_crontab_user ]; then
         detail=$(cat $list_drop)
-        [[ $type == jtask ]] && type2="jd_scipts脚本" 
+        [[ $type == jtask ]] && type2="jd_scipts脚本"
         [[ $type == otask ]] && type2="own脚本"
-        
+
         echo -e "开始尝试自动删除$type2的定时任务...\n"
         for cron in $detail; do
             local tmp=$(echo $cron | perl -pe "s|/|\.|g")
@@ -319,13 +319,13 @@ add_cron_own () {
         for file_full_path in $detail; do
             local file_name=$(echo $file_full_path | awk -F "/" '{print $NF}')
             if [ -f $file_full_path ]; then
-                perl -ne "{
-                    print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*$file_name/
-                }" $file_full_path | \
+                perl -ne "print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*$file_name/" $file_full_path |
                 perl -pe "{
-                    s|[^\d\*]*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file_name.*|\1 $cmd_otask $file_full_path|g;
-                    s|  | |g
-                }" | sort -u | head -1 >> $list_crontab_own_tmp
+                    s|[^\d\*]*(([\d\*]*[\*-\/,\d]*[\d\*] ){4,5}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file_name.*|\1 $cmd_otask $file_full_path|g;
+                    s|  | |g;
+                    s|^[^ ]+ (([^ ]+ ){5}$cmd_otask $file_full_path)|\1|;
+                }" |
+                sort -u | head -1 >> $list_crontab_own_tmp
             fi
         done
         crontab_tmp="$(cat $list_crontab_own_tmp)"
@@ -420,13 +420,12 @@ record_time () {
 jd_scripts目录：$dir_scripts
 
 own脚本目录：$dir_own
-
---------------------------------------------------------------
 "
 }
 
 ## 更新shell
 update_shell () {
+    echo -e "--------------------------------------------------------------\n"
     ## 更新jup任务的cron
     random_update_jup_cron
 
@@ -436,14 +435,16 @@ update_shell () {
         reset_romote_url $dir_scripts $url_scripts
     fi
 
+    ## 记录bot程序md5
+    jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+
     ## 更新shell
     git_pull_scripts $dir_shell
     if [[ $exit_status -eq 0 ]]; then
         echo -e "\n更新$dir_shell成功...\n"
         make_dir $dir_config
         cp -f $file_config_sample $dir_config/config.sample.sh
-        update_docker_entrypoint
-        update_bot_py
+        update_docker
         detect_config_version
     else
         echo -e "\n更新$dir_shell失败，请检查原因...\n"
@@ -453,6 +454,7 @@ update_shell () {
 
 ## 更新scripts
 update_scripts () {
+    echo -e "--------------------------------------------------------------\n"
     ## 更新前先存储package.json和githubAction.md的内容
     [ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
     [ -f $dir_scripts/githubAction.md ] && cp -f $dir_scripts/githubAction.md $dir_list_tmp/githubAction.md
@@ -471,7 +473,7 @@ update_scripts () {
         [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
         [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
         [[ "$scripts_depend_old" != "$scripts_depend_new" ]] && npm_install_2 $dir_scripts
-        
+
         ## diff cron
         gen_list_task
         diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
@@ -533,11 +535,13 @@ update_own () {
 
 ## 调用用户自定义的diy.sh
 source_diy () {
-    if [[ ${EnableExtraShell} == true ]]; then
+    if [[ ${EnableExtraShell} == true || ${EnableJupDiyShell} == true ]]; then
+        echo -e "--------------------------------------------------------------\n"
         if [ -f $file_diy_shell ]
         then
-            echo -e "--------------------------------------------------------------\n"
+            echo -e "开始执行$file_diy_shell...\n"
             . $file_diy_shell
+            echo -e "$file_diy_shell执行完毕...\n"
         else
             echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
         fi
@@ -547,8 +551,16 @@ source_diy () {
 ## 修复crontab
 fix_crontab () {
     if [[ $JD_DIR ]]; then
-        perl -i -pe "{s|( &>/dev/null)+||g; s|(.* ($cmd_jtask\|$cmd_otask\|$cmd_mtask\|$cmd_jcode\|$cmd_jcsv\|$cmd_jlog)( .*\|$))|\1 &>/dev/null|g}" $list_crontab_user
+        perl -i -pe "s|( ?&>/dev/null)+||g" $list_crontab_user
         update_crontab
+    fi
+}
+
+end_notify () {
+    if [[ $JD_DIR ]]; then
+        if [ -f /usr/local/bin/docker-entrypoint.sh ] && [ ! -d /etc/cont-init.d ] && [ ! -d /etc/services.d ]; then
+            notify "镜像更新通知" "Docker镜像的启动方式已从docker-entrypoint调整为s6-overlay，请更新镜像（无需更新配置文件），旧的镜像即将无法使用。" &>/dev/null
+        fi
     fi
 }
 
@@ -592,7 +604,9 @@ main () {
             usage
             ;;
     esac
+    fix_config
     fix_crontab
+    end_notify
     exit 0
 }
 
