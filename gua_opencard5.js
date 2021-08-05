@@ -19,7 +19,7 @@ guaopencard5="true"
 没有适配加购变量 所有是不加购
 ————————————————
 入口
-8.5-8.12 冰爽夏日 钜惠送好礼 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=5a1b7bc1f22e4bc5b5686bb54749de2e&shareUuid=27af3d2de34c43108e36bc9fd3e4baad)
+8.5-8.12 冰爽夏日 钜惠送好礼 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=5a1b7bc1f22e4bc5b5686bb54749de2e&shareUuid=f8a9135344754e259422b554a8877c29)
 
 ============Quantumultx===============
 [task_local]
@@ -71,7 +71,7 @@ message = ""
   if (!process.env.guaopencard_addSku5 || process.env.guaopencard_addSku5 == "false") {
     console.log('如需加购请设置环境变量[guaopencard_addSku5]为"true"')
   }
-  $.shareUuid = '27af3d2de34c43108e36bc9fd3e4baad'
+  $.shareUuid = 'f8a9135344754e259422b554a8877c29'
   $.activityId = '5a1b7bc1f22e4bc5b5686bb54749de2e'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
