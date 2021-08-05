@@ -1,7 +1,7 @@
 /*
 女装盲盒
-活动时间：2021-5-24至2021-6-22
-活动地址：https://anmp.jd.com/babelDiy/Zeus/sVeWYpCvtfH754mtAT13s8V1Yjt/index.html
+活动时间：2021-8-5至2021-8-31
+活动地址：https://anmp.jd.com/babelDiy/Zeus/3bMo2AgbRYYfZt83qHLZ3ruVtrtG/index.html
 活动入口：京东app-女装馆-赢京豆
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
@@ -9,11 +9,14 @@
 [task_local]
 #女装盲盒
 35 1,23 * * * jd_nzmh.js, tag=女装盲盒, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
 ================Loon==============
 [Script]
 cron "35 1,23 * * *" script-path=jd_nzmh.js,tag=女装盲盒
+
 ===============Surge=================
 女装盲盒 = type=cron,cronexp="35 1,23 * * *",wake-system=1,timeout=3600,script-path=jd_nzmh.js
+
 ============小火箭=========
 女装盲盒 = type=cron,script-path=jd_nzmh.js, cronexpr="35 1,23 * * *", timeout=3600, enable=true
  */
@@ -41,13 +44,9 @@ if ($.isNode()) {
     return;
   }
   console.log('女装盲盒\n' +
-      '活动时间：2021-5-24至2021-6-22\n' +
-      '活动地址：https://anmp.jd.com/babelDiy/Zeus/sVeWYpCvtfH754mtAT13s8V1Yjt/index.html\n' +
+      '活动时间：2021-8-5至2021-8-31\n' +
+      '活动地址：https://anmp.jd.com/babelDiy/Zeus/3bMo2AgbRYYfZt83qHLZ3ruVtrtG/index.html\n' +
       '活动入口：京东app-女装馆-赢京豆');
-  console.log('欧气盲盒\n' +
-      '活动时间：2021-5-31至2021-6-18\n' +
-      '活动地址：https://h5.m.jd.com/babelDiy/Zeus/2uLowGtHJQrFBRjawAfaEnntNWMK/index.html\n' +
-      '活动入口：京东app-京东图书-开盲盒');
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -69,9 +68,9 @@ if ($.isNode()) {
         continue
       }
       try {
-        await jdMh('https://h5.m.jd.com/babelDiy/Zeus/2uLowGtHJQrFBRjawAfaEnntNWMK/index.html')
-        await jdMh('https://anmp.jd.com/babelDiy/Zeus/2nxUXjyYLz5rNJ1HL472B3KWf71C/index.html')
-        await jdMh('https://anmp.jd.com/babelDiy/Zeus/9Z9HZWmQuwDnYKC1rzZTMpdn8ms/index.html')
+        await jdMh('https://anmp.jd.com/babelDiy/Zeus/3bMo2AgbRYYfZt83qHLZ3ruVtrtG/index.html')
+        // await jdMh('https://anmp.jd.com/babelDiy/Zeus/2nxUXjyYLz5rNJ1HL472B3KWf71C/index.html')
+        // await jdMh('https://anmp.jd.com/babelDiy/Zeus/9Z9HZWmQuwDnYKC1rzZTMpdn8ms/index.html')
       } catch (e) {
         $.logErr(e)
       }
