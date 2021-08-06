@@ -3,8 +3,8 @@
 ###### ql repo https:<span></span>//github.com/Tsukasa007/my_script.git "" "jdCookie|USER_AGENTS|sendNotify|backup" "" "master"
 
 
-# 关于2.8 傻瓜智障版自动互助方 
-##### 如果你是小白，又不知道2。8如何互助，何不尝试一下我这个不用动脑系列互助配置
+# 关于2.8 傻瓜智障版自动互助方法
+##### 如果你是小白，又不知道2.8如何互助，何不尝试一下我这个不用动脑系列互助配置
 # 1.根据上述拉取仓库后,青龙添加如下任务
 #### task /ql/repo/Tsukasa007_my_script_master/code_tsukasa.sh	
 ![image](https://user-images.githubusercontent.com/28201662/128467629-6f9dd427-d4f3-4ef3-a364-a6a9511402c2.png)
