@@ -163,8 +163,8 @@ class getJDCookie(object):
             return ck, nickname
         except Exception:
             context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
-            print(context)
-            return ck, False
+            test="nonnickname"
+            return ck, test
 
     def iscookie(self):
         """
