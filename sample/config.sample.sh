@@ -67,7 +67,7 @@ AutoDelCron="true"
 ## 是否自动增加 jd_scripts 项目中新的本地定时任务（选填）
 AutoAddCron="true"
 
-## 删除日志的时间（选填） 
+## 删除日志的时间（选填）
 ## 在运行删除旧的日志任务时，要删除多少天以前的日志，请输入正整数，不填则禁用删除日志的功能
 RmLogDaysAgo="7"
 
@@ -113,23 +113,25 @@ EnableTaskFinishShell=""
 ## OwnRepoUrl1="https://gitee.com/abc/jdtsa.git"
 ## OwnRepoUrl2="https://github.com/nedcd/jxddfsa.git"
 ## OwnRepoUrl3="git@github.com:eject/poex.git"
-## 
+##
 ## OwnRepoBranch1=""         # 代表第1个仓库 https://gitee.com/abc/jdtsa.git 使用 "默认" 分支
 ## OwnRepoBranch2="main"     # 代表第2个仓库 https://github.com/nedcd/jxddfsa.git 使用 "main" 分支
 ## OwnRepoBranch3="master"   # 代表第3个仓库 git@github.com:eject/poex.git 使用 "master" 分支
-## 
+##
 ## OwnRepoPath1=""                   # 代表第1个仓库https://gitee.com/abc/jdtsa.git，你想使用的脚本就在仓库根目录下。
 ## OwnRepoPath2="scripts/jd normal"  # 代表第2个仓库https://github.com/nedcd/jxddfsa.git，你想使用的脚本在仓库的 scripts/jd 和 normal文件夹下，必须输入相对路径
 ## OwnRepoPath3="'' cron"            # 代表第3个仓库git@github.com:eject/poex.git，你想使用的脚本在仓库的 根目录 和 cron 文件夹下，必须输入相对路径
 
-OwnRepoUrl1=""
-OwnRepoUrl2=""
 
-OwnRepoBranch1=""
-OwnRepoBranch2=""
 
-OwnRepoPath1=""
-OwnRepoPath2=""
+#OwnRepoUrl1="https://ghproxy.com/"
+OwnRepoUrl1="https://ghproxy.com/https://github.com/jiulan/platypus.git"
+
+OwnRepoBranch1="main"
+
+#OwnRepoPath1="normal rewrite i-chenzhe backup member"
+OwnRepoPath1="scripts"
+
 
 ## 启用其他开发者的仓库方式二（选填）：只下载想要的文件，针对同一个仓库，方式一和方式二只能选择一种。
 ## 请先确认你能正常下载该raw文件才列在下方，无论是github还是gitee，请只填入 raw 文件链接。
@@ -158,6 +160,36 @@ AutoDelOwnCron="true"
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第五区域：额外的环境变量填写区域 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 ## 请在以下补充你需要用到的额外的环境变量，形式：export 变量名="变量值"，或：export 变量名='变量值'
+## 想通过什么渠道收取通知，就填入对应渠道的值
+## 1. ServerChan，教程：http://sc.ftqq.com/3.version
+export PUSH_KEY=""
+
+## 2. BARK，教程（看BARK_PUSH和BARK_SOUND的说明）：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md#%E4%B8%8B%E6%96%B9%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84-secrets%E5%85%A8%E9%9B%86%E5%90%88
+export BARK_PUSH=""
+export BARK_SOUND=""
+
+## 3. Telegram，如需使用，TG_BOT_TOKEN和TG_USER_ID必须同时赋值，教程：https://gitee.com/lxk0301/jd_docker/blob/master/backUp/TG_PUSH.md
+export TG_BOT_TOKEN=""
+export TG_USER_ID=""
+
+## 4. 钉钉，教程（看DD_BOT_TOKEN和DD_BOT_SECRET部分）：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md#%E4%B8%8B%E6%96%B9%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84-secrets%E5%85%A8%E9%9B%86%E5%90%88
+export DD_BOT_TOKEN=""
+export DD_BOT_SECRET=""
+
+## 5. iGot聚合推送，支持多方式推送，填写iGot的推送key。教程：https://wahao.github.io/Bark-MP-helper/#/
+export IGOT_PUSH_KEY=""
+
+## 6. Push Plus，微信扫码登录后一对一推送或一对多推送，参考文档：http://www.pushplus.plus
+## 其中PUSH_PLUS_USER是一对多推送的“群组编码”（一对多推送下面->您的群组(如无则新建)->群组编码）注:(1、需订阅者扫描二维码 2、如果您是创建群组所属人，也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送)，只填PUSH_PLUS_TOKEN默认为一对一推送
+export PUSH_PLUS_TOKEN=""
+#export PUSH_PLUS_USER=""
+
+## 7. 企业微信机器人消息推送 webhook 后面的 key，文档：https://work.weixin.qq.com/api/doc/90000/90136/91770
+export QYWX_KEY=""
+
+## 8. 企业微信应用消息推送的值，文档：https://work.weixin.qq.com/api/doc/90000/90135/90236
+## 依次填上corpid的值,corpsecret的值,touser的值,agentid,media_id的值，注意用,号隔开，例如："wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat"
+export QYWX_AM=""
 
 
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第五区域：额外的环境变量填写区域 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
