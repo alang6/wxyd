@@ -71,6 +71,7 @@ message = ""
         });
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+          break;
         }
         continue
       }
@@ -328,7 +329,7 @@ function taskPostClientActionUrl(body,functionId) {
     url: `https://api.m.jd.com/client.action?${functionId?`functionId=${functionId}`:``}`,
     body: body,
     headers: {
-      'User-Agent':'jdltapp;iPhone;3.5.6;14.6;eac3e15e91fd380664fc7c788e8ab6a07805646d;network/4g;ADID/8F6CAEEA-5BF7-4F7E-86C3-A641C19CA832;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone13,2;addressid/1995295948;hasOCPay/0;appBuild/1070;supportBestPay/0;pv/41.26;apprpd/;ref/JDLTSubMainPageViewController;psq/2;ads/;psn/eac3e15e91fd380664fc7c788e8ab6a07805646d|112;jdv/0|kong|t_500509960_|jingfen|bb9c79e4c4174521873879a27a707da4|1625071927291|1625071930;adk/;app_device/IOS;pap/JA2020_3112531|3.5.6|IOS 14.6;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
+      'User-Agent':'jdltapp;android;3.2.0;11;7343836616365326-1656137353262393;network/wifi;model/M2012K11AC;addressid/3433656423;aid/748fac5bae175b29;oaid/6b5edfbf03dddfc0;osVer/30;appBuild/1456;psn/8O4ClMLj0yL2K4y0EDbvhIGOoK3tI/2b|250;psq/2;adk/;ads/;pap/JA2020_3112531|3.2.0|ANDROID 11;osv/11;pv/111.11;jdv/0|kong|t_2011602649_|jingfen|6dde5b9d4fc14330bcbc078843141fc4|1627863806033|1627863809;ref/HomeFragment;partner/android;apprpd/Home_Main;eufv/1;Mozilla/5.0 (Linux; Android 11; M2012K11AC Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045534 Mobile Safari/537.36',
       'Content-Type':'application/x-www-form-urlencoded',
       'Host':'api.m.jd.com',
       'Origin':'https://joypark.jd.com',
