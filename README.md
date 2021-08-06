@@ -7,7 +7,8 @@
 ##### 如果你是小白，又不知道2。8如何互助，何不尝试一下我这个不用动脑系列互助配置
 # 1.根据上述拉取仓库后,青龙添加如下任务
 #### task /ql/repo/Tsukasa007_my_script_master/code_tsukasa.sh	
-![img](https://user-images.githubusercontent.com/28201662/128215495-7381af44-af86-4fea-81ef-1558c30b4cf9.png)
+![image](https://user-images.githubusercontent.com/28201662/128467629-6f9dd427-d4f3-4ef3-a364-a6a9511402c2.png)
+
 # 2.配置文件--config
 ![img1](https://user-images.githubusercontent.com/28201662/128215529-bf9d1f70-48dd-45fa-8434-1830d6d4e68e.png)
 #### 拉到文件的最下面，在最下面粘贴以下代码
