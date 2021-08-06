@@ -1,4 +1,4 @@
-FROM nevinee/jd:v4
+FROM jiulan/jd:v4
 RUN apk add --no-cache -f \
         python3 \
         zlib-dev \
