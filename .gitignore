@@ -10,3 +10,4 @@
 /jbot/__pycache__/
 /jbot/bot/__pycache__/
 /*session*
+/docker/test.v4.Dockerfile
