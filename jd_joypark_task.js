@@ -244,9 +244,9 @@ function getJoyBaseInfo(taskId = '',inviteType = '',inviterPin = '') {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        $.log(`resolve start`)
+        //$.log(`resolve start`)
         resolve(data);
-        $.log(`resolve end`)
+        //$.log(`resolve end`)
       }
     })
   })
