@@ -651,15 +651,15 @@ def iscookie():
             u = 1
             for i in result:
                 r = re.compile(r"pt_pin=(.*?);")
-                rr = re.compile(r"pt_key=(.*?);")
+                #rr = re.compile(r"pt_key=(.*?);")
                 pinName = r.findall(i)
-                keyName = rr.findall(i)
+                #keyName = rr.findall(i)
                 pinName = unquote(pinName[0])
-                keyName = unquote(keyName[0])
+               # keyName = unquote(keyName[0])
                 # 获取账号名
-                #ck, nickname = self.getUserInfo(i, pinName, u)
-                ck =  f'pt_key={keyName};pt_pin={pinName};'
-                nickname = pinName
+                ck, nickname = self.getUserInfo(i, pinName, u)
+               # ck =  f'pt_key={keyName};pt_pin={pinName};'
+               # nickname = pinName
                 if nickname != False:
                     cookiesList.append(ck)
                     userNameList.append(nickname)
@@ -748,7 +748,8 @@ def getUserInfo(ck, pinName, userNum):
         context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
         message(context)
         send("【JD入会领豆】Cookie 已失效！", context)
-        return ck, False
+        test="nonnickname"
+        return ck, test
 
 # 设置Headers
 def setHeaders(cookie, intype):
