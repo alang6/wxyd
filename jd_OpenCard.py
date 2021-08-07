@@ -657,7 +657,7 @@ def iscookie():
                 pinName = unquote(pinName[0])
                # keyName = unquote(keyName[0])
                 # 获取账号名
-                ck, nickname = self.getUserInfo(i, pinName, u)
+                ck, nickname = getUserInfo(i, pinName, u)
                # ck =  f'pt_key={keyName};pt_pin={pinName};'
                # nickname = pinName
                 if nickname != False:
