@@ -181,10 +181,15 @@ class getJDCookie(object):
                 u = 1
                 for i in result:
                     r = re.compile(r"pt_pin=(.*?);")
+                    rr = re.compile(r"pt_key=(.*?);")
                     pinName = r.findall(i)
+                    keyName = rr.findall(i)
                     pinName = unquote(pinName[0])
+                    keyName = unquote(keyName[0])
                     # 获取账号名
-                    ck, nickname = self.getUserInfo(i, pinName, u)
+                    #ck, nickname = self.getUserInfo(i, pinName, u)
+                    ck =  f'pt_key={keyName};pt_pin={pinName};'
+                    nickname = pinName
                     if nickname != False:
                         cookiesList.append(ck)
                         userNameList.append(nickname)
