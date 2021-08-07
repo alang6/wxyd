@@ -62,7 +62,7 @@ message = ""
       } else {
         $.log(`${$.name} - ${$.UserName}  助力码: null`);
         $.invitePinTaskList.push('');
-        $.isLogin = false
+        //$.isLogin = false
       }
 
       if (!$.isLogin) {
