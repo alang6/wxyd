@@ -8,7 +8,7 @@ cron: 10 0,7 * * *
 Date: 2021/7/17 下午9:40
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-update 2021.7.24 14:30
+update 2021.8.8 12:30
 建议cron: 0 0,7,10 * * *  python3 jd_jxgc_tuan.py
 new Env('京喜工厂开团');
 '''
@@ -37,7 +37,7 @@ from hashlib import sha256, sha512, md5
 import hmac
 
 appId = 10001
-activeId = 'T_zZaWP6by9yA1wehxM4mg%3D%3D'
+activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
 
 countElectric = {}
 def userAgent():
@@ -163,8 +163,8 @@ class getJDCookie(object):
             return ck, nickname
         except Exception:
             context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
-            test="nonnickname"
-            return ck, test
+            print(context)
+            return ck, False
 
     def iscookie(self):
         """
@@ -181,15 +181,10 @@ class getJDCookie(object):
                 u = 1
                 for i in result:
                     r = re.compile(r"pt_pin=(.*?);")
-                   # rr = re.compile(r"pt_key=(.*?);")
                     pinName = r.findall(i)
-                   # keyName = rr.findall(i)
                     pinName = unquote(pinName[0])
-                   # keyName = unquote(keyName[0])
                     # 获取账号名
                     ck, nickname = self.getUserInfo(i, pinName, u)
-                   # ck =  f'pt_key={keyName};pt_pin={pinName};'
-                    #nickname = pinName
                     if nickname != False:
                         cookiesList.append(ck)
                         userNameList.append(nickname)
@@ -248,7 +243,7 @@ def getactiveId():
         "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Mobile Safari/537.36"
     }
     result = requests.get(url, headers, timeout=30).text
-    r = re.compile(r'activeId=(T_.*?),')
+    r = re.compile(r'activeId=(Xj2_.*?),')
     r = r.findall(result)
     if len(r) > 0:
         activeId = r[0]
