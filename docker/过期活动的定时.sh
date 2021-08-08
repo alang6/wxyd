@@ -51,7 +51,4 @@
 # 618动物联萌收金币(已结束)
 #0-59/30 * * * * node /scripts/jd_zooCollect.js >> /scripts/logs/jd_zooCollect.log 2>&1
 
-# 超级直播间红包雨(活动时间不定期，出现异常提示请忽略。红包雨期间会正常)
-#1,31 0-23/1 * * * node /scripts/jd_live_redrain.js >> /scripts/logs/jd_live_redrain.log 2>&1
-
 
