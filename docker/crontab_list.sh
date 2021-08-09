@@ -20,9 +20,6 @@
 # 发财大赢家之翻翻乐 .8.15结束
 20,40 * * 7-8 * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 
-# 超级粉丝互动 活动时间：7.31结束
-1 8 1-31 7 * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
-
 # 星系牧场 #wen
 1 */2 * * * node /scripts/jd_qqxing.js >> /scripts/logs/jd_qqxing.log 2>&1
 
