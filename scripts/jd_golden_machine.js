@@ -33,7 +33,7 @@ $.authorCode = '';
     if(res.length > 0){
         $.authorCode = getRandomArrayElements(res,1)[0];
     }
-    for (let i = 10; i < cookiesArr.length; i++) {
+    for (let i = 0; i < cookiesArr.length; i++) {
         await getUA();
         $.index = i + 1;
         $.cookie = cookiesArr[i];
@@ -85,14 +85,13 @@ async function main() {
         console.log(`去参团: ${$.authorCode}`)
         await takePostRequest('join_team');
     }else{
-        console.log(`已参团`);
+        console.log(`已参团`)
     }
     $.needVoteList = $.homeInfo.hard_list;
     await doVote();
     $.needVoteList = $.homeInfo.soft_list;
     await doVote();
 
-    await takeGetRequest('team_info');
 }
 
 async function doVote(){
@@ -120,9 +119,6 @@ function compare(property){
 }
 async function takeGetRequest(type){
     let  url= `https://xinrui1-isv.isvjcloud.com/gapi/${type}`;
-    if(type === 'team_info'){
-        url = `https://xinrui1-isv.isvjcloud.com/gapi/team_info?type=1`;
-    }
     let myRequest = getGetRequest(url);
     return new Promise(async resolve => {
         $.get(myRequest, (err, resp, data) => {
@@ -200,11 +196,6 @@ function dealReturn(type, data) {
             }
             break;
         case 'join_team':
-            if(data){
-                console.log(JSON.stringify(data));
-            }
-            break;
-        case 'team_info':
             if(data){
                 console.log(JSON.stringify(data));
             }
