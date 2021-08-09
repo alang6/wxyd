@@ -21,7 +21,7 @@ var tools= []
         cookie = cookiesArr[i]
         if(kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])!=-1){
             var data = await requestApi('h5launch',cookie);
-            switch (data?.data?.result.status) {
+            switch (data?.data?.result?.status) {
                 case 1://火爆
                     continue;
                 case 2://已经发起过
@@ -50,9 +50,7 @@ var tools= []
     for(let help of helps){
         open(help)
     }
-    while (tools.length) {
-        await $.wait(10000)
-    }
+    await $.wait(60000)
 })()  .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
   })
@@ -69,10 +67,10 @@ function open(help){
     }).then(function(data){
         desc = data?.data?.result?.statusDesc
         if (desc && desc.indexOf("助力已满") != -1) {
-            tools.unshift(help)
+            tools.unshift(tool)
             help.success=true
         } else if (!data) {
-            tools.unshift(help)
+            tools.unshift(tool)
         }
         console.log(`${tool.id}->${help.id}`, desc)   
         open(help)         
