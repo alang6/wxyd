@@ -148,76 +148,76 @@ async function doGetReward() {
   message += `【本期成长值】${roundList[2].growth}\n`;
 }
 async function doCultureBean() {
-  await plantBeanIndex();
-  if ($.plantBeanIndexResult && $.plantBeanIndexResult.code === '0') {
-    const plantBeanRound = $.plantBeanIndexResult.data.roundList[2]
-    if (plantBeanRound.roundState === '2') {
-      //收取营养液
-      if (plantBeanRound.bubbleInfos && plantBeanRound.bubbleInfos.length) console.log(`开始收取营养液`)
-      for (let bubbleInfo of plantBeanRound.bubbleInfos) {
-        console.log(`收取-${bubbleInfo.name}-的营养液`)
-        await cultureBean(plantBeanRound.roundId, bubbleInfo.nutrientsType)
-        console.log(`收取营养液结果:${JSON.stringify($.cultureBeanRes)}`)
-      }
+    await plantBeanIndex();
+    if ($.plantBeanIndexResult && $.plantBeanIndexResult.code === '0') {
+        const plantBeanRound = $.plantBeanIndexResult.data.roundList[2]
+        if (plantBeanRound.roundState === '2') {
+            //收取营养液
+            if (plantBeanRound.bubbleInfos && plantBeanRound.bubbleInfos.length) console.log(`开始收取营养液`)
+            for (let bubbleInfo of plantBeanRound.bubbleInfos) {
+                console.log(`收取-${bubbleInfo.name}-的营养液`)
+                await cultureBean(plantBeanRound.roundId, bubbleInfo.nutrientsType)
+                console.log(`收取营养液结果:${JSON.stringify($.cultureBeanRes)}`)
+            }
+        }
+    } else {
+        console.log(`plantBeanIndexResult:${JSON.stringify($.plantBeanIndexResult)}`)
     }
-  } else {
-    console.log(`plantBeanIndexResult:${JSON.stringify($.plantBeanIndexResult)}`)
-  }
 }
 async function stealFriendWater() {
-  await stealFriendList();
-  if ($.stealFriendList && $.stealFriendList.code === '0') {
-    if ($.stealFriendList.data && $.stealFriendList.data.tips) {
-      console.log('\n\n今日偷取好友营养液已达上限\n\n');
-      return
-    }
-    if ($.stealFriendList.data && $.stealFriendList.data.friendInfoList && $.stealFriendList.data.friendInfoList.length > 0) {
-      let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000);
-      for (let item of $.stealFriendList.data.friendInfoList) {
-        if (new Date(nowTimes).getHours() === 20) {
-          if (item.nutrCount >= 2) {
-            // console.log(`可以偷的好友的信息::${JSON.stringify(item)}`);
-            console.log(`可以偷的好友的信息paradiseUuid::${JSON.stringify(item.paradiseUuid)}`);
-            await collectUserNutr(item.paradiseUuid);
-            console.log(`偷取好友营养液情况:${JSON.stringify($.stealFriendRes)}`)
-            if ($.stealFriendRes && $.stealFriendRes.code === '0') {
-              console.log(`偷取好友营养液成功`)
-            }
-          }
-        } else {
-          if (item.nutrCount >= 3) {
-            // console.log(`可以偷的好友的信息::${JSON.stringify(item)}`);
-            console.log(`可以偷的好友的信息paradiseUuid::${JSON.stringify(item.paradiseUuid)}`);
-            await collectUserNutr(item.paradiseUuid);
-            console.log(`偷取好友营养液情况:${JSON.stringify($.stealFriendRes)}`)
-            if ($.stealFriendRes && $.stealFriendRes.code === '0') {
-              console.log(`偷取好友营养液成功`)
-            }
-          }
+    await stealFriendList();
+    if ($.stealFriendList && $.stealFriendList.code === '0') {
+        if ($.stealFriendList.data && $.stealFriendList.data.tips) {
+            console.log('\n\n今日偷取好友营养液已达上限\n\n');
+            return
         }
-      }
+        if ($.stealFriendList.data && $.stealFriendList.data.friendInfoList && $.stealFriendList.data.friendInfoList.length > 0) {
+            let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000);
+            for (let item of $.stealFriendList.data.friendInfoList) {
+                if (new Date(nowTimes).getHours() === 20) {
+                    if (item.nutrCount >= 2) {
+                        // console.log(`可以偷的好友的信息::${JSON.stringify(item)}`);
+                        console.log(`可以偷的好友的信息paradiseUuid::${JSON.stringify(item.paradiseUuid)}`);
+                        await collectUserNutr(item.paradiseUuid);
+                        console.log(`偷取好友营养液情况:${JSON.stringify($.stealFriendRes)}`)
+                        if ($.stealFriendRes && $.stealFriendRes.code === '0') {
+                            console.log(`偷取好友营养液成功`)
+                        }
+                    }
+                } else {
+                    if (item.nutrCount >= 3) {
+                        // console.log(`可以偷的好友的信息::${JSON.stringify(item)}`);
+                        console.log(`可以偷的好友的信息paradiseUuid::${JSON.stringify(item.paradiseUuid)}`);
+                        await collectUserNutr(item.paradiseUuid);
+                        console.log(`偷取好友营养液情况:${JSON.stringify($.stealFriendRes)}`)
+                        if ($.stealFriendRes && $.stealFriendRes.code === '0') {
+                            console.log(`偷取好友营养液成功`)
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        console.log(`$.stealFriendList 异常： ${JSON.stringify($.stealFriendList)}`)
     }
-  } else {
-    console.log(`$.stealFriendList 异常： ${JSON.stringify($.stealFriendList)}`)
-  }
 }
 async function doEgg() {
-  await egg();
-  if ($.plantEggLotteryRes && $.plantEggLotteryRes.code === '0') {
-    if ($.plantEggLotteryRes.data.restLotteryNum > 0) {
-      const eggL = new Array($.plantEggLotteryRes.data.restLotteryNum).fill('');
-      console.log(`目前共有${eggL.length}次扭蛋的机会`)
-      for (let i = 0; i < eggL.length; i++) {
-        console.log(`开始第${i + 1}次扭蛋`);
-        await plantEggDoLottery();
-        console.log(`天天扭蛋成功：${JSON.stringify($.plantEggDoLotteryResult)}`);
-      }
+    await egg();
+    if ($.plantEggLotteryRes && $.plantEggLotteryRes.code === '0') {
+        if ($.plantEggLotteryRes.data.restLotteryNum > 0) {
+            const eggL = new Array($.plantEggLotteryRes.data.restLotteryNum).fill('');
+            console.log(`目前共有${eggL.length}次扭蛋的机会`)
+            for (let i = 0; i < eggL.length; i++) {
+                console.log(`开始第${i + 1}次扭蛋`);
+                await plantEggDoLottery();
+                console.log(`天天扭蛋成功：${JSON.stringify($.plantEggDoLotteryResult)}`);
+            }
+        } else {
+            console.log('暂无扭蛋机会')
+        }
     } else {
-      console.log('暂无扭蛋机会')
+        console.log('查询天天扭蛋的机会失败' + JSON.stringify($.plantEggLotteryRes))
     }
-  } else {
-    console.log('查询天天扭蛋的机会失败' + JSON.stringify($.plantEggLotteryRes))
-  }
 }
 async function doTask() {
   if ($.taskList && $.taskList.length > 0) {
