@@ -10,7 +10,7 @@ boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.bo
 [Script]
 cron "3 0 7-20 8 *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_ryhxj.js,tag= 荣耀焕新季
 ===============Surge=================
-荣耀焕新季 = type=cron,cronexp="0 1 * * *",wake-system=1,timeout=3600,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_ryhxj.js
+荣耀焕新季 = type=cron,cronexp="3 0 7-20 8 *",wake-system=1,timeout=3600,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_ryhxj.js
 ============小火箭=========
 荣耀焕新季 = type=cron,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_ryhxj.js, cronexpr="0 1 * * *", timeout=3600, enable=true
 */
@@ -115,7 +115,7 @@ async function doTask(){
         if(logs)$.log(data)
         if(result.code == 0){
            console.log("\n"+result.data.bizMsg+"\n")
-   await $.wait(4000)
+   await $.wait(6000)
         }else{
            $.log(result.data.bizMsg+"\n")
         }
