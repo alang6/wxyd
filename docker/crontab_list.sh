@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 金机奖投票
+35 1,7 8-20 8 * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
+
 # 京东手机狂欢城 助力
 0 0,6 9-28 8 * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
 
