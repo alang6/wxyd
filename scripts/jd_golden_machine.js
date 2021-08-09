@@ -58,7 +58,7 @@ $.authorCode = '';
 async function main() {
     $.token = ``;
     await getToken();
-    if($.token === ``){
+    if($.token === `` || !$.token){
         console.log(`获取token失败`);return;
     }
     console.log(`token:${$.token}`);
