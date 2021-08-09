@@ -134,11 +134,11 @@ async function JD818() {
     //await doBrandTask();//做品牌手机任务
     //await doBrowseshopTask();//逛好货街，做任务
     // await doHelp();
-    await myRank();//领取往期排名奖励
+    //await myRank();//领取往期排名奖励
     //await getListRank();
    // await getListIntegral();
     //await getListJbean();
-    //await check();//查询抽奖记录(未兑换的，发送提醒通知);
+    await check();//查询抽奖记录(未兑换的，发送提醒通知);
     await showMsg()
   } catch (e) {
     $.logErr(e)
@@ -655,7 +655,7 @@ function getListIntegral() {
             message += `累计获得积分：${$.integralCount}\n`;
             console.log(`开始抽奖，当前积分可抽奖${parseInt($.integralCount / 50)}次\n`);
             for (let i = 0; i < parseInt($.integralCount / 50); i ++) {
-              await lottery();
+              //await lottery();
               await $.wait(500);
             }
           } else {
