@@ -1,5 +1,8 @@
 ####################过期活动的定时####################
 
+# 沃尔玛畅玩88(7.15-8.8)
+0 0,12,18 * 7-8 * node /scripts/jd_walmart.js >> /scripts/logs/jd_walmart.log 2>&1
+
 # 超级粉丝互动 活动时间：7.31结束
 1 8 1-31 7 * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
 
