@@ -80,15 +80,15 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
 
 async function JD818() {
   try {
-    await indexInfo();//获取任务
+    //await indexInfo();//获取任务
     await supportList();//助力情况
     await getHelp();//获取邀请码
     if ($.blockAccount) return
-    await indexInfo(true);//获取任务
-    await doHotProducttask();//做热销产品任务
-    await doBrandTask();//做品牌手机任务
-    await doBrowseshopTask();//逛好货街，做任务
-    await doHelp();
+    //await indexInfo(true);//获取任务
+    //await doHotProducttask();//做热销产品任务
+    //await doBrandTask();//做品牌手机任务
+    //await doBrowseshopTask();//逛好货街，做任务
+    //await doHelp();
     await myRank();//领取往期排名奖励
     await getListRank();
     await getListIntegral();
@@ -733,7 +733,7 @@ function getListIntegral() {
             message += `累计获得积分：${$.integralCount}\n`;
             console.log(`开始抽奖，当前积分可抽奖${parseInt($.integralCount / 50)}次\n`);
             for (let i = 0; i < parseInt($.integralCount / 50); i++) {
-              await lottery();
+              //await lottery();
               await $.wait(500);
             }
           } else {
