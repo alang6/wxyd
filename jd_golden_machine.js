@@ -1,7 +1,7 @@
 /**
  *  活动路径  手机馆---》IQOO大牌日---〉左下角金机馆
  *  33 4,7 8-20 8 *
- *  脚本会加入脚本内置的团
+ *  第一个账号参加作者内置的团，其他账号参加第一个账号的团
  */
 const $ = new Env('金机奖投票');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -19,12 +19,13 @@ $.authorizationInfo = {};
 $.joinTeamLsit = [];
 $.inviteList = [];
 $.authorCode = '';
+let res = [];
 !(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    let res = [];
+
     /*try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/goldPhone.json');}catch (e) {}
     if(!res){
         try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/goldPhone.json');}catch (e) {}
@@ -87,6 +88,9 @@ async function main() {
     }else{
         console.log(`已参团`);
     }
+    if($.index === 1){
+        $.authorCode = $.useInfo.code
+    }
     $.needVoteList = $.homeInfo.hard_list;
     await doVote();
     $.needVoteList = $.homeInfo.soft_list;
@@ -94,40 +98,40 @@ async function main() {
     $.teamInfo = {}
     $.type = 1;
     await takeGetRequest('team_info');
+    console.log(`自己队伍分数：${$.teamInfo.team_vote_total}`);
     await $.wait(2000);
     if(Number($.teamInfo.my_vote_total) > 0){
-        if($.teamInfo.draw_total_first === 0){
+        if($.teamInfo.draw_total_first === 0 && $.teamInfo.team_vote_total >= 80){
             console.log(`去抽奖1`);
             $.draw_type = 1;
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
-        if($.teamInfo.draw_total_second === 0){
+        if($.teamInfo.draw_total_second === 0 && $.teamInfo.team_vote_total >= 180){
             console.log(`去抽奖2`);
             $.draw_type = 2;
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
     }
-
     $.type = 2;
     await takeGetRequest('team_info');
+    console.log(`加入队伍分数：${$.teamInfo.team_vote_total}`);
     await $.wait(2000);
     if(Number($.teamInfo.my_vote_total) > 0){
-        if($.teamInfo.draw_total_first === 0){
+        if($.teamInfo.draw_total_first === 0 && $.teamInfo.team_vote_total >= 80){
             console.log(`去抽奖3`);
             $.draw_type = 1;
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
-        if($.teamInfo.draw_total_second === 0){
+        if($.teamInfo.draw_total_second === 0 && $.teamInfo.team_vote_total >= 180){
             console.log(`去抽奖4`);
             $.draw_type = 2;
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
     }
-
     await takeGetRequest('my_prize');
 }
 
