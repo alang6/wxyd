@@ -91,7 +91,12 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       if ((cookiesArr && cookiesArr.length >= 1) && $.canHelp) {
         console.log(`\n先自己账号内部相互邀请助力\n`);
+        j = 0
         for (let item of $.temp) {
+          j+=1
+          if (j > 15) {
+            break;
+          }
           console.log(`\n${$.UserName} 去参助力 ${item}`);
           const helpRes = await toHelp(item.trim());
           if (helpRes.data.status === 5) {
