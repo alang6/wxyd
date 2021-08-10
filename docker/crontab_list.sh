@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 粉丝互动 
+21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
+
 # 金机奖投票
 35 1,7 8-20 8 * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
 
