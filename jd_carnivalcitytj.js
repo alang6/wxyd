@@ -29,7 +29,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
     if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n咱江湖再见`);
     return
   }
-  await updateShareCodesCDN();
+  //await updateShareCodesCDN();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -58,7 +58,12 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       if ((cookiesArr && cookiesArr.length >= 1) && $.canHelp) {
         console.log(`\n先自己账号内部相互邀请助力\n`);
+        j = 0
         for (let item of $.temp) {
+          j += 1
+          if (j > 15) {
+            break;
+          }
           console.log(`\n${$.UserName} 去参助力 ${item}`);
           const helpRes = await toHelp(item.trim());
           if (helpRes.data.status === 5) {
@@ -84,11 +89,11 @@ async function JD818() {
     await supportList();//助力情况
     await getHelp();//获取邀请码
     if ($.blockAccount) return
-    //await indexInfo(true);//获取任务
+    // await indexInfo(true);//获取任务
     //await doHotProducttask();//做热销产品任务
     //await doBrandTask();//做品牌手机任务
     //await doBrowseshopTask();//逛好货街，做任务
-    //await doHelp();
+    await doHelp();
     await myRank();//领取往期排名奖励
     await getListRank();
     await getListIntegral();
@@ -433,7 +438,7 @@ function check() {
             }
           }
           if (str.length > 0) {
-            const url = 'https://api.m.jd.com/api/#/integralDetail';
+            const url = 'https://carnivalcity.m.jd.com/#/integralDetail';
             $.msg($.name, '', `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${str}\n兑换地址：${url}`, {'open-url': url});
             if ($.isNode()) await notify.sendNotify($.name, `京东账号 ${$.index} ${$.nickName || $.UserName}\n积分抽奖获得：${str}\n兑换地址：${url}`);
           }
@@ -672,7 +677,7 @@ function getHelp() {
             $.temp.push(data.data.shareId);
           } else {
             console.log(`获取邀请码失败：${JSON.stringify(data)}`);
-            if (data.code === 1002 || data.code === 1001) $.blockAccount = true;
+            if (data.code === 1002) $.blockAccount = true;
           }
         }
       } catch (e) {
@@ -845,9 +850,9 @@ function taskPostUrl(a, t = {}) {
 
 async function showMsg() {
   if ($.beans) {
-    allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n本次运行获得：${$.beans}京豆\n${message}活动地址：https://carnivalcity.m.jd.com/#/home?shareId=ddd345fb-57bb-4ece-968b-7bf4c92be7cc&t=${Date.now()}${$.index !== cookiesArr.length ? '\n\n' : ''}`
+    allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n本次运行获得：${$.beans}京豆\n${message}活动地址：https://carnivalcity.m.jd.com${$.index !== cookiesArr.length ? '\n\n' : ''}`
   }
-  $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${message}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://carnivalcity.m.jd.com/#/home?shareId=ddd345fb-57bb-4ece-968b-7bf4c92be7cc&t=" + Date.now()});
+  $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${message}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://carnivalcity.m.jd.com"});
 }
 
 function getUA() {
