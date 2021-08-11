@@ -747,49 +747,45 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
 
 });
 
- /**
- * 更新已经存在的人的cookie & 自动添加新用户
+/**
+ * 更新已经存在的Cookie & 自动添加新Cookie
  * */
 app.post('/updateCookie', function (request, response) {
   if (request.body.cookie) {
-    const cookie = request.body.cookie;
+    let { cookie, userMsg, cookieTime } = request.body; //cookie和扫描时填写的备注信息以及扫描时cookie时间戳
+    if (!cookieTime) cookieTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;
+    const cookieExpireTime = cookieTime + 60 * 60 * 1000 * 24 * 25;//cookie过期的时间戳(这里以25天计算)
     const content = getFileContentByName(confFile);
     const lines = content.split('\n');
     const pt_pin = cookie.match(/pt_pin=.+?;/)[0];
     let updateFlag = false;
     let lastIndex = 0;
     let maxCookieCount = 0;
+    let msg = `${userMsg ? ' #用户备注：' + userMsg + ' 过期时间(25天)：' + new Date(cookieExpireTime).toLocaleDateString() : ' #过期时间(25天)：' + new Date(cookieExpireTime).toLocaleDateString()}`;
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       if (line.startsWith('Cookie')) {
         maxCookieCount = line.split('=')[0].split('Cookie')[1];
         lastIndex = i;
         if (
-          line.match(/pt_pin=.+?;/) &&
-          line.match(/pt_pin=.+?;/)[0] == pt_pin
+            line.match(/pt_pin=.+?;/) &&
+            line.match(/pt_pin=.+?;/)[0] == pt_pin
         ) {
           const head = line.split('=')[0];
-          const newLine = [head, '=', '"', cookie, '"'].join('');
+          const newLine = [head, '=', '"', cookie, '"', `${msg}`].join('');
           lines[i] = newLine;
           updateFlag = true;
         }
       }
     }
     if (!updateFlag) {
-      const newLine = [
-        'Cookie',
-        Number(maxCookieCount) + 1,
-        '=',
-        '"',
-        cookie,
-        '"',
-      ].join('');
+      const newLine = `Cookie${Number(maxCookieCount) + 1}="${cookie}" ${msg}`;
       lines.splice(lastIndex + 1, 0, newLine);
     }
     saveNewConf('config.sh', lines.join('\n'));
     response.send({
       err: 0,
-      msg: updateFlag ? '更新成功' : '没有此CK，已自动添加',
+      msg: updateFlag ? `Cookie更新成功，当前京东账号数量：${Number(maxCookieCount)}个` : `Cookie新增成功，当前京东账号数量：${Number(maxCookieCount) + 1}个`,
     });
   } else {
     response.send({ msg: '参数错误', err: -1 });
