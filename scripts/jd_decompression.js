@@ -1,3 +1,7 @@
+/**
+ * 活动到24号。一天可以跑2次
+ * cron  5 6,8 12-24 8 *
+ */
 const $ = new Env('热血心跳,狂解压');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
