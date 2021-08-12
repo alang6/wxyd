@@ -109,7 +109,7 @@ async function main() {
         await takePostRequest('draw');
         await $.wait(1500);
     }
-  
+
 }
 
 async function doTask(){
