@@ -10,17 +10,17 @@
 ============Quantumultx===============
 [task_local]
 #京东极速版
-0 7 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
+21 3,8 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "0 7 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_speed_sign.js,tag=京东极速版
+cron "21 3,8 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_speed_sign.js,tag=京东极速版
 
 ===============Surge=================
-京东极速版 = type=cron,cronexp="0 7 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_speed_sign.js
+京东极速版 = type=cron,cronexp="21 3,8 * * *",wake-system=1,timeout=33600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_speed_sign.js
 
 ============小火箭=========
-京东极速版 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_speed_sign.js, cronexpr="0 7 * * *", timeout=3600, enable=true
+京东极速版 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_speed_sign.js, cronexpr="21 3,8 * * *", timeout=33600, enable=true
 */
 
 const $ = new Env('京东极速版');
@@ -117,7 +117,7 @@ async function signInit() {
     $.get(taskUrl('speedSignInit', {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
-      "inviterId":"DWHKncW5H28%3D"
+      "inviterId":"sMWcZ7TKaEBlU//QsVkItw=="
     }), async (err, resp, data) => {
       try {
         if (err) {
@@ -653,7 +653,6 @@ function shootRichManDice() {
     })
   })
 }
-
 var __encode ='jsjiami.com',_a={}, _0xb483=["\x5F\x64\x65\x63\x6F\x64\x65","\x68\x74\x74\x70\x3A\x2F\x2F\x77\x77\x77\x2E\x73\x6F\x6A\x73\x6F\x6E\x2E\x63\x6F\x6D\x2F\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x6F\x62\x66\x75\x73\x63\x61\x74\x6F\x72\x2E\x68\x74\x6D\x6C"];(function(_0xd642x1){_0xd642x1[_0xb483[0]]= _0xb483[1]})(_a);var __Oxb24bc=["\x6C\x69\x74\x65\x2D\x61\x6E\x64\x72\x6F\x69\x64\x26","\x73\x74\x72\x69\x6E\x67\x69\x66\x79","\x26\x61\x6E\x64\x72\x6F\x69\x64\x26\x33\x2E\x31\x2E\x30\x26","\x26","\x26\x38\x34\x36\x63\x34\x63\x33\x32\x64\x61\x65\x39\x31\x30\x65\x66","\x31\x32\x61\x65\x61\x36\x35\x38\x66\x37\x36\x65\x34\x35\x33\x66\x61\x66\x38\x30\x33\x64\x31\x35\x63\x34\x30\x61\x37\x32\x65\x30","\x69\x73\x4E\x6F\x64\x65","\x63\x72\x79\x70\x74\x6F\x2D\x6A\x73","","\x61\x70\x69\x3F\x66\x75\x6E\x63\x74\x69\x6F\x6E\x49\x64\x3D","\x26\x62\x6F\x64\x79\x3D","\x26\x61\x70\x70\x69\x64\x3D\x6C\x69\x74\x65\x2D\x61\x6E\x64\x72\x6F\x69\x64\x26\x63\x6C\x69\x65\x6E\x74\x3D\x61\x6E\x64\x72\x6F\x69\x64\x26\x75\x75\x69\x64\x3D\x38\x34\x36\x63\x34\x63\x33\x32\x64\x61\x65\x39\x31\x30\x65\x66\x26\x63\x6C\x69\x65\x6E\x74\x56\x65\x72\x73\x69\x6F\x6E\x3D\x33\x2E\x31\x2E\x30\x26\x74\x3D","\x26\x73\x69\x67\x6E\x3D","\x61\x70\x69\x2E\x6D\x2E\x6A\x64\x2E\x63\x6F\x6D","\x2A\x2F\x2A","\x52\x4E","\x4A\x44\x4D\x6F\x62\x69\x6C\x65\x4C\x69\x74\x65\x2F\x33\x2E\x31\x2E\x30\x20\x28\x69\x50\x61\x64\x3B\x20\x69\x4F\x53\x20\x31\x34\x2E\x34\x3B\x20\x53\x63\x61\x6C\x65\x2F\x32\x2E\x30\x30\x29","\x7A\x68\x2D\x48\x61\x6E\x73\x2D\x43\x4E\x3B\x71\x3D\x31\x2C\x20\x6A\x61\x2D\x43\x4E\x3B\x71\x3D\x30\x2E\x39","\x75\x6E\x64\x65\x66\x69\x6E\x65\x64","\x6C\x6F\x67","\u5220\u9664","\u7248\u672C\u53F7\uFF0C\x6A\x73\u4F1A\u5B9A","\u671F\u5F39\u7A97\uFF0C","\u8FD8\u8BF7\u652F\u6301\u6211\u4EEC\u7684\u5DE5\u4F5C","\x6A\x73\x6A\x69\x61","\x6D\x69\x2E\x63\x6F\x6D"];function taskUrl(_0x7683x2,_0x7683x3= {}){let _0x7683x4=+ new Date();let _0x7683x5=`${__Oxb24bc[0x0]}${JSON[__Oxb24bc[0x1]](_0x7683x3)}${__Oxb24bc[0x2]}${_0x7683x2}${__Oxb24bc[0x3]}${_0x7683x4}${__Oxb24bc[0x4]}`;let _0x7683x6=__Oxb24bc[0x5];const _0x7683x7=$[__Oxb24bc[0x6]]()?require(__Oxb24bc[0x7]):CryptoJS;let _0x7683x8=_0x7683x7.HmacSHA256(_0x7683x5,_0x7683x6).toString();return {url:`${__Oxb24bc[0x8]}${JD_API_HOST}${__Oxb24bc[0x9]}${_0x7683x2}${__Oxb24bc[0xa]}${escape(JSON[__Oxb24bc[0x1]](_0x7683x3))}${__Oxb24bc[0xb]}${_0x7683x4}${__Oxb24bc[0xc]}${_0x7683x8}${__Oxb24bc[0x8]}`,headers:{'\x48\x6F\x73\x74':__Oxb24bc[0xd],'\x61\x63\x63\x65\x70\x74':__Oxb24bc[0xe],'\x6B\x65\x72\x6E\x65\x6C\x70\x6C\x61\x74\x66\x6F\x72\x6D':__Oxb24bc[0xf],'\x75\x73\x65\x72\x2D\x61\x67\x65\x6E\x74':__Oxb24bc[0x10],'\x61\x63\x63\x65\x70\x74\x2D\x6C\x61\x6E\x67\x75\x61\x67\x65':__Oxb24bc[0x11],'\x43\x6F\x6F\x6B\x69\x65':cookie}}}(function(_0x7683x9,_0x7683xa,_0x7683xb,_0x7683xc,_0x7683xd,_0x7683xe){_0x7683xe= __Oxb24bc[0x12];_0x7683xc= function(_0x7683xf){if( typeof alert!== _0x7683xe){alert(_0x7683xf)};if( typeof console!== _0x7683xe){console[__Oxb24bc[0x13]](_0x7683xf)}};_0x7683xb= function(_0x7683x7,_0x7683x9){return _0x7683x7+ _0x7683x9};_0x7683xd= _0x7683xb(__Oxb24bc[0x14],_0x7683xb(_0x7683xb(__Oxb24bc[0x15],__Oxb24bc[0x16]),__Oxb24bc[0x17]));try{_0x7683x9= __encode;if(!( typeof _0x7683x9!== _0x7683xe&& _0x7683x9=== _0x7683xb(__Oxb24bc[0x18],__Oxb24bc[0x19]))){_0x7683xc(_0x7683xd)}}catch(e){_0x7683xc(_0x7683xd)}})({})
 
 function taskGetUrl(function_id, body) {
@@ -673,124 +672,61 @@ function taskGetUrl(function_id, body) {
   }
 }
 
-/*
- *Progcessed By JSDec in 0.03s
- *JSDec - JSDec.js.org
- */
 function invite2() {
-    var _0x27cc4a = {
-        'KDLqe': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'XIuhb': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'hMbtL': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'yMkrt': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'XkXQo': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'MhLVF': 'sMWcZ7TKaEBlU%2F%2FQsVkItw%3D%3D',
-        'sEtGZ': 'X6BLtZKxx%2BikABCqvZBocS5IRQlTziSkNyv4iNJVUFI%3D',
-        'RyvrN': 'X6BLtZKxx%2BikABCqvZBocS5IRQlTziSkNyv4iNJVUFI%3D',
-        'IcOHN': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'rLrVC': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'oaBjl': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'olKQO': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'XkvAa': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'dFQTB': function(_0x50b8e9, _0x5ad457) {
-            return _0x50b8e9 * _0x5ad457;
-        },
-        'jNEPV': 'api.m.jd.com',
-        'ySNis': 'application/json, text/plain, */*',
-        'eItqc': 'application/x-www-form-urlencoded',
-        'YUEUo': 'https://assignment.jd.com',
-        'VWEwT': 'zh-cn',
-        'LgnRu': function(_0x4c4f87, _0x4a3170) {
-            return _0x4c4f87(_0x4a3170);
-        },
-        'qdLNj': './JS_USER_AGENTS',
-        'cnIji': 'JSUA',
-        'JkwCg': '\'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
-        'WDrwJ': function(_0x18c181, _0x54f752) {
-            return _0x18c181(_0x54f752);
-        },
-        'cVNZg': function(_0x55643f, _0x34129a) {
-            return _0x55643f(_0x34129a);
-        },
-        'hHKXL': 'https://api.m.jd.com/'
-    };
-    let _0x2c6178 = +new Date();
-    let _0xf67a42 = [_0x27cc4a['KDLqe'], _0x27cc4a['XIuhb'], _0x27cc4a['hMbtL'], _0x27cc4a['yMkrt'], _0x27cc4a['XkXQo'], _0x27cc4a['MhLVF'], _0x27cc4a['sEtGZ'], _0x27cc4a['RyvrN'], _0x27cc4a['IcOHN'], _0x27cc4a['rLrVC'], _0x27cc4a['oaBjl'], _0x27cc4a['olKQO'], _0x27cc4a['XkvAa']][Math['floor'](_0x27cc4a['dFQTB'](Math['random'](), 0xd))];
-    let _0x2aeb55 = {
-        'Host': _0x27cc4a['jNEPV'],
-        'accept': _0x27cc4a['ySNis'],
-        'content-type': _0x27cc4a['eItqc'],
-        'origin': _0x27cc4a['YUEUo'],
-        'accept-language': _0x27cc4a['VWEwT'],
-        'user-agent': $['isNode']() ? process['env']['JS_USER_AGENT'] ? process['env']['JS_USER_AGENT'] : _0x27cc4a['LgnRu'](require, _0x27cc4a['qdLNj'])['USER_AGENT'] : $['getdata'](_0x27cc4a['cnIji']) ? $['getdata'](_0x27cc4a['cnIji']) : _0x27cc4a['JkwCg'],
-        'referer': 'https://assignment.jd.com/?inviterId=' + _0x27cc4a['WDrwJ'](encodeURIComponent, _0xf67a42),
-        'Cookie': cookie
-    };
-    let _0x594b10 = 'functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"' + _0x27cc4a['cVNZg'](encodeURIComponent, _0xf67a42) + '","type":1}}&appid=market-task-h5&uuid=&_t=' + _0x2c6178;
-    var _0x44d05b = {
-        'url': _0x27cc4a['hHKXL'],
-        'headers': _0x2aeb55,
-        'body': _0x594b10
-    };
-    $['post'](_0x44d05b, (_0x46da53, _0x3abdba, _0x113b96) => {});
+  let t = +new Date()
+  let inviterId = [
+    "sMWcZ7TKaEBlU//QsVkItw==",
+  ][Math.floor((Math.random() * 1))]
+  let headers = {
+    'Host': 'api.m.jd.com',
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/x-www-form-urlencoded',
+    'origin': 'https://assignment.jd.com',
+    'accept-language': 'zh-cn',
+    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+    'referer': `https://assignment.jd.com/?inviterId=${encodeURIComponent(inviterId)}`,
+    'Cookie': cookie
+  }
+
+  let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${t}`;
+
+  var options = {
+    url: 'https://api.m.jd.com/',
+    headers: headers,
+    body: dataString
+  }
+  $.post(options, (err, resp, data) => {
+    // console.log(data)
+  })
 }
 
 function invite() {
-    var _0x4528be = {
-        'lfKXW': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'EJaoM': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'CXUmd': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'HvtbA': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'aWuxU': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'cmhRz': 'sMWcZ7TKaEBlU%2F%2FQsVkItw%3D%3D',
-        'tymAQ': 'sMWcZ7TKaEBlU%2F%2FQsVkItw%3D%3D',
-        'HpgmM': 'X6BLtZKxx%2BikABCqvZBocS5IRQlTziSkNyv4iNJVUFI%3D',
-        'SRkzU': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'BdqMO': 'sMWcZ7TKaEBlU//QsVkItw==',
-        'klfuI': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'Ssdoy': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'rHlzU': 'X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=',
-        'WcVSW': function(_0x4c5c2a, _0x17e256) {
-            return _0x4c5c2a * _0x17e256;
-        },
-        'dwJLC': 'api.m.jd.com',
-        'ypina': 'application/json, text/plain, */*',
-        'NSOgc': 'application/x-www-form-urlencoded',
-        'bJReN': 'https://invite-reward.jd.com',
-        'ZxeLt': 'zh-cn',
-        'JUbKP': function(_0x1b6c70, _0x582396) {
-            return _0x1b6c70(_0x582396);
-        },
-        'ICuEj': './JS_USER_AGENTS',
-        'eCLeH': 'JSUA',
-        'eFYya': '\'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
-        'HNjrY': 'https://invite-reward.jd.com/',
-        'QqROC': function(_0x310d41, _0x4d6a91) {
-            return _0x310d41(_0x4d6a91);
-        }
-    };
-    let _0x297a32 = +new Date();
-    let _0x7c13a = [_0x4528be['lfKXW'], _0x4528be['EJaoM'], _0x4528be['CXUmd'], _0x4528be['HvtbA'], _0x4528be['aWuxU'], _0x4528be['cmhRz'], _0x4528be['tymAQ'], _0x4528be['HpgmM'], _0x4528be['SRkzU'], _0x4528be['BdqMO'], _0x4528be['klfuI'], _0x4528be['Ssdoy'], _0x4528be['rHlzU']][Math['floor'](_0x4528be['WcVSW'](Math['random'](), 0xd))];
-    var _0x586b3f = {
-        'Host': _0x4528be['dwJLC'],
-        'accept': _0x4528be['ypina'],
-        'content-type': _0x4528be['NSOgc'],
-        'origin': _0x4528be['bJReN'],
-        'accept-language': _0x4528be['ZxeLt'],
-        'user-agent': $['isNode']() ? process['env']['JS_USER_AGENT'] ? process['env']['JS_USER_AGENT'] : _0x4528be['JUbKP'](require, _0x4528be['ICuEj'])['USER_AGENT'] : $['getdata'](_0x4528be['eCLeH']) ? $['getdata'](_0x4528be['eCLeH']) : _0x4528be['eFYya'],
-        'referer': _0x4528be['HNjrY'],
-        'Cookie': cookie
-    };
-    var _0xded7d1 = 'functionId=InviteFriendApiService&body={"method":"attendInviteActivity","data":{"inviterPin":"' + _0x4528be['QqROC'](encodeURIComponent, _0x7c13a) + '","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidIf3dd8121b7sdmiBLGdxRR46OlWyh62kFAZogTJFnYqqRkwgr63%2BdGmMlcv7EQJ5v0HBic81xHXzXLwKM6fh3i963zIa7Ym2v5ehnwo2B7uDN92Q0&aid=&client=ios&clientVersion=14.4&networkType=wifi&fp=-1&appid=market-task-h5&_t=' + _0x297a32;
-    var _0x4e6c1c = {
-        'url': 'https://api.m.jd.com/?t=' + +new Date(),
-        'headers': _0x586b3f,
-        'body': _0xded7d1
-    };
-    $['post'](_0x4e6c1c, (_0x4129d7, _0x3dcfb6, _0x48a4c9) => {});
-};
-_0xod3 = 'jsjiami.com.v6'
+  let t = +new Date()
+  let inviterId = [
+    "sMWcZ7TKaEBlU//QsVkItw==",
+    "X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI="
+  ][Math.floor((Math.random() * 2))]
+  var headers = {
+    'Host': 'api.m.jd.com',
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/x-www-form-urlencoded',
+    'origin': 'https://invite-reward.jd.com',
+    'accept-language': 'zh-cn',
+    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+    'referer': 'https://invite-reward.jd.com/',
+    'Cookie': cookie
+  };
 
+  var dataString = `functionId=InviteFriendChangeAssertsService&body={"method":"attendInviteActivity","data":{"inviterPin":"${encodeURIComponent(inviterId)}","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidI9b2981202fsec83iRW1nTsOVzCocWda3YHPN471AY78%2FQBhYbXeWtdg%2F3TCtVTMrE1JjM8Sqt8f2TqF1Z5P%2FRPGlzA1dERP0Z5bLWdq5N5B2VbBO&aid=&client=ios&clientVersion=14.4.2&networkType=wifi&fp=-1&uuid=ab048084b47df24880613326feffdf7eee471488&osVersion=14.4.2&d_brand=iPhone&d_model=iPhone10,2&agent=-1&pageClickKey=-1&platform=3&lang=zh_CN&appid=market-task-h5&_t=${t}`;
+  var options = {
+    url: `https://api.m.jd.com/?t=${t}`,
+    headers: headers,
+    body: dataString
+  };
+  $.post(options, (err, resp, data) => {
+    // console.log(data)
+  })
+}
 
 function TotalBean() {
   return new Promise(async resolve => {
