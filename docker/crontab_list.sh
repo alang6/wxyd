@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 送豆得豆
+16 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
+
 # 粉丝互动 
 21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
 
