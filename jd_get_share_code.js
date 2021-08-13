@@ -40,7 +40,7 @@ if ($.isNode()) {
       await arrayCode();
     }
   }
-  await exportCode();
+ // await exportCode();
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
