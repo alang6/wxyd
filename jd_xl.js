@@ -98,8 +98,8 @@ async function xl() {
                     $.log("你还不是会员,不能抽奖")
                 }
                 if (helpAuthor) {
-                    $.log("去帮助作者")
-                    await task('xiaolong/collectcard/helpFriend', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&shareUuid=${encodeURIComponent($.authorCode)}`)
+                //  $.log("去帮助作者")
+                //  await task('xiaolong/collectcard/helpFriend', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&shareUuid=${encodeURIComponent($.authorCode)}`)
                 }
             } else {
                 $.log("无法顺利的获取到活动信息。")
