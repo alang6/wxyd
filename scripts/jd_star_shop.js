@@ -29,7 +29,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    console.log(`\n哎，没水，就是跑着玩\n`);
+    console.log(`\n哎，这活动没水，就是跑着玩\n`);
     console.log(`==================开始执行明星小店任务==================`);
     for (let i = 0; i < cookiesArr.length; i++) {
         $.index = i + 1;
