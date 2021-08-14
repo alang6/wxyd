@@ -64,19 +64,19 @@ if (!$.isNode()) {
       const num = str.match(/账号\d+结束/g);
       $.number = num.length;
 
-      $.shareCodeObj.Bean = exportShareCodes(str, "种豆得豆】");
       $.shareCodeObj.Fruit = exportShareCodes(str, "京东农场】");
       $.shareCodeObj.Pet = exportShareCodes(str, "京东萌宠】");
+      $.shareCodeObj.Bean = exportShareCodes(str, "种豆得豆】");
+      $.shareCodeObj.JdFactory = exportShareCodes(str, "东东工厂】");
       $.shareCodeObj.DreamFactory = exportShareCodes(str, "京喜工厂】");
       $.shareCodeObj.Jxnc = exportShareCodes(str, "京喜农场】");
-      $.shareCodeObj.JdFactory = exportShareCodes(str, "东东工厂】");
-      $.shareCodeObj.Joy = exportShareCodes(str, "crazyJoy】");
-      $.shareCodeObj.Cash = exportShareCodes(str, "签到领现金】");
       $.shareCodeObj.Sgmh = exportShareCodes(str, "闪购盲盒】");
- //     $.shareCodeObj.Jdcfd = exportShareCodes(str, "财富岛】");
-      $.shareCodeObj.Kdsd = exportShareCodes(str, "口袋书店】");
-      $.shareCodeObj.Jdzz = exportShareCodes(str, "的京东赚赚好友互助码】");
-      $.shareCodeObj.Global = exportShareCodes(str, "环球挑战赛】");
+      $.shareCodeObj.Cfd = exportShareCodes(str, "财富岛】");
+      $.shareCodeObj.Cash = exportShareCodes(str, "签到领现金】");
+      $.shareCodeObj.Bookshop = exportShareCodes(str, "口袋书店】");
+      $.shareCodeObj.Health = exportShareCodes(str, "健康社区】");
+      //$.shareCodeObj.Joy = exportShareCodes(str, "crazyJoy】");
+      //$.shareCodeObj.Jdzz = exportShareCodes(str, "京东赚赚好友互助码】");
 
       showFormatMsg($.shareCodeObj);
       exportLog();
@@ -173,17 +173,10 @@ function showFormatMsg(shareCodeObj) {
     );
 
   console.log(`\n========== 【格式化互助码for docker】 ==========`);
-  shareCodeObj.Bean &&
-    formatShareCodesForLinux(
-      shareCodeObj.Bean,
-      "\n# ################################# 定义种豆得豆互助（选填） ###################################",
-      "MyBean",
-      "ForOtherBean"
-    );
   shareCodeObj.Fruit &&
     formatShareCodesForLinux(
       shareCodeObj.Fruit,
-      "################################## 定义东东农场互助（选填） ##################################",
+      "\n# ################################## 定义东东农场互助（选填） ##################################",
       "MyFruit",
       "ForOtherFruit"
     );
@@ -194,20 +187,12 @@ function showFormatMsg(shareCodeObj) {
       "MyPet",
       "ForOtherPet"
     );
-  shareCodeObj.Jxnc &&
+  shareCodeObj.Bean &&
     formatShareCodesForLinux(
-      shareCodeObj.Jxnc,
-      "################################## 定义京喜农场互助（选填） ##################################",
-      "MyJxnc",
-      "ForOtherJxnc",
-      "'"
-    );
-  shareCodeObj.DreamFactory &&
-    formatShareCodesForLinux(
-      shareCodeObj.DreamFactory,
-      "################################## 定义京喜工厂互助（选填） ##################################",
-      "MyDreamFactory",
-      "ForOtherDreamFactory"
+      shareCodeObj.Bean,
+      "################################# 定义种豆得豆互助（选填） ###################################",
+      "MyBean",
+      "ForOtherBean"
     );
   shareCodeObj.JdFactory &&
     formatShareCodesForLinux(
@@ -216,19 +201,20 @@ function showFormatMsg(shareCodeObj) {
       "MyJdFactory",
       "ForOtherJdFactory"
     );
-  shareCodeObj.Cash &&
+  shareCodeObj.DreamFactory &&
     formatShareCodesForLinux(
-      shareCodeObj.Cash,
-      "################################## 定义签到领现金互助（选填） ##################################",
-      "MyCash",
-      "ForOtherCash"
+      shareCodeObj.DreamFactory,
+      "################################## 定义京喜工厂互助（选填） ##################################",
+      "MyDreamFactory",
+      "ForOtherDreamFactory"
     );
-  shareCodeObj.Joy &&
+  shareCodeObj.Jxnc &&
     formatShareCodesForLinux(
-      shareCodeObj.Joy,
-      "################################## 定义crazy joy互助（选填） ##################################",
-      "MyJoy",
-      "ForOtherJoy"
+      shareCodeObj.Jxnc,
+      "################################## 定义京喜农场互助（选填） ##################################",
+      "MyJxnc",
+      "ForOtherJxnc",
+      "'"
     );
   shareCodeObj.Sgmh &&
     formatShareCodesForLinux(
@@ -237,27 +223,49 @@ function showFormatMsg(shareCodeObj) {
       "MySgmh",
       "ForOtherSgmh"
     );
-//  shareCodeObj.Jdcfd &&
-//    formatShareCodesForLinux(
-//      shareCodeObj.Jdcfd,
-//      "################################## 定义京喜财富岛互助（选填） ##################################",
-//      "MyJdcfd",
-//      "ForOtherJdcfd"
-//    );
-  // shareCodeObj.Global &&
-  //   formatShareCodesForLinux(
-  //     shareCodeObj.Global,
-  //     "################################## 定义环球挑战赛互助（选填） ##################################",
-  //     "MyGlobal",
-  //     "ForOtherGlobal"
-  //   );
-  shareCodeObj.Jdzz &&
+  shareCodeObj.Cfd &&
+     formatShareCodesForLinux(
+       shareCodeObj.Cfd,
+       "################################## 定义京喜财富岛互助（选填） ##################################",
+       "MyCfd",
+       "ForOtherCfd"
+     );
+
+  shareCodeObj.Cash &&
     formatShareCodesForLinux(
-      shareCodeObj.Jdzz,
-      "################################## 定义京东赚赚互助（选填） ##################################",
-      "MyJdzz",
-      "ForOtherJdzz"
+      shareCodeObj.Cash,
+      "################################## 定义签到领现金互助（选填） ##################################",
+      "MyCash",
+      "ForOtherCash"
     );
+   shareCodeObj.Bookshop &&
+     formatShareCodesForLinux(
+       shareCodeObj.Bookshop,
+       "################################## 定义口袋书店互助（选填） ##################################",
+              "MyBookshop",
+             "ForOtherBookshop"
+     );
+   shareCodeObj.Health &&
+     formatShareCodesForLinux(
+       shareCodeObj.Health,
+       "################################## 定义健康社区互助（选填） ##################################",
+              "MyHealth",
+              "ForOtherHealth"
+     );
+  //shareCodeObj.Joy &&
+  //  formatShareCodesForLinux(
+  //    shareCodeObj.Joy,
+  //    "################################## 定义crazy joy互助（选填） ##################################",
+  //    "MyJoy",
+  //    "ForOtherJoy"
+  //  );
+  //shareCodeObj.Jdzz &&
+  //  formatShareCodesForLinux(
+  //    shareCodeObj.Jdzz,
+  //    "################################## 定义京东赚赚互助（选填） ##################################",
+  //    "MyJdzz",
+  //    "ForOtherJdzz"
+  //  );
 }
 
 const formatShareCodesForLinux = (

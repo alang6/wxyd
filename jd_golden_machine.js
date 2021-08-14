@@ -1,7 +1,7 @@
 /**
- *  活动路径  手机馆---》IQOO大牌日---〉左下角金机馆
- *  33 4,7 8-20 8 *
- *  脚本会加入脚本内置的团
+活动路径  首页搜索 金机馆
+cron 33 4,7 8-20 8 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_golden_machine.js
+第一个账号参加作者内置的团，其他账号参加第一个账号的团
  */
 const $ = new Env('金机奖投票');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -13,18 +13,22 @@ if ($.isNode()) {
     })
     if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-    cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
+    cookiesArr = [
+        $.getdata("CookieJD"),
+        $.getdata("CookieJD2"),
+        ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 $.authorizationInfo = {};
 $.joinTeamLsit = [];
 $.inviteList = [];
 $.authorCode = '';
+let res = [];
 !(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    let res = [];
+
     try{res = await getAuthorShareCode('http://adguard.ipq.co/goldPhone.json');}catch (e) {}
     if(!res){
         try{res = await getAuthorShareCode('http://adguard.ipq.co/goldPhone.json');}catch (e) {}
@@ -87,6 +91,9 @@ async function main() {
     }else{
         console.log(`已参团`);
     }
+    if($.index === 1){
+        $.authorCode = $.useInfo.code
+    }
     $.needVoteList = $.homeInfo.hard_list;
     await doVote();
     $.needVoteList = $.homeInfo.soft_list;
@@ -103,7 +110,7 @@ async function main() {
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
-        if($.teamInfo.draw_total_second === 0 && $.teamInfo.team_vote_total >= 180){
+        if($.teamInfo.draw_total_second === 1 && $.teamInfo.team_vote_total >= 180){
             console.log(`去抽奖2`);
             $.draw_type = 2;
             await takePostRequest('draw_prize');
@@ -121,7 +128,7 @@ async function main() {
             await takePostRequest('draw_prize');
             await $.wait(2000);
         }
-        if($.teamInfo.draw_total_second === 0 && $.teamInfo.team_vote_total >= 180){
+        if($.teamInfo.draw_total_second === 1 && $.teamInfo.team_vote_total >= 180){
             console.log(`去抽奖4`);
             $.draw_type = 2;
             await takePostRequest('draw_prize');
