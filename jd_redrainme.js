@@ -18,7 +18,8 @@ cron "1 0-23/1 * * *" script-path=https://raw.githubusercontent.com/nianyuguai/l
  整点京豆雨= type=cron,script-path=https://raw.githubusercontent.com/nianyuguai/longzhuzhu/main/qx/jd_super_redrain.js, cronexpr="1 0-23/1 * * *",timeout=200, enable=true
  */
 const $ = new Env('整点京豆雨ME');
-var code = process.env.redrainid ?? ""
+var code = process.env.redrainid.split('&');
+//code = [...new Set(code.filter(item => !!item))]
 let allMessage = '';
 let bodyList = {
     '20': {
@@ -51,22 +52,27 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     }
     // await getRedRain();
 
-    //let code = await redRainId()
+    //let code = "RRA44mA1u4J4w9HbGoRqxNRUeGrex9b;RRAxMMSrxajDYVkYJUMuSh5GfpfWAZ"//await redRainId()
+
 
     if(!code){
         $.log(`今日龙王🐲出差，天气晴朗☀️，改日再来～\n`)
         return
     }
 
-    console.log(`远程红包雨配置获取成功: ${code}`)
+    //console.log(`远程红包雨配置获取成功: ${code}`)
+    //console.log(`远程红包雨配置获取成功: ${code.length}`)
     let ids = {}
     for(let i = 0; i < 24 ; i++ ){
         ids[String(i)] = code
+        //$.log(`ids:${ids[String(i)]}`)
     }
-
+    $.activityIds = []
     let hour = (new Date().getUTCHours() + 8) % 24
     if (ids[hour]) {
-        $.activityId = ids[hour]
+        $.activityIds = ids[hour]
+        $.log(`activityId:${$.activityIds}`)
+        $.log(`activityId的个数:${$.activityIds.length}`)
         $.log(`本地红包雨配置获取成功`)
     } else {
         $.log(`无法从本地读取配置，请检查运行时间`)
@@ -92,8 +98,11 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
                 continue
             }
             let nowTs = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000
-            
-            await receiveRedRain();
+            for (let j = 0; j < $.activityIds.length; j++) {
+                $.activityId = $.activityIds[j]
+                $.log(`当前activityId:${$.activityId}\n`)
+                await receiveRedRain();
+            }
             // await showMsg();
         }
     }
