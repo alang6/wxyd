@@ -5,11 +5,11 @@
     Author: MoPoQAQ
     Created：2021/6/4 23:30
     Updated: 2021/6/9 7:30
-    
+    https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jx_mc_coin.js
+    https://github.com/yuannian1112/jd_scripts/blob/main/jx_mc_coin.js
     ！！！先将新手任务做完，再执行本脚本，不然会出现未知错误
     cron 10 * * * * 或者 0 10 * * * *
     hostname = m.jingxi.com
-cron "22 * * * *" script-path=
     BoxJS订阅
     https://raw.githubusercontent.com/whyour/hundun/master/quanx/whyour.boxjs.json
 *
