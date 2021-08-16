@@ -5,6 +5,7 @@
 若发现脚本里没有的粉丝互动活动。欢迎反馈给我
 cron 34 6,18 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
 * */
+
 const $ = new Env('粉丝互动');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
