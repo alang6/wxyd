@@ -37,7 +37,7 @@ from hashlib import sha256, sha512, md5
 import hmac
 
 appId = 10001
-activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
+activeId = 'yNtpovqFehHByNrt_lmb3g%3D%3D'
 
 countElectric = {}
 def userAgent():
