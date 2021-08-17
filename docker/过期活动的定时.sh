@@ -1,5 +1,8 @@
 ####################过期活动的定时####################
 
+# 天天优惠大乐透
+9 0 * * * node /scripts/jd_DrawEntrance.js >> /scripts/logs/jd_DrawEntrance.log 2>&1
+
 # 财富岛提现
 59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 
