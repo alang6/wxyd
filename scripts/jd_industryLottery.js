@@ -146,10 +146,11 @@ function join() {
         } else {
           data = JSON.parse(data);
           if (data.success == true) {
-            console.log(`恭喜获得:${data.data.rewardName}`);
+            console.log(`恭喜获得:${data.data.rewardName || '水干了，啥都没有'}`);
           } else {
             console.log(data.errorMessage);
           }
+          console.log(`${JSON.stringify(data)}`)
         }
       } catch (e) {
         $.logErr(e, resp);
