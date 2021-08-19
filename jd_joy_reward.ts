@@ -77,7 +77,7 @@ function init() {
 function exchange(beanId: number) {
   return new Promise<void>(async resolve => {
     while (1) {
-      if (new Date().getSeconds() < 15) {
+      if (new Date().getSeconds() < 55) {
         break
       } else {
         await wait(100)
