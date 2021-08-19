@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 众筹许愿池 活动时间：2021-08-01到2021-12-31
+11 1,9 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
+
 # 粉丝互动 
 #21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
 
