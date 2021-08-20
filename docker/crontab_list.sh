@@ -5,8 +5,8 @@
 
 ##############短期活动##############
 
-# 众筹许愿池 活动时间：2021-08-01到2021-12-31
-11 1,9 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
+# 开学充电站 
+19 1 20-31 8 * node /scripts/jd_kxcdz.js >> /scripts/logs/jd_kxcdz.log 2>&1
 
 # 粉丝互动 
 #21 6,18 * * * node /scripts/jd_wxFans.js >> /scripts/logs/jd_wxFans.log 2>&1
@@ -35,11 +35,11 @@
 # 京喜领88元红包(8.31结束)
 0 0,12,21 * 7-8 * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
 
-# 跳跳乐瓜分京豆(7.20-7.27)
-15 */2 20-27 7 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
-
 # 发财大赢家之翻翻乐 .8.15结束
 20,40 * * 7-8 * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+
+# 众筹许愿池 活动时间：2021-08-01到2021-12-31
+11 1,9 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
 
 # 星系牧场 #wen
 1 */2 * * * node /scripts/jd_qqxing.js >> /scripts/logs/jd_qqxing.log 2>&1
