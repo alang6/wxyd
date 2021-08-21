@@ -117,6 +117,8 @@
 3 0-21/3 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
 # 摇钱树
 21 */4 * * * node /scripts/jd_moneyTree.js >> /scripts/logs/jd_moneyTree.log 2>&1
+# 摇钱树助力
+8 1,11,21 * * * node /scripts/jd_moneyTree_heip.js >> /scripts/logs/jd_moneyTree_heip.log 2>&1
 # 东东萌宠
 10 7,12,18 * * * node /scripts/jd_pet.js >> /scripts/logs/jd_pet.log 2>&1
 # 京东种豆得豆
