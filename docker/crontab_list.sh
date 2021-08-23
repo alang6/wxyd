@@ -14,12 +14,6 @@
 # 骁龙品牌日
 11 6,20 13-25 8 * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
 
-# 汽车生活节
-16 1 12-20 8 * node /scripts/jd_qcshj.js >> /scripts/logs/jd_qcshj.log 2>&1
-
-# 金机奖投票
-35 1,7 8-20 8 * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
-
 # 京东手机狂欢城 助力
 0 0,6 9-28 8 * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
 
@@ -28,9 +22,6 @@
 
 # 荣耀焕新季( 玩一玩- 来电好物季 )
 11 0 9-25 8 * node /scripts/jd_ldhwj.js >> /scripts/logs/jd_ldhwj.log 2>&1
-
-# 荣耀焕新季( 玩一玩- 荣耀焕新 )
-3 0 7-20 8 * node /scripts/jd_ryhxj.js >> /scripts/logs/jd_ryhxj.log 2>&1
 
 # 京喜领88元红包(8.31结束)
 0 0,12,21 * 7-8 * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
