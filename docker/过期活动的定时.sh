@@ -1,8 +1,5 @@
 ####################过期活动的定时####################
 
-# 点点券修复
-6 0,5,9,20 * * * node /scripts/jd_necklace.js >> /scripts/logs/jd_necklace.log 2>&1
-
 # 送豆得豆
 6 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 
