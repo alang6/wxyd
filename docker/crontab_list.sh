@@ -20,7 +20,7 @@
 # 京东手机狂欢城
 0 0-18/6 9-28 8 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 
-# 荣耀焕新季( 玩一玩- 来电好物季 )
+# 来电好物季( 玩一玩- 来电好物季 )
 11 0 9-25 8 * node /scripts/jd_ldhwj.js >> /scripts/logs/jd_ldhwj.log 2>&1
 
 # 京喜领88元红包(8.31结束)
