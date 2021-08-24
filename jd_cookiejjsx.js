@@ -70,11 +70,11 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             var a = qcMessage.indexOf(obj.remarks)
 	    
             if(uptime && a===-1) {
-		qcMessage += obj.remarks 
+                qcMessage += obj.remarks 
                 var day1 = new Date(); 
                 console.log("\n\n当前时间为："+day1);
                 var day2 = new Date(uptime);
-		console.log(`\n${obj.remarks}上次更新cookie时间为：`+day2);
+                console.log(`\n${obj.remarks}上次更新cookie时间为：`+day2);
                 var difference= Math.abs(day1-day2);
                 days = difference/(1000 * 3600 * 24);
                 console.log(days);
@@ -82,7 +82,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
                     //var a = allMessage.indexOf(obj.remarks)
                     //if (a === -1) {
                     var gqday = 30 - days
-                    gqday = gqday.tofix(2)
+                    gqday = gqday.toFixed(2)
                     allMessage +=  `\n京东账号 ${obj.remarks}还有 ${gqday} 天过期，请及时扫码更新\n`;
                     console.log(`\n京东账号${obj.remarks}还有${gqday}天过期，请及时更新cookie\n`);
                     //}
