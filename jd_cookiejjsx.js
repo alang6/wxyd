@@ -81,10 +81,10 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
                 if(30 - days < 5 && days < 30) {
                     //var a = allMessage.indexOf(obj.remarks)
                     //if (a === -1) {
-			var gqday = 30 - days
-			gqday = gqday.tofix(2)
-                        allMessage +=  `\n京东账号 ${obj.remarks}还有 ${gqday} 天过期，请及时扫码更新\n`;
-                        console.log(`\n京东账号${obj.remarks}还有${gqday}天过期，请及时更新cookie\n`);
+                    var gqday = 30 - days
+                    gqday = gqday.tofix(2)
+                    allMessage +=  `\n京东账号 ${obj.remarks}还有 ${gqday} 天过期，请及时扫码更新\n`;
+                    console.log(`\n京东账号${obj.remarks}还有${gqday}天过期，请及时更新cookie\n`);
                     //}
                 }
             }
