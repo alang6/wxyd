@@ -72,9 +72,9 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             if(uptime && a===-1) {
 		qcMessage += obj.remarks 
                 var day1 = new Date(); 
-                console.log("当前时间为："+day1);
+                console.log("\n\n当前时间为："+day1);
                 var day2 = new Date(uptime);
-		console.log(`${obj.remarks}上次更新cookie时间为：`+day2);
+		console.log(`\n${obj.remarks}上次更新cookie时间为：`+day2);
                 var difference= Math.abs(day1-day2);
                 days = difference/(1000 * 3600 * 24);
                 console.log(days);
