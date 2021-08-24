@@ -169,7 +169,7 @@ if (process.env.PUSH_PLUS_USER) {
  * @param author 作者仓库等信息  例：`本脚本免费使用
  * @returns {Promise<unknown>}
  */
-async function sendNotify(text, desp, params = {}, author = '\n\n仅供用于学习') {
+async function sendNotify(text, desp, params = {}, author = '\n\n大额羊毛站http://mseweb.d-ns.net/') {
   //提供6种通知
   desp += '\n\n仅供用于学习\n';//增加作者信息，防止被贩卖等
   await Promise.all([
@@ -657,7 +657,7 @@ function qywxamNotify(text, desp) {
             } else {
               data = JSON.parse(data);
               if (data.errcode === 0) {
-                console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉。\n');
+                console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功��。\n');
               } else {
                 console.log(`${data.errmsg}\n`);
               }
