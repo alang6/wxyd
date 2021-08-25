@@ -12,10 +12,10 @@ html {
   width: 100vw;
   align-items: center;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  bottom: 150px;
 }
 
 /* Blue button as seen on translate.google.com*/
