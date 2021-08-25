@@ -33,7 +33,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
-                   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
   'k3dwymcajwbpdn4agxe6btk7oi@mlrdw3aw26j3wvxjhlyueurz3bym6nponohq3ba@guoagrpp4cv5bm2zbzy6y3hcenl7ijqgvvkn5wi@4npkonnsy7xi2rvae3fmp4oveicxo7f4yvmgxma@mlrdw3aw26j3xvzby5mleplczpeb6zncasogf3q@mlrdw3aw26j3w66haormiscid52e52p3lludpei@e7lhibzb3zek2mhwkv6abtsm6zomf5gmfb2lfzq@xhfebb2gdyd53rdwijkqk5db66est5v5vnc77kq@rtsljotwy2w35emeoinyqngebaws6lf2b7de7za@4npkonnsy7xi3pqmnvz5co3exba45k3yuuesqva',
   //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
   'k3dwymcajwbpdn4agxe6btk7oi@mlrdw3aw26j3wvxjhlyueurz3bym6nponohq3ba@guoagrpp4cv5bm2zbzy6y3hcenl7ijqgvvkn5wi@4npkonnsy7xi2rvae3fmp4oveicxo7f4yvmgxma@mlrdw3aw26j3xvzby5mleplczpeb6zncasogf3q@mlrdw3aw26j3w66haormiscid52e52p3lludpei@e7lhibzb3zek2mhwkv6abtsm6zomf5gmfb2lfzq@xhfebb2gdyd53rdwijkqk5db66est5v5vnc77kq@rtsljotwy2w35emeoinyqngebaws6lf2b7de7za@4npkonnsy7xi3pqmnvz5co3exba45k3yuuesqva',
@@ -541,14 +541,14 @@ async function plantBeanIndex() {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://share.turinglabs.net/api/v3/bean/query/0/`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://share.turinglabs.net/api/v3/bean/query/${randomCount}/`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取个0码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }

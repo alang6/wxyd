@@ -1615,11 +1615,11 @@ async function barGain() {
 }
 
 async function bigWinner() {
-  let res = await getAuthorShareCode2('http://adguard.ipq.co/bigWinner.json')
+  let res = await getAuthorShareCode2('http://adguard.ipq.co/bigwinner.json')
   if (!res) {
-    $.http.get({url: 'http://adguard.ipq.co/bigWinner.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    $.http.get({url: 'http://adguard.ipq.co/bigwinner.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode2('http://adguard.ipq.co/bigWinner.json')
+    res = await getAuthorShareCode2('http://adguard.ipq.co/bigwinner.json')
   }
   $.codeList = getRandomArrayElements([...(res || [])], [...(res || [])].length);
   for (let vo of $.codeList) {
