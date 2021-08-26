@@ -5,4 +5,4 @@ docker run -d --name jd_cookie -p 6789:6789 -e QYWX_KEY={QYWX_KEY} -e QYWX_AM={Q
 sls deploy
 
 
-<a href="https://github.com/msechen/autojd">一键安装面板+前端扫码</a>   链接,CK数量上限1K
+<a href="https://github.com/msechen/autojd">一键安装V3 docker+面板+前端扫码</a>   链接,CK数量上限1K
