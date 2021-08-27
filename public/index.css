@@ -9,11 +9,11 @@ html {
   justify-content: space-around;
   /*height: 100%;*/
   /*min-height: 100vh;*/
-  width: 100vw;
+  width: 100%;
   align-items: center;
   position: absolute;
   top: 150px;
-  left: 150px;
+  left: 0px;
   right: 150px;
   bottom: 150px;
 }
@@ -55,12 +55,12 @@ html {
 .primary {
   color: #fff;
   background-color: #07c160;
-  border: 1px solid #07c160;
+  border: 6px solid #07c160;
 }
 .info {
   color: #fff;
   background-color: #1989fa;
-  border: 1px solid #1989fa;
+  border: 6px solid #1989fa;
 }
 .container .dec {
   margin-top: 100px;
