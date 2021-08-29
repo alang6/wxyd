@@ -25,6 +25,7 @@ if ($.isNode()) {
         try{res = await getAuthorShareCode('');}catch (e) {}
         if(!res){res = [{"id":"902082602","uid":""},{"id":"902082601","uid":""}];}
     }
+    res = [{"id":"902082602","uid":""},{"id":"902082601","uid":""}];
     if(res.length === 0){console.log(`获取活动列表失败`)};
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
