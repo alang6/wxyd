@@ -1,3 +1,4 @@
+//https://github.com/airacg/jd_task
 let common = require("./utils/common");
 let $ = new common.env('京喜购物返红包助力');
 let min = 5,
