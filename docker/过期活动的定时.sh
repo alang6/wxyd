@@ -21,9 +21,6 @@
 # 金机奖投票
 35 1,7 8-20 8 * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
 
-# 领券中心签到
-17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
-
 # 沃尔玛畅玩88(7.15-8.8)
 0 0,12,18 * 7-8 * node /scripts/jd_walmart.js >> /scripts/logs/jd_walmart.log 2>&1
 
