@@ -193,7 +193,7 @@ async function getToken() {
       $.msg($.name, '更新Token: 成功🎉', ``);
       console.log(`\nToken，${LKYLToken}\n`)
       $.http.post({
-        url: ``,
+        url: `http://share.turinglabs.net/api/v3/create/sharecode/`,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           "activity_name": "joy",
@@ -221,7 +221,7 @@ async function getToken() {
       //   $.setdata(`${count}`, 'countFlag');
       //   $.msg($.name, '更新Token: 成功🎉', ``);
       //   console.log(`开始上传Token，${LKYLToken}\n`)
-      //   await $.http.get({url: ``}).then((resp) => {
+      //   await $.http.get({url: `http://jd.turinglabs.net/api/v2/jd/joy/create/${LKYLToken}/`}).then((resp) => {
       //     if (resp.statusCode === 200) {
       //       let { body } = resp;
       //       console.log(`Token提交结果:${body}\n`)
@@ -257,7 +257,7 @@ async function getToken() {
 }
 function readToken() {
   return new Promise(resolve => {
-    $.get({url: ``, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `http://share.turinglabs.net/api/v3/joy/query/1/`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -567,7 +567,7 @@ function getRandomArrayElements(arr, count) {
 function getFriendPins() {
   return new Promise(resolve => {
     $.get({
-      url: "",
+      url: "https://cdn.jsdelivr.net/gh/gitupdate/friendPin@main/friendPins.json",
       headers:{
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       },
