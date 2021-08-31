@@ -1,5 +1,5 @@
 //Check Ck Tools by ccwav
-//Update : 20210831 V2
+//Update : 20210831 V3
 const $ = new Env('京东CK检测');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -84,7 +84,7 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
 	  //if (SuccessMessage){
 		  //allMessage+=`👇👇👇👇👇👇👇有效账号👇👇👇👇👇👇👇\n`+SuccessMessage+`\n`;		  
 	  //}
-	  if ($.isNode() && ErrorMessage) {
+	  if ($.isNode() && EnableMessage && DisableMessage) {
 		await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
 	  }
    }
