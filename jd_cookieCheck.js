@@ -76,7 +76,7 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
 	  if (ErrorMessage){
 		  allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n`+ErrorMessage+`\n\n`;		  
 	  }	else {
-		  allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n 一个失效的都没有呢，羡慕啊...``\n\n`;
+		  allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n 一个失效的都没有呢，羡慕啊...\n\n`;
 	  }  
 	  
 	  console.log(allMessage);
