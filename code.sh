@@ -46,10 +46,10 @@ DiyHelpType="1"
 diy_help_rules(){
     case $1 in
         Pet | JdFactory | Health)
-            tmp_helptype="1"            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
+            tmp_helptype=""            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
             ;;
         Jdzz | Joy)
-            tmp_helptype="2"            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
+            tmp_helptype=""            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
             ;;
         *)
             tmp_helptype=$HelpType      # 其他活动仍按默认互助模板生产互助规则。
@@ -71,7 +71,7 @@ BreakHelpNum="4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
 
 ## 定义是否自动更新配置文件中的互助码和互助规则
 ## 默认为 UpdateType="1" 表示更新互助码和互助规则；UpdateType="2" 表示只更新互助码，不更新互助规则；UpdateType="3" 表示只更新互助规则，不更新互助码；留空或其他数值表示不更新。
-UpdateType="3"
+UpdateType="1"
 
 ## 定义是否自动安装或修复缺失的依赖，默认为1，表示自动修复；留空或其他数值表示不修复。
 FixDependType=""
