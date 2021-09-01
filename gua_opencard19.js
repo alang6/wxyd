@@ -1,35 +1,38 @@
 /*
-秋新资联合开卡 [gua_opencard17.js]
+健康、食品联合开卡 [gua_opencard19.js]
 ————————————————
 跑此脚本需要添加依赖文件[sign_graphics_validate.js]
 
-新增开卡脚本
 一次性脚本
 
 没有邀请助力
 没有邀请助力
 没有邀请助力
 
-开2组卡(10+9) 共19个卡 每个卡10京豆 (如果在别的地方开过卡 则在这不能开卡 故没有京豆
-2个日常任务 有浏览、关注、加购 (每次1京豆 关注和加购可以多次
-(默认不加购 如需加购请设置环境变量[guaopencard_addSku17]为"true"
-做完浏览、关注、加购 可以领取20京豆
+开27卡 每个卡10京豆 (如果在别的地方开过卡 则在这不能开卡 故没有京豆
+3个日常任务 有关注、加购 (每次1京豆 关注和加购可以多次
+(默认不加购 如需加购请设置环境变量[guaopencard_addSku19]为"true"
 
 默认脚本不执行
 如需执行脚本请设置环境变量
 做任务
-guaopencardRun17="true"
+guaopencardRun19="true"
 开卡
-guaopencard17="true"
+guaopencard19="true"
+
+活动有点小毛病
+经常获取不到任务信息
 
 ————————————————
 因需要加载依赖文件
-所以不支持手机软件(Quantumultx、Loon、Surge、小火箭等
+所有不支持手机软件(Quantumultx、Loon、Surge、小火箭等
 ————————————————
-入口：[ 秋新资联合开卡 (https://prodev.m.jd.com/mall/active/3q7yrbh3qCJvHsu3LhojdgxNuWQT/index.html)]
+入口：[ 健康、食品联合开卡 (https://prodev.m.jd.com/mall/active/41o9RN7Wm7F8RCtEGaWuLQDRTj39/index.html) (https://prodev.m.jd.com/mall/active/36ZBKEQQB7M7GdBBsqQkvasTiFkL/index.html)]
+
+获得到的京豆不一定到账
 
 */
-const $ = new Env('秋新资联合开卡');
+const $ = new Env('健康、食品联合开卡');
 const Faker=require('./sign_graphics_validate.js') 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
@@ -46,11 +49,11 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let guaopencard_addSku = "false"
-guaopencard_addSku = $.isNode() ? (process.env.guaopencard_addSku17 ? process.env.guaopencard_addSku17 : `${guaopencard_addSku}`) : ($.getdata('guaopencard_addSku17') ? $.getdata('guaopencard_addSku17') : `${guaopencard_addSku}`);
+guaopencard_addSku = $.isNode() ? (process.env.guaopencard_addSku19 ? process.env.guaopencard_addSku19 : `${guaopencard_addSku}`) : ($.getdata('guaopencard_addSku19') ? $.getdata('guaopencard_addSku19') : `${guaopencard_addSku}`);
 let guaopencard = "false"
-guaopencard = $.isNode() ? (process.env.guaopencard17 ? process.env.guaopencard17 : `${guaopencard}`) : ($.getdata('guaopencard17') ? $.getdata('guaopencard17') : `${guaopencard}`);
+guaopencard = $.isNode() ? (process.env.guaopencard19 ? process.env.guaopencard19 : `${guaopencard}`) : ($.getdata('guaopencard19') ? $.getdata('guaopencard19') : `${guaopencard}`);
 let guaopencardRun = "false"
-guaopencardRun = $.isNode() ? (process.env.guaopencardRun17 ? process.env.guaopencardRun17 : `${guaopencardRun}`) : ($.getdata('guaopencardRun17') ? $.getdata('guaopencardRun17') : `${guaopencardRun}`);
+guaopencardRun = $.isNode() ? (process.env.guaopencardRun19 ? process.env.guaopencardRun19 : `${guaopencardRun}`) : ($.getdata('guaopencardRun19') ? $.getdata('guaopencardRun19') : `${guaopencardRun}`);
 message = ""
 !(async () => {
   if (!cookiesArr[0]) {
@@ -60,15 +63,15 @@ message = ""
     return;
   }
   if(guaopencard+"" != "true"){
-    console.log('如需开卡请设置环境变量[guaopencard17]为"true"')
+    console.log('如需开卡请设置环境变量[guaopencard19]为"true"')
   }
   if(guaopencardRun+"" != "true"){
-    console.log('如需做任务请设置环境变量[guaopencardRun17]为"true"')
+    console.log('如需做任务请设置环境变量[guaopencardRun19]为"true"')
   }
   if(guaopencard+"" != "true" && guaopencardRun+"" != "true"){
     return
   }
-  console.log(`入口:\nhttps://prodev.m.jd.com/mall/active/3q7yrbh3qCJvHsu3LhojdgxNuWQT/index.html`)
+  console.log(`入口:\nhttps://prodev.m.jd.com/mall/active/41o9RN7Wm7F8RCtEGaWuLQDRTj39/index.html\nhttps://prodev.m.jd.com/mall/active/36ZBKEQQB7M7GdBBsqQkvasTiFkL/index.html`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
@@ -95,17 +98,16 @@ message = ""
 
 async function run() {
   try {
-    await getHtml();
+    // await getHtml();
     await $.wait(parseInt(Math.random() * 1000 + 2000, 10))
     if(!$.fp || !$.eid){
-      $.log("获取活动信息失败！")
+      message += `【京东账号${$.index}】获取活动信息失败！\n`
       return
     }
     let config = [
-      {configCode:'5f08564a952142fba421fabac1d480c2',configName:'秋新资联合开卡组2'},
-      {configCode:'8f5f70f072154ce3acd50acaecee6638',configName:'秋新资联合开卡组1'},
-      {configCode:'482c166b0a7648c3a0840626bff3af06',configName:'秋新资任务组件 组2'},
-      {configCode:'ce04c87546ea40cc8f601e85f2dda2a9',configName:'秋新资任务组件 组1'},
+      {configCode:'5de285e5956a4b869d982f19457dbfeb',configName:'健康联合开卡组1'},
+      {configCode:'b9e7462bd7ae4f7aaa34844ce72ceb72',configName:'健康联合开卡组2'},
+      {configCode:'e23a262b02fc4e279f5a0fc3a5764ac6',configName:'9月食品联合开卡分会场一'},
     ]
     for(let i in config){
       $.hotFlag = false
@@ -115,95 +117,75 @@ async function run() {
       $.taskInfo = ''
       let q = 5
       for(m=1;q--;m++){
-        if($.task == '') await getActivity(item.configCode,item.configName,0)
+        if($.task == '') await getActivity(item.configCode,item.configName,3)
         if($.task || $.hotFlag) break
       }
-      if($.hotFlag) continue;
-      if($.task.showOrder){
-        console.log(`\n[${item.configName}] ${$.task.showOrder == 2 && '日常任务' || $.task.showOrder == 1 && '开卡' || '未知活动类型'} ${($.taskInfo.rewardStatus == 2) && '全部完成' || ''}`)
-        if($.taskInfo.rewardStatus == 2) continue;
-        $.taskList = $.task.memberList || $.task.taskList || []
-        $.oneTask = ''
-        for (let i = 0; i < $.taskList.length; i++) {
-          $.oneTask = $.taskList[i];
-          if($.task.showOrder == 1){
-            if(guaopencard+"" != "true"){
-              console.log('如需开卡请设置环境变量[guaopencard17]为"true"')
-              break
-            }
-            if($.oneTask.cardName.indexOf('马克华') > -1) continue
-            console.log(`${$.oneTask.cardName} ${0 == $.oneTask.result ? "开卡得" + $.oneTask.rewardQuantity + "京豆" : 1 == $.oneTask.result ? "领取" + $.oneTask.rewardQuantity + "京豆" : 3 == $.oneTask.result ? "其他渠道入会" : "已入会"}`)
-            if($.oneTask.result == 0) await statistic(`{"activityType":"module_task","groupType":7,"configCode":"${item.configCode}","itemId":${$.oneTask.cardId}}`)
-            if($.oneTask.result == 0) await join($.oneTask.venderId)
-            await $.wait(parseInt(Math.random() * 1000 + 500, 10))
-            if($.oneTask.result == 1 || $.oneTask.result == 0) await getReward(`{"configCode":"${item.configCode}","groupType":7,"itemId":${$.oneTask.cardId},"eid":"${$.eid}","fp":"${$.fp}"}`)
-          }else if($.task.showOrder == 2){
-            if(guaopencardRun+"" != "true"){
-              console.log('如需做任务请设置环境变量[guaopencardRun17]为"true"')
-              break
-            }
-            $.cacheNum = 0
-            $.doTask = false
-            $.outActivity = false
-            let name = `${1 == $.oneTask.groupType ? "关注并浏览店铺" : 2 == $.oneTask.groupType ? "加购并浏览商品" : 3 == $.oneTask.groupType ? "关注并浏览频道" : 6 == $.oneTask.groupType ? "浏览会场" : "未知"}`
-            let msg = `(${$.oneTask.finishCount}/${$.oneTask.taskCount})`
-            let status = `${$.oneTask.finishCount >= $.oneTask.taskCount && '已完成' || "去" + (1 == $.oneTask.groupType ? "关注" : 2 == $.oneTask.groupType ? "加购" : 3 == $.oneTask.groupType ? "关注" : 6 == $.oneTask.groupType ? "浏览" : "做任务")}`
-            console.log(`${name}${msg} ${status}`)
-            if(guaopencard_addSku+"" != "true" && 2 == $.oneTask.groupType) console.log('如需加购请设置环境变量[guaopencard_addSku17]为"true"\n');
-            if(guaopencard_addSku+"" != "true" && 2 == $.oneTask.groupType) continue;
-            if($.oneTask.finishCount < $.oneTask.taskCount){
-              await doTask(`{"configCode":"${item.configCode}","groupType":${$.oneTask.groupType},"itemId":"${$.oneTask.item.itemId}","eid":"${$.eid}","fp":"${$.fp}"}`)
-              let c = $.oneTask.taskCount - $.oneTask.finishCount - 1
-              for(n=2;c-- && !$.outActivity;n++){
-                if($.outActivity) break
-                console.log(`第${n}次`)
-                await getActivity(item.configCode,item.configName,$.oneTask.groupType)
-                $.oneTasks = ''
-                let q = 3
-                for(m=1;q--;m++){
-                  if($.oneTasks == '') await getActivity(item.configCode,item.configName,$.oneTask.groupType)
-                  if($.oneTasks) break
-                }
-                if($.oneTasks){
-                  c = $.oneTasks.taskCount - $.oneTasks.finishCount
-                  if($.oneTasks.item.itemId == $.oneTask.item.itemId){
-                    n--;
-                    console.log(`数据缓存中`)
-                    $.cacheNum++;
-                    if($.cacheNum > 3) console.log('请重新执行脚本，数据缓存问题');
-                    if($.cacheNum > 3) break;
-                    await getUA()
-                    await $.wait(parseInt(Math.random() * 1000 + 3000, 10))
-                    await getHtml();
-                  }else{
-                    $.cacheNum = 0
-                  }
-                  if($.oneTasks.item.itemId != $.oneTask.item.itemId && $.oneTasks.finishCount < $.oneTasks.taskCount) await doTask(`{"configCode":"${item.configCode}","groupType":${$.oneTasks.groupType},"itemId":"${$.oneTasks.item.itemId}","eid":"${$.eid}","fp":"${$.fp}"}`)
-                  await $.wait(parseInt(Math.random() * 1000 + 1000, 10))
-                }else{
-                  n--;
-                }
-              }
-            }
-          }else{
-            console.log('未知活动类型')
-          }
+      if($.task.memberTask && $.task.memberTask.memberList){
+        let msg = ''
+        if(guaopencard+"" != "true"){
+          msg = '如需开卡请设置环境变量[guaopencard19]为"true"'
         }
-        if($.task.showOrder == 2){
-          if($.doTask){
-            $.taskInfo = ''
-            let q = 5
-            for(m=1;q--;m++){
-              if($.taskInfo == '') await getActivity(item.configCode,item.configName,-1)
-              if($.taskInfo) break
-            }
-          }
-          if($.taskInfo.rewardStatus == 1) await getReward(`{"configCode":"${item.configCode}","groupType":5,"itemId":1,"eid":"${$.eid}","fp":"${$.fp}"}`,1)
+        console.log(`\n[${$.task.moduleBaseInfo.configName}] ${$.task.memberTask.showOrder == 2 && '日常任务' || $.task.memberTask.showOrder == 1 && '开卡任务' || '未知任务'} ${($.task.moduleBaseInfo.rewardStatus == 2) && '全部完成' || ''}${msg}`)
+        $.oneTask = ''
+        for (let o in $.task.memberTask.memberList) {
+          if(guaopencard !== "true") break
+          $.oneTask = $.task.memberTask.memberList[o];
+          console.log(`[${$.oneTask.cardName}] ${0 == $.oneTask.result ? "开卡得" + $.oneTask.rewardQuantity + "京豆" : 1 == $.oneTask.result ? "领取" + $.oneTask.rewardQuantity + "京豆" : 3 == $.oneTask.result ? "其他渠道入会" : "已入会"}`)
+          if($.oneTask.result == 0) await statistic(`{"activityType":"module_task","groupType":7,"configCode":"${item.configCode}","itemId":${$.oneTask.cardId}}`)
+          if($.oneTask.result == 0) await join($.oneTask.venderId)
+          await $.wait(parseInt(Math.random() * 1000 + 500, 10))
+          if($.oneTask.result == 1 || $.oneTask.result == 0) await getReward(`{"configCode":"${item.configCode}","groupType":7,"itemId":${$.oneTask.cardId},"eid":"${$.eid}","fp":"${$.fp}"}`)
         }
       }
-      await $.wait(parseInt(Math.random() * 1000 + 1000, 10))
+      if($.task.dailyTask && $.task.dailyTask.taskList){
+        for (let t in $.task.dailyTask.taskList) {
+          $.oneTask = $.task.dailyTask.taskList[t];
+          $.cacheNum = 0
+          $.doTask = false
+          $.outActivity = false
+          let name = `${1 == $.oneTask.groupType ? "关注并浏览店铺" : 2 == $.oneTask.groupType ? "加购并浏览商品" : 3 == $.oneTask.groupType ? "关注并浏览频道" : 6 == $.oneTask.groupType ? "浏览会场" : "未知"}`
+          let msg = `(${$.oneTask.finishCount}/${$.oneTask.taskCount})`
+          let status = `${$.oneTask.finishCount >= $.oneTask.taskCount && '已完成' || "去" + (1 == $.oneTask.groupType ? "关注" : 2 == $.oneTask.groupType ? "加购" : 3 == $.oneTask.groupType ? "关注" : 6 == $.oneTask.groupType ? "浏览" : "做任务")}`
+          console.log(`${name}${msg} ${status}`)
+          if(guaopencard_addSku+"" != "true" && 2 == $.oneTask.groupType) console.log('如需加购请设置环境变量[guaopencard_addSku19]为"true"\n');
+          if(guaopencard_addSku+"" != "true" && 2 == $.oneTask.groupType) continue;
+          if($.oneTask.finishCount < $.oneTask.taskCount){
+            await doTask(`{"configCode":"${item.configCode}","groupType":${$.oneTask.groupType},"itemId":"${$.oneTask.item.itemId}","eid":"${$.eid}","fp":"${$.fp}"}`)
+            let c = $.oneTask.taskCount - $.oneTask.finishCount - 1
+            for(n=2;c-- && !$.outActivity;n++){
+              if($.outActivity) break
+              console.log(`第${n}次`)
+              await getActivity(item.configCode,item.configName,$.oneTask.groupType)
+              $.oneTasks = ''
+              let q = 3
+              for(m=1;q--;m++){
+                if($.oneTasks == '') await getActivity(item.configCode,item.configName,$.oneTask.groupType)
+                if($.oneTasks) break
+              }
+              if($.oneTasks){
+                c = $.oneTasks.taskCount - $.oneTasks.finishCount
+                if($.oneTasks.item.itemId == $.oneTask.item.itemId){
+                  n--;
+                  console.log(`数据缓存中`)
+                  $.cacheNum++;
+                  if($.cacheNum > 5) console.log('请重新执行脚本，数据缓存问题');
+                  if($.cacheNum > 5) break;
+                  await getUA()
+                  await $.wait(parseInt(Math.random() * 1000 + 3000, 10))
+                  await getHtml();
+                }else{
+                  $.cacheNum = 0
+                }
+                if($.oneTasks.item.itemId != $.oneTask.item.itemId && $.oneTasks.finishCount < $.oneTasks.taskCount) await doTask(`{"configCode":"${item.configCode}","groupType":${$.oneTasks.groupType},"itemId":"${$.oneTasks.item.itemId}","eid":"${$.eid}","fp":"${$.fp}"}`)
+              }else{
+                n--;
+              }
+              await $.wait(parseInt(Math.random() * 1000 + 1000, 10))
+            }
+          }
+        }
+      }
     }
-    
   } catch (e) {
     console.log(e)
   }
@@ -241,6 +223,8 @@ function getActivity(code,name,flag) {
                     break
                   }
                 }
+              }else if(flag == 3){
+                $.task = res.data
               }else{
                 console.log('活动-未知类型')
               }
@@ -289,7 +273,7 @@ function doTask(body) {
           if(typeof res == 'object'){
             if(res.success == true){
               console.log(`领奖成功:${$.oneTask.rewardQuantity}京豆`)
-              $.bean += Number($.oneTask.rewardQuantity)
+              $.bean += $.oneTask.rewardQuantity
             }else if(res.errorMessage){
               if(res.errorMessage.indexOf('活动已结束') > -1) $.outActivity = true
               console.log(`${res.errorMessage}`)
@@ -331,11 +315,12 @@ function getReward(body, flag = 0) {
           if(typeof res == 'object'){
             if(res.success == true){
               console.log(`领奖成功:${flag == 1 && $.taskInfo.rewardFinish || $.oneTask.rewardQuantity}京豆`)
-              $.bean += Number($.oneTask.rewardQuantity)
+              $.bean += $.oneTask.rewardQuantity || 0
             }else{
               console.log(`${res.errorMessage}`)
             }
           }
+          
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -415,7 +400,7 @@ function ruhui(functionId) {
       'accept': '*/*',
       'User-Agent': $.UA,
       'content-type': 'application/x-www-form-urlencoded',
-      'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${functionId}&shopId=${functionId}&venderType=5&channel=401&returnUrl=https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`,
+      'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${functionId}&shopId=${functionId}&venderType=5&channel=401`,
       'Cookie': cookie
     }
   }
@@ -425,6 +410,7 @@ function getshopactivityId(venderId) {
   return new Promise(resolve => {
     $.get(shopactivityId(`${venderId}`), async (err, resp, data) => {
       try {
+        // console.log(data)
         data = JSON.parse(data);
         if(data.success == true){
           console.log(`入会:${data.result.shopMemberCardInfo.venderCardName || ''}`)
@@ -448,7 +434,7 @@ function shopactivityId(functionId) {
       'accept': '*/*',
       'User-Agent': $.UA,
       'content-type': 'application/x-www-form-urlencoded',
-      'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${functionId}&shopId=${functionId}&venderType=5&channel=401&returnUrl=https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`,
+      'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${functionId}&shopId=${functionId}&venderType=5&channel=401`,
       'Cookie': cookie
     }
   }
@@ -456,7 +442,7 @@ function shopactivityId(functionId) {
 function getHtml() {
   return new Promise(resolve => {
     $.get({
-      url: `https://prodev.m.jd.com/mall/active/3q7yrbh3qCJvHsu3LhojdgxNuWQT/index.html`,
+      url: `https://prodev.m.jd.com/mall/active/45As2RxLNvQaLGH4fTDRNETvA4fV/index.html`,
       headers: {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
         "Accept-Encoding": "gzip, deflate, br",
@@ -517,7 +503,7 @@ function getEid(arr) {
 
 async function getUA(){
   $.UA = `jdapp;iPhone;10.0.10;14.3;${randomString(40)};network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167741;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
-  let arr = await Faker.getBody($.UA,'https://prodev.m.jd.com/mall/active/3q7yrbh3qCJvHsu3LhojdgxNuWQT/index.html')
+  let arr = await Faker.getBody($.UA,'https://prodev.m.jd.com/mall/active/45As2RxLNvQaLGH4fTDRNETvA4fV/index.html')
   $.fp = arr.fp
   await getEid(arr)
 }
