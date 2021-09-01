@@ -187,7 +187,7 @@ pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 
 ######
 openCardBean = 10
-sleepNum = 2.0
+sleepNum = 1.0
 record = True
 onlyRecord = False
 memory = False
