@@ -78,7 +78,7 @@ var ckjinyong = process.env.ckjinyong ?? ""
 		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+DisableMessage+`\n\n`;		  
 	  }
 	  if (delMessage){
-		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+delMessage+`\n\n`;		  
+		  allMessage+=`👇👇👇👇👇自动删除账号👇👇👇👇👇\n`+delMessage+`\n\n`;		  
 	  }
 	  if (EnableMessage){
 		  allMessage+=`👇👇👇👇👇自动启用账号👇👇👇👇👇\n`+EnableMessage+`\n\n`;		  
