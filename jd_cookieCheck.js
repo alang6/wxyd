@@ -5,13 +5,13 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const got = require('got');
-const {getEnvs,DisableCk,EnableCk} = require('./utils/ql');
+const {getEnvs,DisableCk,EnableCk,delEnv} = require('./utils/ql');
 const api = got.extend({
   retry: { limit: 0 },
   responseType: 'json',
 });
 
-let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage=''
+let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage=''delMessage=''
 
 
 !(async () => {  
@@ -35,14 +35,23 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
       if (!$.isLogin) {	
 		if (envs[i].status==0)
 		{
-		  const DisableCkBody = await DisableCk(envs[i]._id);
-		  if (DisableCkBody.code == 200) {
-		    console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用成功!\n`);
-		    DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动禁用成功!)\n`;
-			} else {
+		  if(i < ckjinyong) {
+		    const DisableCkBody = await DisableCk(envs[i]._id);
+		    if (DisableCkBody.code == 200) {
+		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用成功!\n`);
+		      DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动禁用成功!)\n`;
+		    } else {
 				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用失败!\n`);
 				DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动禁用失败!)\n`;
-			}			
+		    }	
+		  } else {
+		    const delCkBody = await delEnv(envs[i]._id);
+		    if (delCkBody.code == 200) {
+		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除成功!\n`);
+		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动删除成功!)\n`;
+		    } else {
+				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除失败!\n`);
+		  }				  
 		} else {
 			console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已禁用!\n`);
 			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已禁用.\n`;
@@ -68,7 +77,10 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
   if ($.isNode()) {
 	  if (DisableMessage){
 		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+DisableMessage+`\n\n`;		  
-	  }	  
+	  }
+	  if (delMessage){
+		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+delMessage+`\n\n`;		  
+	  }
 	  if (EnableMessage){
 		  allMessage+=`👇👇👇👇👇自动启用账号👇👇👇👇👇\n`+EnableMessage+`\n\n`;		  
 	  }	  
@@ -76,15 +88,15 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
 	  if (ErrorMessage){
 		  allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n`+ErrorMessage+`\n\n`;		  
 	  }	else {
-		  allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n 一个失效的都没有呢，羡慕啊...\n\n`;
+		  //allMessage+=`👇👇👇👇👇失效账号👇👇👇👇👇\n 一个失效的都没有呢，羡慕啊...\n\n`;
 	  }  
 	  
 	  console.log(allMessage);
-	  
+	  allMessage += `为保证失效ck更新后立即启用，失效ck直接删除`
 	  //if (SuccessMessage){
 		  //allMessage+=`👇👇👇👇👇👇👇有效账号👇👇👇👇👇👇👇\n`+SuccessMessage+`\n`;		  
 	  //}
-	  if ($.isNode() && (EnableMessage || DisableMessage)) {
+	  if ($.isNode() && (EnableMessage || DisableMessage || delMessage)) {
 		await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
 	  }
    }
