@@ -10,9 +10,9 @@ const api = got.extend({
   retry: { limit: 0 },
   responseType: 'json',
 });
-var ckjinyong== process.env.ckjinyong ?? ""
-let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage=''delMessage=''
 
+let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage='',delMessage=''
+var ckjinyong = process.env.ckjinyong ?? ""
 
 !(async () => {  
   const envs = await getEnvs();
@@ -29,7 +29,7 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
       $.isLogin = true;
       $.nickName = '';  
 	  console.log(`开始检测【京东账号${$.index}】${$.nickName || $.UserName}....\n`);
-      onsole.log(`禁用ck为前 ${ckjinyong} 个\n`);	 
+	 
       await TotalBean();      
 
       if (!$.isLogin) {	
@@ -48,14 +48,13 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
 		    const delCkBody = await delEnv(envs[i]._id);
 		    if (delCkBody.code == 200) {
 		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除成功!\n`);
-		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动删除成功!)\n`;
+		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动删除成功!)\n`;		  
 		    } else {
-				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除失败!\n`);
-		  }				  
-		} else {
-			console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已禁用!\n`);
-			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已禁用.\n`;
-		}
+			console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除!\n`);
+			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除.\n`;
+		    }
+          }
+        }
 	  } else {
 		  if (envs[i].status==1){
 			  const EnableCkBody = await EnableCk(envs[i]._id);
