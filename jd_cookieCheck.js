@@ -10,7 +10,7 @@ const api = got.extend({
   retry: { limit: 0 },
   responseType: 'json',
 });
-
+var ckjinyong== process.env.ckjinyong ?? ""
 let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage=''delMessage=''
 
 
@@ -29,7 +29,7 @@ let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMess
       $.isLogin = true;
       $.nickName = '';  
 	  console.log(`开始检测【京东账号${$.index}】${$.nickName || $.UserName}....\n`);
-	 
+      onsole.log(`禁用ck为前 ${ckjinyong} 个\n`);	 
       await TotalBean();      
 
       if (!$.isLogin) {	
