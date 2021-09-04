@@ -39,16 +39,16 @@ var ckjinyong = process.env.ckjinyong ?? ""
 		    const DisableCkBody = await DisableCk(envs[i]._id);
 		    if (DisableCkBody.code == 200) {
 		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用成功!\n`);
-		      DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动禁用成功!)\n`;
+		      DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动禁用成功!)\n`;
 		    } else {
 				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用失败!\n`);
-				DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动禁用失败!)\n`;
+				DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动禁用失败!)\n`;
 		    }	
 		  } else {
 		    const delCkBody = await delEnv(envs[i]._id);
 		    if (delCkBody.code == 200) {
 		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除成功!\n`);
-		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动删除成功!)\n`;		  
+		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动删除成功!)\n`;		  
 		    } else {
 			console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除!\n`);
 			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除.\n`;
@@ -60,10 +60,10 @@ var ckjinyong = process.env.ckjinyong ?? ""
 			  const EnableCkBody = await EnableCk(envs[i]._id);
 			  if (EnableCkBody.code == 200) {
 				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已恢复,自动启用成功!\n`);
-				EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动启用成功!)\n`;
+				EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已恢复,自动启用成功!)\n`;
 				} else {
 					console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已恢复,自动启用失败!\n`);
-					EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (自动启用失败!)\n`;
+					EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已恢复,自动启用失败!)\n`;
 				}
 		  } else { 
 			SuccessMessage += `京东账号${$.index} : ${$.nickName || $.UserName}\n`;	
