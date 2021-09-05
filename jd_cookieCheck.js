@@ -109,15 +109,16 @@ if (process.env.CKREMARK) {
     }   
   
   if ($.isNode()) {	  
-	  if (OErrorMessage){
-		  allMessage+=`👇👇👇👇👇检测出错账号👇👇👇👇👇\n`+OErrorMessage+`\n\n`;		  
-	  }
+
 	  if (delMessage){
 		  allMessage+=`👇👇👇👇👇自动删除账号👇👇👇👇👇\n`+delMessage+`\n\n`;
       }	
 	  if (DisableMessage){
 		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+DisableMessage+`\n\n`;		  
 	  }	  
+	  if (OErrorMessage){
+		  allMessage+=`👇👇👇👇👇检测出错账号👇👇👇👇👇\n`+OErrorMessage+`\n\n`;		  
+	  }
 	  if (EnableMessage){
 		  if (CKAutoEnable=="true"){
 			allMessage+=`👇👇👇👇👇自动启用账号👇👇👇👇👇\n`+EnableMessage+`\n\n`;
@@ -137,7 +138,7 @@ if (process.env.CKREMARK) {
 	  if (ShowSuccess=="true" && SuccessMessage){
 		  allMessage+=`👇👇👇👇👇有效账号👇👇👇👇👇\n`+SuccessMessage+`\n`;		  
 	  }
-	  if ($.isNode() && (EnableMessage || DisableMessage || OErrorMessage || CKAlwaysNotify=="true" || delMessage)) {
+	  if ($.isNode() && (EnableMessage || DisableMessage || CKAlwaysNotify=="true" || delMessage)) {
 		await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
 	  }
    }
