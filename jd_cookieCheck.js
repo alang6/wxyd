@@ -1,5 +1,12 @@
+/*
+cron "30 * * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
+*/
 //Check Ck Tools by ccwav
-//Update : 20210831 V4
+//Update : 20210903
+//增加变量显示正常CK:  export SHOWSUCCESSCK="true"
+//增加变量永远通知CK状态:  export CKALWAYSNOTIFY="true"
+//增加变量停用自动启用CK:  export CKAUTOENABLE="false"
+//增加变量不显示CK备注:  export CKREMARK="false"
 const $ = new Env('京东CK检测');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -11,8 +18,22 @@ const api = got.extend({
   responseType: 'json',
 });
 
-let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage='',delMessage=''
+let allMessage='',ErrorMessage='',SuccessMessage='',DisableMessage='',EnableMessage='',OErrorMessage='',delMessage='';
+let ShowSuccess="false",CKAlwaysNotify="false",CKAutoEnable="true",CKRemark="true";
 var ckjinyong = process.env.ckjinyong ?? ""
+
+if (process.env.SHOWSUCCESSCK) {
+  ShowSuccess = process.env.SHOWSUCCESSCK;
+}
+if (process.env.CKALWAYSNOTIFY) {
+  CKAlwaysNotify = process.env.CKALWAYSNOTIFY;
+}
+if (process.env.CKAUTOENABLE) {
+  CKAutoEnable = process.env.CKAUTOENABLE;
+}
+if (process.env.CKREMARK) {
+  CKRemark = process.env.CKREMARK;
+}
 
 !(async () => {  
   const envs = await getEnvs();
@@ -27,10 +48,24 @@ var ckjinyong = process.env.ckjinyong ?? ""
       $.UserName = (cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])	 
       $.index = i + 1;
       $.isLogin = true;
-      $.nickName = '';  
-	  console.log(`开始检测【京东账号${$.index}】${$.nickName || $.UserName}....\n`);
+	  $.error = '';
+      $.nickName = decodeURIComponent($.UserName); 
+	  $.Remark = '';
+	  if (CKRemark=="true"){
+		  $.Remark = envs[i].remarks||'';	  	  
+		  if($.Remark){
+			  $.Remark = $.Remark.replace("remark=","");
+			  $.Remark = $.Remark.replace(";","");
+			  $.Remark="("+$.Remark+")";
+		  }	
+	  }	  
+	  console.log(`开始检测【京东账号${$.index}】${$.nickName}${$.Remark}....\n`);
 	 
       await TotalBean();      
+	  if ($.error){
+		  OErrorMessage+=$.error;
+		  continue;
+	  }
 
       if (!$.isLogin) {	
 		if (envs[i].status==0)
@@ -38,20 +73,20 @@ var ckjinyong = process.env.ckjinyong ?? ""
 		  if(i < ckjinyong) {
 		    const DisableCkBody = await DisableCk(envs[i]._id);
 		    if (DisableCkBody.code == 200) {
-		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用成功!\n`);
-		      DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动禁用成功!)\n`;
+		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已失效,自动禁用成功!\n`);
+		      DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}(已失效,自动禁用成功!)\n`;
 		    } else {
-				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动禁用失败!\n`);
-				DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动禁用失败!)\n`;
+				console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已失效,自动禁用失败!\n`);
+				DisableMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}(已失效,自动禁用失败!)\n`;
 		    }	
 		  } else {
 		    const delCkBody = await delEnv(envs[i]._id);
 		    if (delCkBody.code == 200) {
-		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,自动删除成功!\n`);
-		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已失效,自动删除成功!)\n`;		  
+		      console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已失效,自动删除成功!\n`);
+		      delMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}(已失效,自动删除成功!)\n`;		  
 		    } else {
-			console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除!\n`);
-			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName} 已失效,已删除.\n`;
+			console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已失效,已删除!\n`);
+			ErrorMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已失效,已删除.\n`;
 		    }
           }
         }
@@ -59,11 +94,11 @@ var ckjinyong = process.env.ckjinyong ?? ""
 		  if (envs[i].status==1){
 			  const EnableCkBody = await EnableCk(envs[i]._id);
 			  if (EnableCkBody.code == 200) {
-				console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已恢复,自动启用成功!\n`);
-				EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已恢复,自动启用成功!)\n`;
+				console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已恢复,自动启用成功!\n`);
+				EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}(已恢复,自动启用成功!)\n`;
 				} else {
-					console.log(`京东账号${$.index} : ${$.nickName || $.UserName} 已恢复,自动启用失败!\n`);
-					EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName} (已恢复,自动启用失败!)\n`;
+					console.log(`京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}已恢复,自动启用失败!\n`);
+					EnableMessage += `京东账号${$.index} : ${$.nickName || $.UserName}${$.Remark}(已恢复,自动启用失败!)\n`;
 				}
 		  } else { 
 			SuccessMessage += `京东账号${$.index} : ${$.nickName || $.UserName}\n`;	
@@ -71,17 +106,24 @@ var ckjinyong = process.env.ckjinyong ?? ""
 		}
 	  }
       await $.wait(2*1000)
-    }  
+    }   
   
-  if ($.isNode()) {
-	  if (DisableMessage){
-		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+DisableMessage+`\n\n`;		  
+  if ($.isNode()) {	  
+	  if (OErrorMessage){
+		  allMessage+=`👇👇👇👇👇检测出错账号👇👇👇👇👇\n`+OErrorMessage+`\n\n`;		  
 	  }
 	  if (delMessage){
-		  allMessage+=`👇👇👇👇👇自动删除账号👇👇👇👇👇\n`+delMessage+`\n\n`;		  
-	  }
+		  allMessage+=`👇👇👇👇👇自动删除账号👇👇👇👇👇\n`+delMessage+`\n\n`;
+      }	
+	  if (DisableMessage){
+		  allMessage+=`👇👇👇👇👇自动禁用账号👇👇👇👇👇\n`+DisableMessage+`\n\n`;		  
+	  }	  
 	  if (EnableMessage){
-		  allMessage+=`👇👇👇👇👇自动启用账号👇👇👇👇👇\n`+EnableMessage+`\n\n`;		  
+		  if (CKAutoEnable=="true"){
+			allMessage+=`👇👇👇👇👇自动启用账号👇👇👇👇👇\n`+EnableMessage+`\n\n`;
+		  }	else {
+			allMessage+=`👇👇👇👇👇账号已恢复👇👇👇👇👇\n`+EnableMessage+`\n\n`;
+		  }			  
 	  }	  
 	  
 	  if (ErrorMessage){
@@ -92,10 +134,10 @@ var ckjinyong = process.env.ckjinyong ?? ""
 	  
 	  console.log(allMessage);
 	  allMessage += `为保证失效ck更新后立即启用，失效ck直接删除`
-	  //if (SuccessMessage){
-		  //allMessage+=`👇👇👇👇👇👇👇有效账号👇👇👇👇👇👇👇\n`+SuccessMessage+`\n`;		  
-	  //}
-	  if ($.isNode() && (EnableMessage || DisableMessage || delMessage)) {
+	  if (ShowSuccess=="true" && SuccessMessage){
+		  allMessage+=`👇👇👇👇👇有效账号👇👇👇👇👇\n`+SuccessMessage+`\n`;		  
+	  }
+	  if ($.isNode() && (EnableMessage || DisableMessage || OErrorMessage || CKAlwaysNotify=="true" || delMessage)) {
 		await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
 	  }
    }
@@ -107,42 +149,46 @@ var ckjinyong = process.env.ckjinyong ?? ""
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      "url": `https://wq.jd.com/user/info/QueryJDUserInfo?sceneval=2`,
-      "headers": {
-        "Accept": "application/json,text/plain, */*",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept-Encoding": "gzip, deflate, br",
+      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      headers: {
+        Host: "me-api.jd.com",
+        Accept: "*/*",
+        Connection: "keep-alive",
+        Cookie: cookie,
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
         "Accept-Language": "zh-cn",
-        "Connection": "keep-alive",
-        "Cookie": cookie,
-        "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-      },
-      "timeout": 10000
+        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
+        "Accept-Encoding": "gzip, deflate, br"
+      }
     }
-    $.post(options, (err, resp, data) => {
+    $.get(options, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          $.logErr(err)
+		  $.error=`${$.name} :`+`${JSON.stringify(err)}\n`;	
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === 13) {
+            if (data['retcode'] === "1001") {
               $.isLogin = false; //cookie过期
-              return
+			  $.nickName = decodeURIComponent($.UserName);
+              return;
             }
-            if (data['retcode'] === 0) {
-              $.nickName = (data['base'] && data['base'].nickname) || decodeURIComponent($.UserName);
+            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+			  $.nickName = (data.data.userInfo.baseInfo.nickname) || decodeURIComponent($.UserName);
             } else {
               $.nickName = decodeURIComponent($.UserName);
-            }
+			  console.log("Debug Code:"+data['retcode']);
+			  $.error=`${$.nickName} :`+`服务器返回未知状态，不做变动\n`;		
+            }            
           } else {
-            console.log(`京东服务器返回空数据`)
+            $.log('京东服务器返回空数据');
+			$.error=`${$.nickName} :`+`服务器返回空数据，不做变动\n`;
           }
         }
       } catch (e) {
-        $.logErr(e, resp)
+        $.logErr(e)
+		$.error=`检测出错，不做变动\n`;
       } finally {
         resolve();
       }
