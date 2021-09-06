@@ -1,11 +1,7 @@
 /*
+cron "2 0 * * *" jd_dpqd.js
 店铺签到，各类店铺签到，有新的店铺直接添加token即可
 搬运cui521大佬脚本，请勿外传！！！
-
-自带的Token List网址已不可用
-
-由LAzysheep更新
-cron 30 0,23 * * * jd_qpqd_diy.js, tag=店铺签到diy
 */
 const $ = new Env('店铺签到');
 
@@ -54,6 +50,7 @@ const token=[
   '3D99640B8E65273658E3A21908FFEC4C',
   'A0F78AB303FAB2F731115934FAAFA5AF',
   'CDC56C42F64CA34677E5894F28AF4871',//每日，100分；1天，200分、2豆；2天，1000分、25-3券
+
 ]
 //IOS等用户直接用NobyDa的jd cookie
 
@@ -82,8 +79,8 @@ if ($.isNode()) {
   
 	$.TokenLists = []
   
-        //$.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
-        $.innerTokenList = token
+        $.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
+        //$.innerTokenList = token
 	
 	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
 
