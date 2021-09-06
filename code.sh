@@ -73,15 +73,15 @@ function rand(){
     echo $(($num % $max + $min))
 }
 
-rnd=$(rand 8 45)
+rnd=$(rand 8 47)
 #echo $rnd
-rnd2=$[$rnd + 30]
+rnd2=$[$rnd + 31]
 #echo $rnd2
 #BreakHelpNum=$rnd~$rnd2
 #echo $BreakHelpNum
 BreakHelpType="1"                  ## 屏蔽模式
 BreakHelpNum=$rnd~$rnd2  #"4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
-echo -e "\n## 本次屏蔽被助力账号区间\"$BreakHelpNum\"，共31个账号"
+echo -e "\n## 本次屏蔽被助力账号区间\"$BreakHelpNum\"，共32个账号"
 
 ## 定义是否自动更新配置文件中的互助码和互助规则
 ## 默认为 UpdateType="1" 表示更新互助码和互助规则；UpdateType="2" 表示只更新互助码，不更新互助规则；UpdateType="3" 表示只更新互助规则，不更新互助码；留空或其他数值表示不更新。
