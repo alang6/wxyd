@@ -89,7 +89,7 @@ async function main() {
     $.actorUuid = $.activityData.actorUuid;
     console.log(`获取活动详情成功`);
     if(!$.activityData.opencard){
-        if(!$.shareUuid){$.shareUuid = 'd3202be8a8a74fac8b98ae613f75495d';}
+        if(!$.shareUuid){$.shareUuid = 'a2d9bc5ecbf745e8bd8f0a36dc9cb408';}
         await join($.venderId);
         await $.wait(2000);
         await takePostRequest('activityContent');
