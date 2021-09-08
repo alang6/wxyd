@@ -50,7 +50,7 @@ if ($.isNode()) {
         return;
     }
     for (let i = 0; i < cookiesArr.length; i++) {
-        await $.wait(60000)
+        await $.wait(45000)
         cookie = cookiesArr[i];
         if (cookie) {
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -104,6 +104,8 @@ if ($.isNode()) {
             }
             await followShop()
             // await saveTask()
+            await drawContent();
+            await drawContent();
             await startDraw(1)
             await startDraw(2)
             await checkOpenCard();
@@ -176,6 +178,25 @@ function saveTask() {
                 $.logErr(e, resp)
             } finally {
                 resolve(data.data);
+            }
+        })
+    })
+}
+
+async function drawContent() {
+    return new Promise(resolve => {
+        let body = `activityId=9ef833504aaf436ebd84a3b762c32ead&pin=${encodeURIComponent($.myPingData.secretPin)}`
+        $.post(taskPostUrl('/dingzhi/taskact/openCardcommon/drawContent', body, `https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/805745?activityId=9ef833504aaf436ebd84a3b762c32ead&shareUuid=${$.shareUuid ? $.shareUuid : '7d7b6e18ad5a4b219b3fe16f19dbc5cf'}`), async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                }
+            } catch (e) {
+                //await $.wait(5000)
+                $.logErr(e, resp)
+            } finally {
+                resolve(data);
             }
         })
     })
