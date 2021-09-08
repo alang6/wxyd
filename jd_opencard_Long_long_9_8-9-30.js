@@ -50,7 +50,7 @@ if ($.isNode()) {
         return;
     }
     for (let i = 0; i < cookiesArr.length; i++) {
-        await $.wait(7000)
+        await $.wait(40000)
         cookie = cookiesArr[i];
         if (cookie) {
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -421,7 +421,7 @@ function getActorUuid() {
 
 function checkOpenCard() {
     return new Promise(resolve => {
-        let body = `activityId=9ef833504aaf436ebd84a3b762c32ead&actorUuid=${$.actorUuid}&shareUuid=${$.shareUuid}&pin=${encodeURIComponent($.myPingData.secretPin)}`
+        let body = `activityId=9ef833504aaf436ebd84a3b762c32ead&actorUuid=${$.actorUuid}&shareUuid=${$.shareUuid ? $.shareUuid : '7d7b6e18ad5a4b219b3fe16f19dbc5cf'}&pin=${encodeURIComponent($.myPingData.secretPin)}`
         $.post(taskPostUrl('/dingzhi/dz/openCard/checkOpenCard', body, 'https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/checkOpenCard'), async (err, resp, data) => {
             try {
                 if (err) {
