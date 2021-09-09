@@ -1,8 +1,5 @@
 /*
-jd_get_share_code 日志专用修复版
-
-author:msechen
-time:2021-9-7
+jd_get_share_code 日志 专用
 
 详细配置使用说明 查看 https://github.com/qq34347476/js_script/wiki/format_share_jd_code
 
@@ -10,10 +7,8 @@ time:2021-9-7
 
 只支持nodejs
 
-使用前先使用本仓库jd_get_share_code.js脚本获取互助码
-
 #获取互助码并格式化/docker自动更新容器下所有账号互助码
-55 23 * * * jd_get_share_code_format.js
+55 23 * * * https://gitee.com/qq34347476/quantumult-x/raw/master/format_share_jd_code.js, tag=获取互助码并格式化/docker自动更新容器下所有账号互助码, img-url=https://raw.githubusercontent.com/yogayyy/task/master/huzhucode.png, enabled=true
 
  */
 const $ = new Env("获取互助码并格式化/docker自动更新容器下所有账号互助码");
@@ -78,7 +73,7 @@ if (!$.isNode()) {
       $.shareCodeObj.Sgmh = exportShareCodes(str, "闪购盲盒】");
       $.shareCodeObj.Jdcfd = exportShareCodes(str, "财富岛】");
       $.shareCodeObj.Cash = exportShareCodes(str, "签到领现金】");
-      $.shareCodeObj.Bookshop = exportShareCodes(str, "口袋书店】");
+      //$.shareCodeObj.Bookshop = exportShareCodes(str, "口袋书店】");
       $.shareCodeObj.Health = exportShareCodes(str, "健康社区】");
       //$.shareCodeObj.Joy = exportShareCodes(str, "crazyJoy】");
       //$.shareCodeObj.Jdzz = exportShareCodes(str, "京东赚赚好友互助码】");
@@ -243,13 +238,13 @@ function showFormatMsg(shareCodeObj) {
       "MyCash",
       "ForOtherCash"
     );
-   shareCodeObj.Bookshop &&
-     formatShareCodesForLinux(
-       shareCodeObj.Bookshop,
-       "################################## 定义口袋书店互助（选填） ##################################",
-              "MyBookshop",
-             "ForOtherBookshop"
-     );
+//   shareCodeObj.Bookshop &&
+ //    formatShareCodesForLinux(
+ //      shareCodeObj.Bookshop,
+ //      "################################## 定义口袋书店互助（选填） ##################################",
+ //             "MyBookshop",
+ //            "ForOtherBookshop"
+ //    );
    shareCodeObj.Health &&
      formatShareCodesForLinux(
        shareCodeObj.Health,
