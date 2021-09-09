@@ -1,7 +1,7 @@
 #!/bin/env python3
 # -*- coding: utf-8 -*
 '''
-cron: 15 */16 * * *  python3 wscat_explicit.py
+cron: 22 4,13 * * *  python3 wscat_explicit.py
 new Env('wskey转换');
 '''
 
