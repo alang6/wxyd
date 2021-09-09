@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*
+'''
+cron: 15 */16 * * * wskey.py
+new Env('wskey转换');
+'''
 import socket
 import base64
 import http.client
