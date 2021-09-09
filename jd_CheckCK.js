@@ -205,7 +205,7 @@ if (process.env.CKNOWARNERROR) {
 			OErrorMessage="NoWarn!";
 		}
 		
-        if ($.isNode() && (EnableMessage || DisableMessage || OErrorMessage || CKAlwaysNotify == "true" || delMessage)) {
+        if ($.isNode() && (EnableMessage || DisableMessage || CKAlwaysNotify == "true" || delMessage)) {
             await notify.sendNotify(`${$.name}`, `${allMessage}`, {
                 url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
             })
