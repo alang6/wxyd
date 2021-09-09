@@ -177,9 +177,7 @@ if (process.env.CKNOWARNERROR) {
         if (DisableMessage) {
             allMessage += `👇👇👇👇👇自动禁用账号👇👇👇👇👇\n` + DisableMessage + `\n\n`;
         }        
-        if (OErrorMessage) {
-            allMessage += `👇👇👇👇👇检测出错账号👇👇👇👇👇\n` + OErrorMessage + `\n\n`;
-        }
+
 
         if (EnableMessage) {
             if (CKAutoEnable == "true") {
@@ -188,7 +186,9 @@ if (process.env.CKNOWARNERROR) {
                 allMessage += `👇👇👇👇👇账号已恢复👇👇👇👇👇\n` + EnableMessage + `\n\n`;
             }
         }
-
+        if (OErrorMessage) {
+            allMessage += `👇👇👇👇👇检测出错账号👇👇👇👇👇\n` + OErrorMessage + `\n\n`;
+        }
         if (ErrorMessage) {
             allMessage += `👇👇👇👇👇失效账号👇👇👇👇👇\n` + ErrorMessage + `\n\n`;
         } else {
