@@ -104,22 +104,19 @@ message = ""
       // 签到 / 逛会场 / 浏览商品
       for (const task of $.taskList) {
         if (task.taskType === 'SIGN') {
-          $.log(`${task.taskTitle} 签到`)
+          $.log(`${task.taskTitle}`)
           await apDoTask(task.id, task.taskType, undefined);
-
-          $.log(`${task.taskTitle} 领取签到奖励`)
+          $.log(`${task.taskTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
-
         }
-        if (task.taskType === 'BROWSE_PRODUCT' || task.taskType === 'BROWSE_CHANNEL') {
+        if (task.taskType === 'BROWSE_PRODUCT' || task.taskType === 'BROWSE_CHANNEL' && task.taskLimitTimes !== 1) {
           let productList = await apTaskDetail(task.id, task.taskType);
-
           let productListNow = 0;
           if (productList.length === 0) {
             let resp = await apTaskDrawAward(task.id, task.taskType);
 
             if (!resp.success) {
-              $.log(`${task.taskTitle} 领取完成!`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 领取完成!`)
               productList = await apTaskDetail(task.id, task.taskType);
 
             }
@@ -135,7 +132,7 @@ message = ""
             let resp = await apDoTask(task.id, task.taskType, productList[productListNow].itemId, productList[productListNow].appid);
 
             if (resp.code === 2005 || resp.code === 0) {
-              $.log(`${task.taskTitle} 任务完成！`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 任务完成！`)
             } else {
               $.log(`${resp.echo} 任务失败！`)
             }
@@ -150,7 +147,7 @@ message = ""
             let resp = await apTaskDrawAward(task.id, task.taskType);
 
             if (!resp.success) {
-              $.log(`${task.taskTitle} 领取完成!`)
+              $.log(`${task.taskTitle}|${task.taskShowTitle} 领取完成!`)
               break
             }
           }
@@ -163,6 +160,12 @@ message = ""
             }
             $.log("领取助力奖励成功！")
           }
+        }
+        if (task.taskType === 'BROWSE_CHANNEL' && task.taskLimitTimes === 1) {
+          $.log(`${task.taskTitle}|${task.taskShowTitle}`)
+          await apDoTask2(task.id, task.taskType, task.taskSourceUrl);
+          $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
+          await apTaskDrawAward(task.id, task.taskType);
         }
       }
     }
@@ -292,10 +295,29 @@ function apDoTask(taskId, taskType, itemId = '', appid = 'activities_platform') 
   })
 }
 
+function apDoTask2(taskId, taskType, itemId, appid = 'activities_platform') {
+  return new Promise(resolve => {
+    $.post(taskPostClientActionUrl(`body={"taskType":"${taskType}","taskId":${taskId},"linkId":"LsQNxL7iWDlXUs6cFl-AAg","itemId":"${itemId}"}&appid=${appid}`, `apDoTask`), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
 function apTaskDetail(taskId, taskType) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.post(taskPostClientActionUrl(`functionId=apTaskDetail&body={"taskType":"${taskType}","taskId":${taskId},"itemId":"https://pro.m.jd.com/jdlite/active/oTtXBgN2Toq1KfdLXUKKivNKVgA/index.html","linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `apTaskDetail`), async (err, resp, data) => {
+    $.post(taskPostClientActionUrl(`functionId=apTaskDetail&body={"taskType":"${taskType}","taskId":${taskId},"channel":4,"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `apTaskDetail`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
