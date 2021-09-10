@@ -203,7 +203,7 @@ async function pasture() {
       if(Number(materialNumber) < 400){
         for (let j = 0; j < canBuyTimes && j < 4; j++) {
           console.log(`第${j + 1}次购买白菜`);
-//          await takeGetRequest('buy');
+          await takeGetRequest('buy');
           await $.wait(2000);
         }
         await takeGetRequest('GetHomePageInfo');
