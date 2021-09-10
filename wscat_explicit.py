@@ -353,4 +353,5 @@ if __name__=='__main__':
   else:
    logger.info("WSKEY格式错误\n--------------------\n")
  logger.info("执行完成\n--------------------")
+ logger.info(wslist)
  sys.exit(0)
