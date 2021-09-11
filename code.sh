@@ -42,7 +42,7 @@ HelpType=""
 ## 设定值为 DiyHelpType="1" 表示启用功能；不填或填其他内容表示不开启功能。
 ## 如果只是想要控制某个活动以执行某种互助规则，可以参考下面 case 这个命令的例子来控制
 ## 活动名称参见 name_config 定义内容；具体可在本脚本中搜索 name_config=( 获悉
-DiyHelpType=""
+DiyHelpType="1"
 diy_help_rules(){
     case $1 in
         Pet | JdFactory | Health | Fruit)
