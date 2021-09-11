@@ -41,11 +41,11 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/';
 !(async () => {
   $.newShareCodes = []
-  // $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateBeanHome.json')
+  // $.authorCode = await getAuthorShareCode('http://adguard.ipq.co/jd_updateBeanHome.json')
   // if (!$.authorCode) {
-  //   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateBeanHome.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+  //   $.http.get({url: 'http://adguard.ipq.co/jd_updateBeanHome.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
   //   await $.wait(1000)
-  //   $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateBeanHome.json') || []
+  //   $.authorCode = await getAuthorShareCode('http://adguard.ipq.co/jd_updateBeanHome.json') || []
   // }
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -151,10 +151,12 @@ async function jdBeanHome() {
     await $.wait(1000)
     await queryCouponInfo()
     $.doneState = false
+    let num = 0
     do {
       await $.wait(2000)
       await beanTaskList(2)
-    } while (!$.doneState)
+      num++
+    } while (!$.doneState && num < 5)
     await $.wait(2000)
     if ($.doneState) await beanTaskList(3)
 
@@ -229,10 +231,10 @@ async function beanTaskList(type) {
                       let taskList = vo.subTaskVOS[key]
                       if (taskList.status === 1) {
                         $.doneState = false
-                        console.log(`去做[${vo.taskName}]${taskList.title}`)
+                        console.log(`去做[${vo.taskName}]${taskList.title || ''}`)
                         await $.wait(2000)
                         await beanDoTask({"actionType": 1, "taskToken": `${taskList.taskToken}`}, vo.taskType)
-                        if (vo.taskType === 9) {
+                        if (vo.taskType === 9 || vo.taskType === 8) {
                           await $.wait(3000)
                           await beanDoTask({"actionType": 0, "taskToken": `${taskList.taskToken}`}, vo.taskType)
                         }
@@ -272,7 +274,7 @@ function beanDoTask(body, taskType) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            if (body.actionType === 1 && taskType !== 9) {
+            if (body.actionType === 1 && (taskType !== 9 && taskType !== 8)) {
               if (data.code === "0" && data.data.bizCode === "0") {
                 console.log(`完成任务，获得+${data.data.score}成长值`)
               } else {
