@@ -75,7 +75,7 @@ function rand(){
 
 rnd=$(rand 8 47)
 #echo $rnd
-rnd2=$[$rnd + 32]
+rnd2=$[$rnd + 33]
 #echo $rnd2
 #BreakHelpNum=$rnd~$rnd2
 #echo $BreakHelpNum
