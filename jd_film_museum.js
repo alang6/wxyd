@@ -30,12 +30,12 @@ if ($.isNode()) {
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/museum.json');}catch (e) {}
-    if(!res){
-        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/museum.json');}catch (e) {}
+    try{res = await getAuthorShareCode('');}catch (e) {}
+    if(res){
+        try{res = await getAuthorShareCode('');}catch (e) {}
         if(!res){res = ["2028","12668","12137","12684","12695"];}
     }
-    $.shareUuid = getRandomArrayElements(res,1)[0];
+    //$.shareUuid = getRandomArrayElements(res,1)[0];
     for (let i = 0; i < cookiesArr.length; i++) {
         getUA();
         $.index = i + 1;
@@ -89,8 +89,8 @@ async function main() {
         console.log(`活动抽奖码：${$.activityInfo.lotteryCount.cuponcode}`);
     }
     if($.activityInfo.isJoin.status === '0'){
-        await join('1000085868');
-        await $.wait(1000);
+        //await join('1000085868');
+        //await $.wait(1000);
         for (let i = 0; i < typeList.length; i++) {
             $.activityInfo[typeList[i]] = await takeGet(typeList[i]);
             await $.wait(100);
@@ -361,7 +361,9 @@ function getToken() {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
+                    console.log(`${data}`)
                     data = JSON.parse(data);
+                    
                     $.token = data['token']
                 }
             } catch (e) {
