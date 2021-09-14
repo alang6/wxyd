@@ -48,7 +48,7 @@ if ($.isNode()) {
         return;
     }
     for (let i = 0; i < cookiesArr.length; i++) {
-        // await $.wait(52000)
+        await $.wait(53000)
         cookie = cookiesArr[i];
         if (cookie) {
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -98,6 +98,7 @@ if ($.isNode()) {
             await saveTask(23,0)
             await saveTask(13,1000223886)
             await saveTask(12,12)
+            await drawContent();
             // await drawContent();
             // await startDraw(1)
             // await startDraw(2)
