@@ -139,6 +139,9 @@ if (process.env.PUSH_PLUS_TOKEN) {
 if (process.env.PUSH_PLUS_USER) {
   PUSH_PLUS_USER = process.env.PUSH_PLUS_USER;
 }
+if (process.env.WX_BOT) {
+  WX_BOT = process.env.WX_BOT;
+}
 //==========================云端环境变量的判断与接收=========================
 
 /**
