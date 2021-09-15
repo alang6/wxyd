@@ -1,8 +1,9 @@
 /*
 动人影像馆
-抽奖貌似没水了，累计签到有豆子，14天100豆  应该能拿到
-注意*****************脚本会开一个会员卡，会加购，默认助力作者********************
-cron 23 10,22 13-26 9 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_film_museum.js
+抽奖貌似没水了，累计签到有豆子，5天25豆，10天50豆，14天100豆  应该能拿到
+注意*****************脚本会开一个会员卡，会加购，会助力作者********************
+///cron 23 15 13-26 9 *
+///https://raw.githubusercontent.com/star261/jd/main/scripts/jd_film_museum.js
 * */
 const $ = new Env('影像馆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -34,6 +35,9 @@ if ($.isNode()) {
     if(!res){
         try{res = await getAuthorShareCode('http://adguard.ipq.co/museum.json');}catch (e) {}
         if(!res){res = [];}
+    }
+    if(res.length === 0){
+        return ;
     }
     $.shareUuid = getRandomArrayElements(res,1)[0];
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -427,9 +431,6 @@ function TotalBean() {
     })
 }
 function getRandomArrayElements(arr, count) {
-    if(arr.length === 0){
-        arr = ["2028","12668","12137","12684","12695","12769","12795","12808","12827","12792"];
-    }
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
