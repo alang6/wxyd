@@ -1,2 +1,2 @@
 # opencard
-# 请勿star，搬运自用
+# 请勿star，勿star，star是nt
