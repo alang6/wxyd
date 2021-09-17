@@ -57,11 +57,6 @@ let run_pins = ['5141779-21548625,jd_nlGJfCMVydhw'];
 //friendsArr内置太多会导致IOS端部分软件重启,可PR过来(此处目的:帮别人助力可得30g狗粮)
 let friendsArr = ["5141779-21548625","jd_nlGJfCMVydhw"]
 
-let JD_invokeKey = 'JL1VTNRadM68cIMQ'
-if(process.env.JOY_HOST){
-  JD_invokeKey = process.env.JD_invokeKey
-}
-
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000);
