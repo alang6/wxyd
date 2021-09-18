@@ -2,7 +2,7 @@
 * TODO
 * 团
 * 
-* cron: 30 * * * *
+* cron: 0,13 */5 * * *
 */
 
 import {format} from 'date-fns';
