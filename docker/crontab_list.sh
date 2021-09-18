@@ -5,6 +5,9 @@
 
 ##############短期活动##############
 
+# 京东手机狂欢城 (10.1 结束)
+6 0-18/6 1,16-30 9-10 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
+
 # 跳跳乐瓜分京豆(9.13-9.19)
 11 1,12,22 * 9 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 
