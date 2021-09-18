@@ -2,6 +2,7 @@
 * 活动地址:https://ddsj-dz.isvjcloud.com/dd-world/load_app/load_app.html
 cron "17 1,15 * * *" script-path=jd_ddworld.js, tag=东东世界
 * */
+
 const $ = new Env('东东世界');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
