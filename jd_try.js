@@ -104,7 +104,7 @@ let args_xh = {
      * 不打印的缺点：无法清晰知道每个商品为什么会被过滤，哪个商品被添加到了待提交试用组
      * 可设置环境变量：JD_TRY_PLOG，默认为true
      * */
-    printLog: process.env.JD_TRY_PLOG || true,
+    printLog: process.env.JD_TRY_PLOG || false,
     /*
      * 白名单
      * 可通过环境变量控制：JD_TRY_WHITELIST，默认为false
