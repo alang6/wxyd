@@ -299,9 +299,13 @@ async function scans() {
 			//$.log("Token：" + token)
 			$.log("任务：" + taskName[j])
 			bolTaskFail = true;
-		await doTask()
+		if (taskName[j].indexOf("开通") == -1 && taskName[j].indexOf("会员") == -1) {
+			await doTask()
+			await DoTask()	
+		}
+		
 		//if (bolTaskFail) {
-		await DoTask()
+		
 		//}
 	}
 }
