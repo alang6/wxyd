@@ -151,7 +151,7 @@ async function doTask() {
 									bolTaskFail = false;
 									console.log(result.data.bizMsg + "\n")
 								} else {
-									console.log("任务失败: " + result.data.bizMsg + "\n")
+									console.log("任务失败了: " + result.data.bizMsg + "\n")
 								}
 								await $.wait(1000)
 							}
