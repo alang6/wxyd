@@ -78,7 +78,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
         if (!item) continue;
         if (!$.canHelp) break
         await enrollFriend(item);
-        await $.wait(2500);
+        await $.wait(20000);
       }
     }
   }
