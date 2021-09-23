@@ -87,15 +87,15 @@ async function jdGlobal() {
     await apTaskList()
     await wheelsHome()
 
-//    await signInit()
-//    await sign()
+    // await signInit()
+    // await sign()
     await invite()
     await invite2()
     $.score = 0
     $.total = 0
     await taskList()
     await queryJoy()
-//    await signInit()
+    // await signInit()
     await cash()
     await showMsg()
   } catch (e) {
@@ -117,7 +117,7 @@ async function signInit() {
     $.get(taskUrl('speedSignInit', {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
-      "inviterId":"sMWcZ7TKaEBlU//QsVkItw=="
+      "inviterId":"U44jAghdpW58FKgfqPdotA=="
     }), async (err, resp, data) => {
       try {
         if (err) {
@@ -676,7 +676,9 @@ function invite2() {
   let t = +new Date()
   let inviterId = [
     "sMWcZ7TKaEBlU//QsVkItw==",
-  ][Math.floor((Math.random() * 1))]
+    "X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=",
+    "sMWcZ7TKaEBlU//QsVkItw=="
+  ][Math.floor((Math.random() * 3))]
   let headers = {
     'Host': 'api.m.jd.com',
     'accept': 'application/json, text/plain, */*',
@@ -704,8 +706,9 @@ function invite() {
   let t = +new Date()
   let inviterId = [
     "sMWcZ7TKaEBlU//QsVkItw==",
+    "X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI=",
     "X6BLtZKxx+ikABCqvZBocS5IRQlTziSkNyv4iNJVUFI="
-  ][Math.floor((Math.random() * 2))]
+  ][Math.floor((Math.random() * 3))]
   var headers = {
     'Host': 'api.m.jd.com',
     'accept': 'application/json, text/plain, */*',
