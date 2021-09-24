@@ -98,9 +98,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 async function joyReward() {
   try {
-    if (new Date().getMinutes() === 57) {
+    if (new Date().getMinutes() === 59) {
       let nowtime = new Date().Format("s.S")
-      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 60;
+      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 57;
       if(nowtime < 56) {
         let sleeptime = (starttime - nowtime) * 1000;
         console.log(`等待时间 ${sleeptime / 1000}`);
