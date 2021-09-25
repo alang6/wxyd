@@ -26,6 +26,11 @@ cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 */
 const $ = new Env('东东萌宠');
 let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, newShareCodes, allMessage = '';
+
+const thefs = require('fs');
+const thepath = '/jd/scripts/0sendNotify_Annyooo.js'
+const notifyTip = $.isNode() ? process.env.MY_NOTIFYTIP : false;
+
 //助力好友分享码(最多5个,否则后面的助力失败),原因:京东农场每人每天只有四次助力机会
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
@@ -61,6 +66,12 @@ let randomCount = $.isNode() ? 0 : 5;
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
         }
+
+        if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+            let thenotify = $.isNode() ? require(thepath) : '';
+            await thenotify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        }
+
         continue
       }
       message = '';
@@ -71,6 +82,12 @@ let randomCount = $.isNode() ? 0 : 5;
       await shareCodesFormat();
       await jdPet();
     }
+
+        //if ($.isNode() && thefs.existsSync(thepath) && notifyTip && allMessage && $.ctrTemp){
+        //    let thenotify = $.isNode() ? require(thepath) : '';
+        //    await thenotify.sendNotify(`${$.name}`, `${allMessage}`)
+        //}
+
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
@@ -90,14 +107,28 @@ async function jdPet() {
     if (initPetTownRes.code === '0' && initPetTownRes.resultCode === '0' && initPetTownRes.message === 'success') {
       $.petInfo = initPetTownRes.result;
       if ($.petInfo.userStatus === 0) {
-        // $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`, { "open-url": "openapp.jdmoble://" });
+        $.msg($.name, '', `【提示】京东账号${$.index} ${$.nickName}\n东东萌宠 活动未开启！\n请手动去京东APP开启活动\n入口：我的->更多工具->互动游戏-开启`, { "open-url": "openapp.jdmoble://" });
         await slaveHelp();//助力好友
-        $.log($.name, '', `【提示】京东账号${$.index}${$.nickName}\n萌宠活动未开启\n请手动去京东APP开启活动\n入口：我的->游戏与互动->查看更多开启`);
+        //$.log($.name, '', `【提示】京东账号${$.index} ${$.nickName}\n东东萌宠 活动未开启！\n请手动去京东APP开启活动\n入口：我的->更多工具->互动游戏-开启`);
+
+        if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+            let thenotify = $.isNode() ? require(thepath) : '';
+            await thenotify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index} ${$.nickName}\n东东萌宠 活动未开启！\n请手动去京东APP开启活动\n入口：我的->更多工具->互动游戏-开启`);
+        }
+
         return
       }
       if (!$.petInfo.goodsInfo) {
-        $.msg($.name, '', `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`, { "open-url": "openapp.jdmoble://" });
-        if ($.isNode()) await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index}${$.nickName}\n暂未选购新的商品`);
+        $.msg($.name, '', `【提示】京东账号${$.index} ${$.nickName}\n暂未选购新的商品`, { "open-url": "openapp.jdmoble://" });
+        if ($.isNode()) {
+            await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index} ${$.nickName}\n暂未选购新的商品`);
+        }
+
+        if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+            let thenotify = $.isNode() ? require(thepath) : '';
+            await thenotify.sendNotify(`${$.name} - ${$.index} - ${$.nickName}`, `【提示】京东账号${$.index} ${$.nickName}\n暂未选购新的商品`);
+        }
+
         return
       }
       goodsUrl = $.petInfo.goodsInfo && $.petInfo.goodsInfo.goodsUrl;
@@ -110,6 +141,12 @@ async function jdPet() {
         if ($.isNode()) {
           await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
         }
+
+        if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+            let thenotify = $.isNode() ? require(thepath) : '';
+            await thenotify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
+        }
+
         return
       } else if ($.petInfo.petStatus === 6) {
         await slaveHelp();//已领取红包,但未领养新的,也能继续助力好友
@@ -118,6 +155,12 @@ async function jdPet() {
         if ($.isNode()) {
           await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n已领取红包,但未继续领养新的物品`);
         }
+
+        if ($.isNode() && thefs.existsSync(thepath) && notifyTip){
+            let thenotify = $.isNode() ? require(thepath) : '';
+            await thenotify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName}\n已领取红包,但未继续领养新的物品`);
+        }
+
         return
       }
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.petInfo.shareCode}\n`);
@@ -480,7 +523,7 @@ function shareCodesFormat() {
     if ($.shareCodesArr[$.index - 1]) {
       newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     } else {
-      console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
+      //console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
