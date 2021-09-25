@@ -655,7 +655,7 @@ function TotalMoney() {
                         data = JSON.parse(data);
                         if (data.code == 0 && data.data.bizCode == 0 && data.data.result) {
                             $.TotalMoney = data.data.result.totalMoney || 0
-                            console.log(`京东-总现金查询成功${$.TotalMoney}元\n`)
+                            //console.log(`京东-总现金查询成功${$.TotalMoney}元\n`)
                         } else {
                             console.log(`京东-总现金查询失败 ${data}\n`)
                         }
