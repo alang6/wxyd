@@ -178,7 +178,7 @@ async function jdPet() {
       await feedPetsAgain();//再次投食
       await energyCollect();//收集好感度
       await showMsg();
-      console.log('全部任务完成, 如果帮助到您可以点下🌟STAR鼓励我一下, 明天见~');
+      console.log('全部任务完成！');
     } else if (initPetTownRes.code === '0'){
       console.log(`初始化萌宠失败:  ${initPetTownRes.message}`);
     }
