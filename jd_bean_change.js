@@ -811,10 +811,10 @@ function getJxFactory() {
                                 } else {
                                     $.unActive = false;//标记是否开启了京喜活动或者选购了商品进行生产
                                     if (!data.factoryList) {
-                                        infoMsg = "当前未开始生产商品,请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动"
-                                        // $.msg($.name, '【提示】', `京东账号${$.index}[${$.nickName}]京喜工厂活动未开始\n请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动`);
+                                        infoMsg = "当前未开始生产商品,请手动去京喜APP->我的->京喜工厂 开启活动"
+                                        // $.msg($.name, '【提示】', `京东账号${$.index}[${$.nickName}]京喜工厂活动未开始\n请手动去京喜APP->我的->京喜工厂 开启活动`);
                                     } else if (data.factoryList && !data.productionList) {
-                                        infoMsg = "当前未开始生产商品,请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动"
+                                        infoMsg = "当前未开始生产商品,请手动去京喜APP->我的->京喜工厂 开启活动"
                                     }
                                 }
                             }
