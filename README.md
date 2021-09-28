@@ -1,4 +1,4 @@
-软件名称:微信_金银手指 \
+软件名称:微信_金银手指 \20210928
 项目注册地址(微信扫码):\
 <img src="https://raw.githubusercontent.com/msechen/script/master/photo_2021-09-26_22-41-18.jpg"></img>
 
